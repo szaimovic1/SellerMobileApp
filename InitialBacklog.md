@@ -35,11 +35,12 @@ Korisnik Seller mobilne aplikacije mora imati uvid u dodatne informacije o proiz
 
 
 # Feature
-Pregled nedostupnih proizvoda
+Pregled nedostupnih i kritičnih proizvoda
 ## Item
 Korisnik Seller mobilne aplikacije treba moći na osnovu korisničkog interfejsa jednostavno zaključiti koji proizvod trenutno nije dostupan.
 ### Task
 * Implementirati poseban izgled prizvoda u listi ukoliko je on nedostupan
+* Implementirati poseban izgled prizvoda u listi ukoliko je on kritičan u zalihama
 * Uraditi push koda
 * Napraviti pull request
 
