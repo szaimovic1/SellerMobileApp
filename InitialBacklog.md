@@ -6,6 +6,7 @@ Korisnik Seller mobilne aplikacije mora imati mogućnost da se loguje u aplikaci
 * Kreirati izgled screena za login
 * Implementirati validaciju polja forme
 * Implementirati slanje podataka iz forme ka serveru
+* Implementirati ponašanje sistema u slučaju da su podaci odbijeni prilikom logina
 * Uraditi push koda
 * Napraviti pull request
 
@@ -14,8 +15,8 @@ Mogućnost pristupa samo određenim featurima
 ## Item
 Korisnik Seller mobilne aplikacije treba imati mogućnost pristupa samo onim feature-ima koji su mu dozvoljeni zbog integriteta i sigurnosti podataka.
 ### Task
-* Implementirati ponašanje sistema u slučaju da su podaci odbijeni prilikom logina
-* Implementirati ponašanje sistema u slučaju da su podaci prihvaćeni prilikom logina
+* Implementirati ponašanje sistema u slučaju da su podaci prihvaćeni prilikom logina i da user ima privilegije za pristup
+* Implementirati ponašanje sistema u slučaju da user nema privilegije za pristup
 * Uraditi push koda
 * Napraviti pull request
 
