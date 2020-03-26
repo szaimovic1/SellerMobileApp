@@ -1,7 +1,13 @@
 import React, { useState }  from 'react';
+<<<<<<< HEAD
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { Card, WingBlank, WhiteSpace } from '@ant-design/react-native';
 import CardBody from '@ant-design/react-native/lib/card/CardBody';
+=======
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image} from 'react-native';
+import { WingBlank, WhiteSpace } from '@ant-design/react-native';
+import { Card } from 'react-native-paper';
+>>>>>>> 54195cc53efc667db63cbf48757ba655f2f62e82
 
 export default function DisplayProducts() {  
     /* Privremeni testni podaci */
@@ -67,6 +73,7 @@ export default function DisplayProducts() {
         return (
           <TouchableOpacity>
           <WingBlank size="lg">
+<<<<<<< HEAD
             <Card style={getStyle(item.quantitiy)}>
               <Card.Header
                 title={ item.title }
@@ -79,6 +86,19 @@ export default function DisplayProducts() {
                 //style={getTextStyle(item.quantitiy)}
               />
             </Card>
+=======
+            <Card.Title
+              title={item.title}
+              titleStyle={{color:'black', paddingTop: 10}}
+              subtitle="Card Subtitle"
+              subtitleStyle={{color:'black', paddingBottom: 10}}
+              left={(props) => <Image 
+                style={{width: 35, height: 35}}
+                source={{ uri: 'https://gw.alipayobjects.com/zos/rmsportal/MRhHctKOineMbKAZslML.jpg',}}></Image>}
+              right={(props) => <Text>{item.price}</Text>}
+              style={styles.card}
+            />
+>>>>>>> 54195cc53efc667db63cbf48757ba655f2f62e82
           </WingBlank>
           <WhiteSpace size="lg" />
           </TouchableOpacity>
@@ -98,10 +118,18 @@ const styles = StyleSheet.create({
     paddingTop: 40,
   },
   card: {
+    height: 60,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderWidth: 0.2,
+    borderColor: '#d9d9d9',
     borderRadius: 20,
+<<<<<<< HEAD
     shadowOffset:{  width: 10,  height: 10,  },
     shadowColor: '#eee',
     shadowOpacity: 1.0,  
+=======
+>>>>>>> 54195cc53efc667db63cbf48757ba655f2f62e82
   },
   refreshBtn: {
     alignSelf: "center",
