@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
-export default function Header ({ navigation, title }) {
+export default function Header ({ navigation, title, reload }) {
 
     const openMenu = () => {
         navigation.openDrawer();
@@ -14,7 +14,9 @@ export default function Header ({ navigation, title }) {
             <View>
                 <Text style={styles.headerText}>{ title }</Text>
             </View>
+            {reload && <MaterialIcons name='refresh' size={30} style={styles.rightIcon} />}
         </View>
+        
     )
 }
 
@@ -35,5 +37,9 @@ const styles = StyleSheet.create ({
     icon: {
         position: 'absolute',
         left: 0,
+    },
+    rightIcon : {
+        position: 'absolute',
+        right: 0,
     }
 });
