@@ -1,6 +1,7 @@
 import React, { useState }  from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
-import { Card, WingBlank, WhiteSpace } from '@ant-design/react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image} from 'react-native';
+import { WingBlank, WhiteSpace } from '@ant-design/react-native';
+import { Card } from 'react-native-paper';
 
 export default function DisplayProducts() {  
     /* Privremeni testni podaci */
@@ -19,15 +20,17 @@ export default function DisplayProducts() {
         return (
           <TouchableOpacity>
           <WingBlank size="lg">
-            <Card style={styles.card}>
-              <Card.Header
-                title={ item.title }
-                thumbStyle={{ width: 30, height: 30 }}
-                thumb="https://gw.alipayobjects.com/zos/rmsportal/MRhHctKOineMbKAZslML.jpg"
-                extra={ item.price }
-                style={{height: 50}}
-              />
-            </Card>
+            <Card.Title
+              title={item.title}
+              titleStyle={{color:'black', paddingTop: 10}}
+              subtitle="Card Subtitle"
+              subtitleStyle={{color:'black', paddingBottom: 10}}
+              left={(props) => <Image 
+                style={{width: 35, height: 35}}
+                source={{ uri: 'https://gw.alipayobjects.com/zos/rmsportal/MRhHctKOineMbKAZslML.jpg',}}></Image>}
+              right={(props) => <Text>{item.price}</Text>}
+              style={styles.card}
+            />
           </WingBlank>
           <WhiteSpace size="lg" />
           </TouchableOpacity>
@@ -47,10 +50,12 @@ const styles = StyleSheet.create({
     paddingTop: 40,
   },
   card: {
+    height: 60,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderWidth: 0.2,
+    borderColor: '#d9d9d9',
     borderRadius: 20,
-    shadowOffset:{  width: 10,  height: 10,  },
-    shadowColor: '#eee',
-    shadowOpacity: 1.0,
   },
   refreshBtn: {
     alignSelf: "center",
