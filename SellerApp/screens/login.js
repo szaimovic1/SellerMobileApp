@@ -23,14 +23,18 @@ export default function Login ({navigation}) {
         try {
             const fetchResponse = await fetch('https://cash-register-server-si.herokuapp.com/api/login', settings);
             const data = await fetchResponse.json();
-            console.log(data);
-            console.log(data);
-            navigation.navigate('DisplayProducts')
-            //navigation.push('DisplayProducts')
+            if(fetchResponse.ok){ 
+                navigation.navigate('DisplayProducts')
+              //navigation.push('DisplayProducts')   
+            }
+            else{
+                Alert.alert ('Error', 'Bad credentials!',[{
+                    text: 'Okay'
+                 }])
+            }
             return data;
         } catch (e) {
-           //ispisat "Nešto nije u redu!";
-           Alert.alert ('Error', 'Nesto nije u redu!',[{
+           Alert.alert ('Error', 'Server timeout!',[{
             text: 'Okay'
          }])
             return e;
