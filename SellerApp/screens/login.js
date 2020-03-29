@@ -1,39 +1,51 @@
-import React, { Component } from 'react'
-import { View, TextInput, Text, Button, Alert } from 'react-native'
-import styles from './loginStyles'
-
-class Login extends Component {
-
-    state={username: "", password: ""}
-
-   
+import React, { useState } from 'react';
+import { View, TextInput, Text, Button, Alert } from 'react-native';
+import styles from '../styles/loginStyles.js';
+ 
+export default function Login ({navigation}) {
+    const { heading, input, parent } = styles;
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+ 
+    checkLogin = async () => {
+       // const location = window.location.hostname;
+        const settings = {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                username: username,
+                password: password,
+            })
+        };
+        try {
+            const fetchResponse = await fetch('https://cash-register-server-si.herokuapp.com/api/login', settings);
+            const data = await fetchResponse.json();
+            console.log(data);
+            console.log(data);
+            navigation.navigate('DisplayProducts')
+            //navigation.push('DisplayProducts')
+            return data;
+        } catch (e) {
+           //ispisat "Nešto nije u redu!";
+           Alert.alert ('Error', 'Nesto nije u redu!',[{
+            text: 'Okay'
+         }])
+            return e;
+        }    
     
-    checkLogin(){ 
-        const {username, password} = this.state
-        if(username == 'admin' && password == 'admin'){
-            console.warn('Login is correct')
-            this.props.navigation.navigate('displayProducts')
-        } else{
-            Alert.alert ('Error', 'Username/Password mismatch',[{
-                text: 'Okay'
-            }])
-        }
     }
-
-    render(){
-      const { heading, input, parent } = styles
-
-        return (
-            <View style={parent}>
+ 
+    return (
+        <View style={parent}>
                 <Text style={heading}>Login into the application</Text>
-                <TextInput style={input} placeholder="Username" onChangeText={text => this.setState({username: text})}/>
-                <TextInput style={input} secureTextEntry={true} placeholder="Password" onChangeText={text => this.setState({password: text})} />
-
-
-                <Button title={"Login"} onPress={_ => this.checkLogin()} />
+                <TextInput style={input} placeholder="Username" onChangeText={text => setUsername(text)}/>
+                <TextInput style={input} secureTextEntry={true} placeholder="Password" onChangeText={text => setPassword(text)} />
+ 
+ 
+                <Button title={"Login"} onPress={checkLogin} />
             </View>
-        )
-    }
+    )
 }
-
-export default Login
