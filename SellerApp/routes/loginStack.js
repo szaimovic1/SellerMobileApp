@@ -1,7 +1,7 @@
 import { createStackNavigator } from 'react-navigation-stack';
 import { createAppContainer } from 'react-navigation';
 import Login from '../screens/login';
-import Header from '../components/header';
+import Header from '../components/headerLogin';
 import React from 'react';
 
 
@@ -10,6 +10,7 @@ const screens = {
         screen: Login,
         navigationOptions: ({ navigation }) => {
             return {
+                headerLeft:()=> null,
                 headerTitle: () => <Header navigation={navigation} title='Log In' />
             }
         }
@@ -18,7 +19,7 @@ const screens = {
 
 const LoginStack = createStackNavigator (screens, {
     defaultNavigationOptions: {
-        headerStyle: { height: 80},
+        headerStyle: { backgroundColor: '#05132e', height: 80, },
    }
 });
 
