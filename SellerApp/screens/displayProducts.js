@@ -1,11 +1,12 @@
-import React, { useState, useEffect }  from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, RefreshControl} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, RefreshControl } from 'react-native';
 import { WingBlank, WhiteSpace } from '@ant-design/react-native';
 import { Card } from 'react-native-paper';
-import {AsyncStorage} from 'react-native';
+import { AsyncStorage } from 'react-native';
+import Filter from '../components/filter';
 
-export default function DisplayProducts() {  
-  const [products, setProducts] = useState ([]);
+export default function DisplayProducts() {
+  const [products, setProducts] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
 
   getProducts = async () => {
@@ -17,53 +18,58 @@ export default function DisplayProducts() {
         'Authorization': 'Bearer ' + TOKEN
       }
     })
-    .then((response) => response.json())
-    .then((products) => {
-      console.log(products);
-      setProducts(products);
-      setRefreshing(false);
-      return products;
-    })
-    .done();
+      .then((response) => response.json())
+      .then((products) => {
+        setProducts(products);
+        setRefreshing(false);
+        return products;
+      })
+      .done();
   }
-   
+
   useEffect(() => {
     getProducts();
   }, []);
-  
+
+  const updateList = (specificProducts) => {
+    setProducts(specificProducts);
+  }
+
   return (
     <View style={styles.container}>
-      <ScrollView 
+      <Filter updateList={updateList} />
+      <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={getProducts} />
         }>
-      {products.map((item) => {
-        return (
-          <TouchableOpacity key={item.id}>
-          <WingBlank size="lg">
-            <Card.Title              
-              title={item.name}
-              titleStyle={{color:'black', paddingTop: 10}}
-              subtitleStyle={{color:'black', paddingBottom: 10}}
-              left={(props) => {
-                const img = item.imageBase64;
-                return <Image 
-                  style={{width: 35, height: 35}}
-                  source={{ uri: img }} /> 
-              }}
+        {products.map((item) => {
+          return (
+            <TouchableOpacity key={item.id}>
+              <WingBlank size="lg">
+                <Card.Title
+                  title={item.name}
+                  titleStyle={{ color: 'black', paddingTop: 10 }}
+                  subtitleStyle={{ color: 'black', paddingBottom: 10 }}
+                  left={(props) => {
+                    const img = item.imageBase64;
+                    return <Image
+                      style={{ width: 35, height: 35 }}
+                      source={{ uri: img }} />
+                  }}
 
-              right={(props) => <Text>{item.price} KM</Text>}
-              style={styles.card}
-            />
-          </WingBlank>
-          <WhiteSpace size="lg" />
-          </TouchableOpacity>
-           
+                  right={(props) => <Text>{item.price} KM</Text>}
+                  style={styles.card}
+                />
+              </WingBlank>
+              <WhiteSpace size="lg" />
+            </TouchableOpacity>
+
+          )
+        }
         )}
-      )}
-      </ScrollView>                       
+      </ScrollView>
     </View>
-  )             
+  )
 }
 
 const styles = StyleSheet.create({
@@ -86,7 +92,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     width: 160,
   },
-  rightIcon : {
+  rightIcon: {
     position: 'absolute',
     left: 20,
     marginTop: 20,
