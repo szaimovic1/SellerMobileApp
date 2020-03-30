@@ -1,63 +1,13 @@
 import React, { useState }  from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, Modal, TouchableHighlight, Dimensions} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, Dimensions, Modal, TouchableHighlight} from 'react-native';
 import { WingBlank, WhiteSpace } from '@ant-design/react-native';
 import { Card } from 'react-native-paper';
+import {AsyncStorage} from 'react-native';
 
 export default function DisplayProducts() {  
-    /* Dohvatanje proizvoda */
-  const [products, setProducts] = useState ([
-    { product: 
-      {id: '67',
-      name: 'Coca Cola',
-      price: '1.20',
-      image: 'https://eatforum.org/content/uploads/2018/05/table_with_food_top_view_900x700.jpg',
-      unit: 'l',
-      discount: {
-        percentage: '0'
-      }
-      },
-      quantity: '150.0'
-    },
-    { product: 
-      {id: '67',
-      name: 'Limunada',
-      price: '5.20',
-      image: 'https://eatforum.org/content/uploads/2018/05/table_with_food_top_view_900x700.jpg',
-      unit: 'l',
-      discount: {
-        percentage: '0'
-      }
-      },
-      quantity: '50.0'
-    },
-    { product: 
-      {id: '67',
-      name: 'Čaj',
-      price: '1',
-      image: 'https://eatforum.org/content/uploads/2018/05/table_with_food_top_view_900x700.jpg',
-      unit: 'k',
-      discount: {
-        percentage: '0'
-      }
-      },
-      quantity: '20.0'
-    },
-    { product: 
-      {id: '67',
-      name: 'Topla čokolada',
-      price: '5',
-      image: 'https://eatforum.org/content/uploads/2018/05/table_with_food_top_view_900x700.jpg',
-      unit: 'l',
-      discount: {
-        percentage: '20'
-      }
-      },
-      quantity: '20.0'
-    },
-  ]);
-
+  const [products, setProducts] = useState ([]);
+  const [productsLoaded, setProductsLoaded] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-
   /* Podaci o proizvodu za koji tražimo dodatne informacije. */
   const [modalData, setModalData] = useState({name: null, 
     price: null, 
@@ -65,16 +15,15 @@ export default function DisplayProducts() {
     unit: null, 
     discount: null, 
     quantity: null});
-
   /* Popunjavanje dodatnih informacija o nekom proizvodu */  
-  const ModalFetcher = (text) =>{
+  const ModalFetcher = (id) =>{
     products.map((item) => {
-      if(text == item.product.name){
-        setModalData({name: item.product.name,
-            price: item.product.price, 
-            image: item.product.image, 
-            unit: item.product.unit, 
-            discount: item.product.discount.percentage, 
+      if(id == item.id){
+        setModalData({name: item.name,
+            price: item.price, 
+            image: item.imageBase64, 
+            unit: item.measurementUnit, 
+            discount: item.discount, 
             quantity: item.quantity
           })
           return;
@@ -83,6 +32,28 @@ export default function DisplayProducts() {
     )
   }
 
+  getProducts = async () => {
+    var TOKEN = await AsyncStorage.getItem('token');
+    fetch("https://cash-register-server-si.herokuapp.com/api/products", {
+      method: "GET",
+      headers: {
+        'Authorization': 'Bearer ' + TOKEN
+      }
+    })
+    .then((response) => response.json())
+    .then((products) => {
+      console.log(products);
+      setProducts(products);
+      setProductsLoaded(true);
+      return products;
+    })
+    .done();
+  }
+
+  if (!productsLoaded) {
+    getProducts();
+  }
+  
   return (
     <View style={[styles.container, modalVisible ? {backgroundColor: 'rgba(0,0,0,0.7)'} : '']}>
       <Modal
@@ -94,7 +65,7 @@ export default function DisplayProducts() {
         <View style={styles.modal}>
             <Image
               style={styles.modalImage}
-              source={{ uri: modalData.image }}
+              source={{ uri: 'data:image/gif;base64,${modalData.image}' }}
             />
         </View>
         <View style={styles.centeredView}>
@@ -114,24 +85,25 @@ export default function DisplayProducts() {
           </View>
         </View>
       </Modal>
-    
+
       <ScrollView>
       {products.map((item) => {
         return (
-          <TouchableOpacity onPress={ () => {
-            ModalFetcher(item.product.name); 
+          <TouchableOpacity
+            key={item.id}
+            onPress={ () => {
+            ModalFetcher(item.id); 
             setModalVisible(true);}}
           >
           <WingBlank size="lg">
             <Card.Title
-              title={item.product.name}
+              title={item.name}
               titleStyle={{color:'black', paddingTop: 10}}
-              //subtitle="Card Subtitle"
               subtitleStyle={{color:'black', paddingBottom: 10}}
               left={(props) => <Image 
                 style={{width: 35, height: 35}}
-                source={{ uri: 'https://gw.alipayobjects.com/zos/rmsportal/MRhHctKOineMbKAZslML.jpg',}}></Image>}
-              right={(props) => <Text>{item.product.price}</Text>}
+                source={{ uri: 'data:image/gif;base64,${item.imageBase64}'}}></Image>}
+              right={(props) => <Text>{item.price} {item.measurementUnit}</Text>}
               style={styles.card}
             />
           </WingBlank>
@@ -140,8 +112,10 @@ export default function DisplayProducts() {
         )}
       )}
       </ScrollView>
+                        
     </View>
-  )
+  )             
+   
 }
 
 const styles = StyleSheet.create({
@@ -164,7 +138,6 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     width: 160,
   },
-
   centeredView: {
     flex: 1,
     justifyContent: "center",
@@ -220,3 +193,4 @@ const styles = StyleSheet.create({
   opacity: 0.9
 }
 });
+

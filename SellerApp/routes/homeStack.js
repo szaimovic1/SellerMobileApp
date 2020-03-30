@@ -10,7 +10,7 @@ const screens = {
         screen: DisplayProducts,
         navigationOptions: ({ navigation }) => {
             return {
-                headerTitle: () => <Header navigation={navigation} title='Products' reload='true'/>
+                headerTitle: () => <Header navigation={navigation} title='Products' reload='true' />
             }
         }
     },
@@ -19,7 +19,7 @@ const screens = {
 
 const HomeStack = createStackNavigator (screens, {
     defaultNavigationOptions: {
-        headerStyle: { height: 80},
+        headerStyle: { backgroundColor: '#05132e',height: 80},
    }
 });
 
