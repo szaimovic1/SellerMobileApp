@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image} from 'reac
 import { WingBlank, WhiteSpace } from '@ant-design/react-native';
 import { Card } from 'react-native-paper';
 import {AsyncStorage} from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
 
 export default function DisplayProducts() {  
   const [products, setProducts] = useState ([]);
@@ -32,39 +33,44 @@ export default function DisplayProducts() {
   
   return (
     <View style={styles.container}>
+      <TouchableOpacity activeScale={0.7} style={styles.rightIcon}>
+        <MaterialIcons name='refresh' size={40}  onPress={getProducts} />
+     </TouchableOpacity>
       <ScrollView>
       {products.map((item) => {
         return (
-          <TouchableOpacity>
+          <TouchableOpacity key={item.id}>
           <WingBlank size="lg">
-            <Card.Title
+            <Card.Title              
               title={item.name}
               titleStyle={{color:'black', paddingTop: 10}}
               subtitleStyle={{color:'black', paddingBottom: 10}}
-              left={(props) => <Image 
-                style={{width: 35, height: 35}}
-                source={{ uri: 'data:image/gif;base64,${item.imageBase64}'}}></Image>}
-              right={(props) => <Text>{item.price} {item.measurementUnit}</Text>}
+              left={(props) => {
+                const img = item.imageBase64;
+                return <Image 
+                  style={{width: 35, height: 35}}
+                  source={{ uri: img }} /> 
+              }}
+
+              right={(props) => <Text>{item.price} KM</Text>}
               style={styles.card}
             />
           </WingBlank>
           <WhiteSpace size="lg" />
           </TouchableOpacity>
+           
         )}
       )}
-      </ScrollView>
-                        
-
+      </ScrollView>                       
     </View>
   )             
-   
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingTop: 40,
+    paddingTop: 80,
   },
   card: {
     height: 60,
@@ -79,5 +85,11 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 30,
     width: 160,
+  },
+  rightIcon : {
+    position: 'absolute',
+    left: 20,
+    marginTop: 20,
+    marginBottom: 30,
   }
 });

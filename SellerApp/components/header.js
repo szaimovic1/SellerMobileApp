@@ -16,7 +16,6 @@ export default function Header ({ navigation, title, reload }) {
             <View>
                 <Text style={styles.headerText}>{ title }</Text>
             </View>
-            {reload && <MaterialIcons name='refresh' size={30} style={styles.rightIcon} />}
         </View>
         
     )
