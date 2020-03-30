@@ -1,20 +1,14 @@
-<<<<<<< HEAD
-import React, { useState }  from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, Dimensions, Modal, TouchableHighlight} from 'react-native';
-=======
 import React, { useState, useEffect }  from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, RefreshControl} from 'react-native';
->>>>>>> 59cbccc27dcae373d75128c142a388df52c76c09
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, Dimensions, Modal, TouchableHighlight, RefreshControl} from 'react-native';
 import { WingBlank, WhiteSpace } from '@ant-design/react-native';
 import { Card } from 'react-native-paper';
 import {AsyncStorage} from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 
 export default function DisplayProducts() {  
   const [products, setProducts] = useState ([]);
-<<<<<<< HEAD
   const [productsLoaded, setProductsLoaded] = useState(false);
- 
+  const [refreshing, setRefreshing] = React.useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   /* Podaci o proizvodu za koji tražimo dodatne informacije. */
   const [modalData, setModalData] = useState({name: null, 
@@ -39,29 +33,8 @@ export default function DisplayProducts() {
       }
     )
   }
-=======
-  const [refreshing, setRefreshing] = React.useState(false);
->>>>>>> 59cbccc27dcae373d75128c142a388df52c76c09
 
-  getProducts = async () => {
-    setRefreshing(true);
-    var TOKEN = await AsyncStorage.getItem('token');
-    fetch("https://cash-register-server-si.herokuapp.com/api/products", {
-      method: "GET",
-      headers: {
-        'Authorization': 'Bearer ' + TOKEN
-      }
-    })
-    .then((response) => response.json())
-    .then((products) => {
-      console.log(products);
-      setProducts(products);
-      setRefreshing(false);
-      return products;
-    })
-    .done();
-  }
-<<<<<<< HEAD
+  
   const getStyle = (quantitiy) => {
     if(Number(quantitiy)>=0 && Number(quantitiy)<10) {
       return { //ukoliko bude potrebno i za kritične
@@ -117,10 +90,6 @@ export default function DisplayProducts() {
     }
   }
   
-  if (!productsLoaded) {
-    getProducts();
-  }
-
   const isProductQuantitySmall = (quantity) => {
     var small=false;
     if(Number(quantity)>=0 && Number(quantity)<10) {
@@ -130,7 +99,28 @@ export default function DisplayProducts() {
       return(<FontAwesome name='exclamation-circle' color='red' size={25}/>);
     }
   }
-  
+  getProducts = async () => {
+    setRefreshing(true);
+    var TOKEN = await AsyncStorage.getItem('token');
+    fetch("https://cash-register-server-si.herokuapp.com/api/products", {
+      method: "GET",
+      headers: {
+        'Authorization': 'Bearer ' + TOKEN
+      }
+    })
+    .then((response) => response.json())
+    .then((products) => {
+      console.log(products);
+      setProducts(products);
+      setRefreshing(false);
+      return products;
+    })
+    .done();
+  }
+   
+  useEffect(() => {
+    getProducts();
+  }, []);
   return (
     <View style={[styles.container, modalVisible ? {backgroundColor: 'rgba(0,0,0,0.7)'} : '']}>
       <Modal
@@ -148,9 +138,9 @@ export default function DisplayProducts() {
         <View style={styles.centeredView}>
           <View style={{...styles.modalView, marginBottom: '80%'}}>
               <Text style={styles.modalTitle}>{modalData.name}</Text>
-            <Text style={styles.modalText}>Cijena: <Text style={{fontWeight: "bold"}}>{modalData.price} KM</Text></Text>
-            <Text style={getStyle(modalData.quantity)}>Količina: <Text style={{fontWeight: "bold"}}>{modalData.quantity} {modalData.unit}</Text><Text> {isProductQuantitySmall(modalData.quantity)}</Text></Text>
-            <Text style={styles.modalText}>Popust: <Text style={{fontWeight: "bold"}}>{modalData.discount} %</Text></Text>
+            <Text style={styles.modalText}>Price: <Text style={{fontWeight: "bold"}}>{modalData.price} KM</Text></Text>
+            <Text style={getStyle(modalData.quantity)}>Quantity: <Text style={{fontWeight: "bold"}}>{modalData.quantity} {modalData.unit}</Text><Text> {isProductQuantitySmall(modalData.quantity)}</Text></Text>
+            <Text style={styles.modalText}>Discount: <Text style={{fontWeight: "bold"}}>{modalData.discount} %</Text></Text>
             <TouchableHighlight
               style={{ ...styles.openButton, backgroundColor: 'rgba(0,0,0,0.7)' }}
               onPress={() => {
@@ -162,54 +152,27 @@ export default function DisplayProducts() {
           </View>
         </View>
       </Modal>
-
-      <ScrollView>
+      
+      <ScrollView refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={getProducts} />}>
       {products.map((item) => {
         return (
-          <TouchableOpacity
-            key={item.id}
+          <TouchableOpacity key={item.id}
             onPress={ () => {
             ModalFetcher(item.id); 
-            setModalVisible(true);}}
-          >
-=======
-   
-  useEffect(() => {
-    getProducts();
-  }, []);
-  
-  return (
-    <View style={styles.container}>
-      <ScrollView 
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={getProducts} />
-        }>
-      {products.map((item) => {
-        return (
-          <TouchableOpacity key={item.id}>
->>>>>>> 59cbccc27dcae373d75128c142a388df52c76c09
+            setModalVisible(true);}}>
           <WingBlank size="lg">
             <Card.Title              
               title={item.name}
-<<<<<<< HEAD
               titleStyle={getTitleStyle(item.quantity)}
               subtitleStyle={getSubtitleStyle(item.quantity)}
-              left={(props) => <Image 
-                style={{width: 35, height: 35}}
-                source={{ uri: 'data:image/gif;base64,${item.imageBase64}'}}></Image>}
-              right={(props) => <Text style={getTextStyle(item.quantity)}>{item.price} KM</Text>}
-=======
-              titleStyle={{color:'black', paddingTop: 10}}
-              subtitleStyle={{color:'black', paddingBottom: 10}}
               left={(props) => {
                 const img = item.imageBase64;
                 return <Image 
                   style={{width: 35, height: 35}}
                   source={{ uri: img }} /> 
               }}
-
-              right={(props) => <Text>{item.price} KM</Text>}
->>>>>>> 59cbccc27dcae373d75128c142a388df52c76c09
+              right={(props) => <Text style={getTextStyle(item.quantity)}>{item.price} KM</Text>}
               style={styles.card}
             />
           </WingBlank>
@@ -218,12 +181,8 @@ export default function DisplayProducts() {
            
         )}
       )}
-<<<<<<< HEAD
       </ScrollView>
-                        
-=======
-      </ScrollView>                       
->>>>>>> 59cbccc27dcae373d75128c142a388df52c76c09
+                                      
     </View>
   )             
 }
@@ -232,7 +191,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingTop: 40,
+    paddingTop: 80,
   },
   card: {
     height: 60,
@@ -248,7 +207,6 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     width: 160,
   },
-<<<<<<< HEAD
   centeredView: {
     flex: 1,
     justifyContent: "center",
@@ -301,11 +259,8 @@ const styles = StyleSheet.create({
   modalImage: { width: Dimensions.get('window').width, 
   height: '75%', 
   resizeMode: 'stretch', 
-  opacity: 0.9
-}
-});
+  opacity: 0.9},
 
-=======
   rightIcon : {
     position: 'absolute',
     left: 20,
@@ -313,4 +268,3 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   }
 });
->>>>>>> 59cbccc27dcae373d75128c142a388df52c76c09
