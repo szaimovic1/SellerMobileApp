@@ -1,15 +1,16 @@
 import React, { useState }  from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, RefreshControl} from 'react-native';
 import { WingBlank, WhiteSpace } from '@ant-design/react-native';
 import { Card } from 'react-native-paper';
 import {AsyncStorage} from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
 
 export default function DisplayProducts() {  
   const [products, setProducts] = useState ([]);
   const [productsLoaded, setProductsLoaded] = useState(false);
- 
+  const [refreshing, setRefreshing] = React.useState(false);
+
   getProducts = async () => {
+    setRefreshing(true);
     var TOKEN = await AsyncStorage.getItem('token');
     fetch("https://cash-register-server-si.herokuapp.com/api/products", {
       method: "GET",
@@ -22,6 +23,7 @@ export default function DisplayProducts() {
       console.log(products);
       setProducts(products);
       setProductsLoaded(true);
+      setRefreshing(false);
       return products;
     })
     .done();
@@ -33,10 +35,10 @@ export default function DisplayProducts() {
   
   return (
     <View style={styles.container}>
-      <TouchableOpacity activeScale={0.7} style={styles.rightIcon}>
-        <MaterialIcons name='refresh' size={40}  onPress={getProducts} />
-     </TouchableOpacity>
-      <ScrollView>
+      <ScrollView 
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={getProducts} />
+        }>
       {products.map((item) => {
         return (
           <TouchableOpacity key={item.id}>
@@ -70,7 +72,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingTop: 80,
+    paddingTop: 40,
   },
   card: {
     height: 60,
