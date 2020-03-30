@@ -8,22 +8,22 @@ export default StyleSheet.create({
         flexDirection: 'row',      
         alignItems: 'center',
         justifyContent: 'space-evenly',
+<<<<<<< HEAD
         width: Dimensions.get('window').width-35,
+=======
+        alignContent: 'space-between'
+>>>>>>> 59cbccc27dcae373d75128c142a388df52c76c09
     },
     headerText: {
         color: 'white',
         fontWeight: 'bold',
         fontSize: 20,
-        letterSpacing: 1
+        letterSpacing: 1,
     },
     icon: {
         position: 'absolute',
         left: 0,
         color: 'white'
     },
-    rightIcon : {
-        position: 'absolute',
-        right: 0,
-        color: 'white'
-    }
+    
 })

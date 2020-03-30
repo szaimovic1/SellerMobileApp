@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import React, { useState }  from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, Dimensions, Modal, TouchableHighlight} from 'react-native';
+=======
+import React, { useState, useEffect }  from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, RefreshControl} from 'react-native';
+>>>>>>> 59cbccc27dcae373d75128c142a388df52c76c09
 import { WingBlank, WhiteSpace } from '@ant-design/react-native';
 import { Card } from 'react-native-paper';
 import {AsyncStorage} from 'react-native';
@@ -7,6 +12,7 @@ import { FontAwesome } from '@expo/vector-icons';
 
 export default function DisplayProducts() {  
   const [products, setProducts] = useState ([]);
+<<<<<<< HEAD
   const [productsLoaded, setProductsLoaded] = useState(false);
  
   const [modalVisible, setModalVisible] = useState(false);
@@ -33,8 +39,12 @@ export default function DisplayProducts() {
       }
     )
   }
+=======
+  const [refreshing, setRefreshing] = React.useState(false);
+>>>>>>> 59cbccc27dcae373d75128c142a388df52c76c09
 
   getProducts = async () => {
+    setRefreshing(true);
     var TOKEN = await AsyncStorage.getItem('token');
     fetch("https://cash-register-server-si.herokuapp.com/api/products", {
       method: "GET",
@@ -46,11 +56,12 @@ export default function DisplayProducts() {
     .then((products) => {
       console.log(products);
       setProducts(products);
-      setProductsLoaded(true);
+      setRefreshing(false);
       return products;
     })
     .done();
   }
+<<<<<<< HEAD
   const getStyle = (quantitiy) => {
     if(Number(quantitiy)>=0 && Number(quantitiy)<10) {
       return { //ukoliko bude potrebno i za kritične
@@ -161,27 +172,60 @@ export default function DisplayProducts() {
             ModalFetcher(item.id); 
             setModalVisible(true);}}
           >
+=======
+   
+  useEffect(() => {
+    getProducts();
+  }, []);
+  
+  return (
+    <View style={styles.container}>
+      <ScrollView 
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={getProducts} />
+        }>
+      {products.map((item) => {
+        return (
+          <TouchableOpacity key={item.id}>
+>>>>>>> 59cbccc27dcae373d75128c142a388df52c76c09
           <WingBlank size="lg">
-            <Card.Title
+            <Card.Title              
               title={item.name}
+<<<<<<< HEAD
               titleStyle={getTitleStyle(item.quantity)}
               subtitleStyle={getSubtitleStyle(item.quantity)}
               left={(props) => <Image 
                 style={{width: 35, height: 35}}
                 source={{ uri: 'data:image/gif;base64,${item.imageBase64}'}}></Image>}
               right={(props) => <Text style={getTextStyle(item.quantity)}>{item.price} KM</Text>}
+=======
+              titleStyle={{color:'black', paddingTop: 10}}
+              subtitleStyle={{color:'black', paddingBottom: 10}}
+              left={(props) => {
+                const img = item.imageBase64;
+                return <Image 
+                  style={{width: 35, height: 35}}
+                  source={{ uri: img }} /> 
+              }}
+
+              right={(props) => <Text>{item.price} KM</Text>}
+>>>>>>> 59cbccc27dcae373d75128c142a388df52c76c09
               style={styles.card}
             />
           </WingBlank>
           <WhiteSpace size="lg" />
           </TouchableOpacity>
+           
         )}
       )}
+<<<<<<< HEAD
       </ScrollView>
                         
+=======
+      </ScrollView>                       
+>>>>>>> 59cbccc27dcae373d75128c142a388df52c76c09
     </View>
   )             
-   
 }
 
 const styles = StyleSheet.create({
@@ -204,6 +248,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     width: 160,
   },
+<<<<<<< HEAD
   centeredView: {
     flex: 1,
     justifyContent: "center",
@@ -260,3 +305,12 @@ const styles = StyleSheet.create({
 }
 });
 
+=======
+  rightIcon : {
+    position: 'absolute',
+    left: 20,
+    marginTop: 20,
+    marginBottom: 30,
+  }
+});
+>>>>>>> 59cbccc27dcae373d75128c142a388df52c76c09
