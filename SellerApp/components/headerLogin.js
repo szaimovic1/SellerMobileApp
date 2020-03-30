@@ -13,5 +13,6 @@ export default function HeaderLogin ({ navigation, title }) {
             </View>
         </View>
     )
+
 }
 
