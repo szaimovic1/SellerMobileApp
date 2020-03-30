@@ -1,14 +1,15 @@
+
 import React, { useState, useEffect }  from 'react';
-
-
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, ImageBackground, Dimensions, Modal, TouchableHighlight, RefreshControl, Platform} from 'react-native';
 import { WingBlank, WhiteSpace } from '@ant-design/react-native';
 import { Card } from 'react-native-paper';
 import {AsyncStorage} from 'react-native';
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
+import Filter from '../components/filter';
 
-export default function DisplayProducts() {  
-  const [products, setProducts] = useState ([]);
+
+export default function DisplayProducts() {
+  const [products, setProducts] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   /* Podaci o proizvodu za koji tražimo dodatne informacije. */
@@ -110,19 +111,19 @@ export default function DisplayProducts() {
         'Authorization': 'Bearer ' + TOKEN
       }
     })
-    .then((response) => response.json())
-    .then((products) => {
-      console.log(products);
-      setProducts(products);
-      setRefreshing(false);
-      return products;
-    })
-    .done();
+      .then((response) => response.json())
+      .then((products) => {
+        setProducts(products);
+        setRefreshing(false);
+        return products;
+      })
+      .done();
   }
-   
+
   useEffect(() => {
     getProducts();
   }, []);
+
 
   return (
     
@@ -155,7 +156,45 @@ export default function DisplayProducts() {
           </View>
         </View>
       </Modal>
-      
+      const updateList = (specificProducts) => {
+    setProducts(specificProducts);
+  }
+
+  return (
+    <View style={styles.container}>
+      <Filter updateList={updateList} />
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={getProducts} />
+        }>
+        {products.map((item) => {
+          return (
+            <TouchableOpacity key={item.id}>
+              <WingBlank size="lg">
+                <Card.Title
+                  title={item.name}
+                  titleStyle={{ color: 'black', paddingTop: 10 }}
+                  subtitleStyle={{ color: 'black', paddingBottom: 10 }}
+                  left={(props) => {
+                    const img = item.imageBase64;
+                    return <Image
+                      style={{ width: 35, height: 35 }}
+                      source={{ uri: img }} />
+                  }}
+
+                  right={(props) => <Text>{item.price} KM</Text>}
+                  style={styles.card}
+                />
+              </WingBlank>
+              <WhiteSpace size="lg" />
+            </TouchableOpacity>
+
+          )
+        }
+        )}
+      </ScrollView>
+    </View>
+  )
       <ScrollView refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={getProducts} />}
           style={modalVisible ? {backgroundColor: 'rgba(0,0,0,0.7)'} : ''}>
@@ -174,10 +213,11 @@ export default function DisplayProducts() {
               left={(props) => {
                 const img = item.imageBase64;
                 return <Image 
-                  style={{width: 35, height: 35}}
+                  style={[{width: 35, height: 35}, modalVisible ? {opacity: 0} : '1']}
                   source={{ uri: img }} /> 
               }}
-              right={(props) => <Text style={getTextStyle(item.quantity)}>{item.price} KM</Text>}
+              right={(props) => <Text style={[getTextStyle(item.quantity),
+                 modalVisible ? {color: 'rgba(0,0,0,0.7)'} : '']}>{item.price} KM</Text>}
               style={[styles.card, 
                 modalVisible ? {backgroundColor: 'rgba(0,0,0,0.7)'} : '', 
                 modalVisible ? {borderColor: 'rgba(0,0,0,0.7)'} : '']}
@@ -215,6 +255,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     width: 160,
   },
+
   centeredView: {
     flex: 1,
     justifyContent: "center",
