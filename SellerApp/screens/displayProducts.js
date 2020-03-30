@@ -1,5 +1,5 @@
 import React, { useState, useEffect }  from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, Dimensions, Modal, TouchableHighlight, RefreshControl} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, ImageBackground, Dimensions, Modal, TouchableHighlight, RefreshControl} from 'react-native';
 import { WingBlank, WhiteSpace } from '@ant-design/react-native';
 import { Card } from 'react-native-paper';
 import {AsyncStorage} from 'react-native';
@@ -21,9 +21,10 @@ export default function DisplayProducts() {
   const ModalFetcher = (id) =>{
     products.map((item) => {
       if(id == item.id){
+        const img = item.imageBase64;
         setModalData({name: item.name,
             price: item.price, 
-            image: item.imageBase64, 
+            image: img, 
             unit: item.measurementUnit, 
             discount: item.discount, 
             quantity: item.quantity
@@ -56,9 +57,11 @@ export default function DisplayProducts() {
     if(Number(quantitiy) == 0) {
       return {
         paddingTop: 10,
-        color: '#e6e6e6'
+        color: '#e6e6e6',
       }
-    } else {
+    } 
+    
+    else {
       return {
         paddingTop: 10,
         color: '#000000'
@@ -122,7 +125,8 @@ export default function DisplayProducts() {
     getProducts();
   }, []);
   return (
-    <View style={[styles.container, modalVisible ? {backgroundColor: 'rgba(0,0,0,0.7)'} : '']}>
+    
+    <ImageBackground source={require('../images/background2.png')} style={[styles.container, modalVisible ? {backgroundColor: 'rgba(0,0,0,0.7)'} : '']}>
       <Modal
         style={styles.centeredView}
         animationType="fade"
@@ -132,7 +136,7 @@ export default function DisplayProducts() {
         <View style={styles.modal}>
             <Image
               style={styles.modalImage}
-              source={{ uri: 'data:image/gif;base64,${modalData.image}' }}
+              source={{ uri: modalData.image }}
             />
         </View>
         <View style={styles.centeredView}>
@@ -162,7 +166,7 @@ export default function DisplayProducts() {
             ModalFetcher(item.id); 
             setModalVisible(true);}}>
           <WingBlank size="lg">
-            <Card.Title              
+            <Card.Title            
               title={item.name}
               titleStyle={getTitleStyle(item.quantity)}
               subtitleStyle={getSubtitleStyle(item.quantity)}
@@ -183,7 +187,8 @@ export default function DisplayProducts() {
       )}
       </ScrollView>
                                       
-    </View>
+    
+    </ImageBackground>
   )             
 }
 
@@ -200,6 +205,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.2,
     borderColor: '#d9d9d9',
     borderRadius: 20,
+    backgroundColor:'white'
   },
   refreshBtn: {
     alignSelf: "center",
