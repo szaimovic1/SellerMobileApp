@@ -7,18 +7,19 @@ export default StyleSheet.create({
         height: '100%',
         flexDirection: 'row',      
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'space-evenly',
+        alignContent: 'space-between'
     },
     headerText: {
         color: 'white',
         fontWeight: 'bold',
         fontSize: 20,
         letterSpacing: 1,
-        marginLeft: 120
     },
     icon: {
         position: 'absolute',
         left: 0,
         color: 'white'
-    }
+    },
+    
 })

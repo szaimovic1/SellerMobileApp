@@ -1,10 +1,10 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import styles from '../styles/global.js';
 
-export default function Header ({ navigation, title }) {
+export default function Header ({ navigation, title, reload }) {
 
     const openMenu = () => {
         navigation.openDrawer();
@@ -17,5 +17,6 @@ export default function Header ({ navigation, title }) {
                 <Text style={styles.headerText}>{ title }</Text>
             </View>
         </View>
+        
     )
 }

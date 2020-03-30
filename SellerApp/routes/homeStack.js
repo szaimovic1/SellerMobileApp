@@ -10,7 +10,7 @@ const screens = {
         screen: DisplayProducts,
         navigationOptions: ({ navigation }) => {
             return {
-                headerTitle: () => <Header navigation={navigation} title='Products' />
+                headerTitle: () => <Header navigation={navigation} title='Products' reload='true' />
             }
         }
     },
