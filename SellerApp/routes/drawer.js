@@ -4,9 +4,6 @@ import HomeStack from './homeStack';
 import LoginStack from './loginStack';
 
 const RootDrawerNavigator = createDrawerNavigator({
-    LogIn: {
-        screen: LoginStack,
-    },
     Products: {
         screen: HomeStack,
     },
