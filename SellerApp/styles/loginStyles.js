@@ -32,7 +32,9 @@ export default StyleSheet.create({
   userPass: {
     marginLeft:13,
     justifyContent:'center',
-    flexDirection:'row'
+    flexDirection:'row',
+    height: 70,
+  
   }, 
   loginScreenButton: {
     marginRight:20,
