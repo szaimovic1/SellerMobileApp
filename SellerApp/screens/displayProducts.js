@@ -174,10 +174,11 @@ export default function DisplayProducts() {
               left={(props) => {
                 const img = item.imageBase64;
                 return <Image 
-                  style={{width: 35, height: 35}}
+                  style={[{width: 35, height: 35}, modalVisible ? {opacity: 0} : '1']}
                   source={{ uri: img }} /> 
               }}
-              right={(props) => <Text style={getTextStyle(item.quantity)}>{item.price} KM</Text>}
+              right={(props) => <Text style={[getTextStyle(item.quantity),
+                 modalVisible ? {color: 'rgba(0,0,0,0.7)'} : '']}>{item.price} KM</Text>}
               style={[styles.card, 
                 modalVisible ? {backgroundColor: 'rgba(0,0,0,0.7)'} : '', 
                 modalVisible ? {borderColor: 'rgba(0,0,0,0.7)'} : '']}
