@@ -1,7 +1,7 @@
 import React, { useState, useEffect }  from 'react';
 
 
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, ImageBackground, Dimensions, Modal, TouchableHighlight, RefreshControl} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, ImageBackground, Dimensions, Modal, TouchableHighlight, RefreshControl, Platform} from 'react-native';
 import { WingBlank, WhiteSpace } from '@ant-design/react-native';
 import { Card } from 'react-native-paper';
 import {AsyncStorage} from 'react-native';
@@ -9,7 +9,6 @@ import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 
 export default function DisplayProducts() {  
   const [products, setProducts] = useState ([]);
-  const [productsLoaded, setProductsLoaded] = useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   /* Podaci o proizvodu za koji tražimo dodatne informacije. */
@@ -36,9 +35,6 @@ export default function DisplayProducts() {
       }
     )
   }
-
-
-  
   const getStyle = (quantitiy) => {
     if(Number(quantitiy)>=0 && Number(quantitiy)<10) {
       return { //ukoliko bude potrebno i za kritične
@@ -130,13 +126,12 @@ export default function DisplayProducts() {
 
   return (
     
-    <ImageBackground source={require('../images/background2.png')} style={[styles.container, modalVisible ? {backgroundColor: 'rgba(0,0,0,0.7)'} : '']}>
+    <ImageBackground source={require('../images/background2.png')} style={styles.container}>
       <Modal
         style={styles.centeredView}
         animationType="fade"
         transparent={true}
-        visible={modalVisible}
-      >
+        visible={modalVisible}>
         <View style={styles.modal}>
             <Image
               style={styles.modalImage}
@@ -162,7 +157,8 @@ export default function DisplayProducts() {
       </Modal>
       
       <ScrollView refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={getProducts} />}>
+          <RefreshControl refreshing={refreshing} onRefresh={getProducts} />}
+          style={modalVisible ? {backgroundColor: 'rgba(0,0,0,0.7)'} : ''}>
       {products.map((item) => {
         return (
           <TouchableOpacity key={item.id}
@@ -182,8 +178,9 @@ export default function DisplayProducts() {
                   source={{ uri: img }} /> 
               }}
               right={(props) => <Text style={getTextStyle(item.quantity)}>{item.price} KM</Text>}
-
-              style={styles.card}
+              style={[styles.card, 
+                modalVisible ? {backgroundColor: 'rgba(0,0,0,0.7)'} : '', 
+                modalVisible ? {borderColor: 'rgba(0,0,0,0.7)'} : '']}
             />
           </WingBlank>
           <WhiteSpace size="lg" />
@@ -191,10 +188,7 @@ export default function DisplayProducts() {
            
         )}
       )}
-
       </ScrollView>
-                                      
-    
     </ImageBackground>
 
   )             
@@ -221,7 +215,6 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     width: 160,
   },
-
   centeredView: {
     flex: 1,
     justifyContent: "center",
@@ -229,6 +222,11 @@ const styles = StyleSheet.create({
     marginTop: 22
   },
   modalView: {
+    ...Platform.select({
+      ios: {
+        height: 350,
+      },
+    }),
     margin: 20,
     backgroundColor: "white",
     borderRadius: 20,
