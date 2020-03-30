@@ -1,5 +1,6 @@
 import React, { useState, useEffect }  from 'react';
 
+
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, ImageBackground, Dimensions, Modal, TouchableHighlight, RefreshControl} from 'react-native';
 import { WingBlank, WhiteSpace } from '@ant-design/react-native';
 import { Card } from 'react-native-paper';
@@ -35,6 +36,7 @@ export default function DisplayProducts() {
       }
     )
   }
+
 
   
   const getStyle = (quantitiy) => {
@@ -103,7 +105,6 @@ export default function DisplayProducts() {
       return(<FontAwesome name='exclamation-circle' color='red' size={25}/>);
     }
   }
-
   getProducts = async () => {
     setRefreshing(true);
     var TOKEN = await AsyncStorage.getItem('token');
@@ -180,7 +181,6 @@ export default function DisplayProducts() {
                   style={{width: 35, height: 35}}
                   source={{ uri: img }} /> 
               }}
-
               right={(props) => <Text style={getTextStyle(item.quantity)}>{item.price} KM</Text>}
 
               style={styles.card}

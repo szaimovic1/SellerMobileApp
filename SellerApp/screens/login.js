@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { View, TextInput, Text, Button, Alert } from 'react-native';
+import { View, TextInput, Text, Button, Alert, Image, ImageBackground, TouchableOpacity } from 'react-native';
 import styles from '../styles/loginStyles.js';
 import {AsyncStorage} from 'react-native';
- 
+import { FontAwesome } from '@expo/vector-icons';
 export default function Login ({navigation}) {
-    const { heading, input, parent } = styles;
+    const { heading, input, parent, employeeImage, userPass, loginScreenButton, loginText } = styles;
+
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
@@ -64,13 +65,23 @@ export default function Login ({navigation}) {
 
  
     return (
-        <View style={parent}>
-                <Text style={heading}>Login into the application</Text>
+        <ImageBackground source={require('../images/background2.png')} style={parent}>
+        <Image source={require('../images/employee.png')} style={employeeImage}/>
+            <Text style={heading}>Login</Text>
+            <View style={userPass}>
+                <FontAwesome name='user' size = {30} color='#fff'></FontAwesome>
                 <TextInput style={input} placeholder="Username" onChangeText={text => setUsername(text)}/>
-                <TextInput style={input} secureTextEntry={true} placeholder="Password" onChangeText={text => setPassword(text)} />
- 
- 
-                <Button title={"Login"} onPress={checkLogin} />
             </View>
+            <View style={userPass}>
+                <FontAwesome name='lock' size = {30} color='#fff'></FontAwesome>
+                <TextInput style={input} secureTextEntry={true} placeholder="Password" onChangeText={text => setPassword(text)} />
+            </View>
+            <TouchableOpacity
+                style={loginScreenButton}
+                onPress={checkLogin}
+                underlayColor='#fff'>
+                <Text style={loginText}>Submit</Text>
+            </TouchableOpacity>
+    </ImageBackground>
     )
 }
