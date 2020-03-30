@@ -1,4 +1,6 @@
 import React, { useState, useEffect }  from 'react';
+
+
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, ImageBackground, Dimensions, Modal, TouchableHighlight, RefreshControl} from 'react-native';
 import { WingBlank, WhiteSpace } from '@ant-design/react-native';
 import { Card } from 'react-native-paper';
@@ -34,6 +36,7 @@ export default function DisplayProducts() {
       }
     )
   }
+
 
   
   const getStyle = (quantitiy) => {
@@ -124,6 +127,7 @@ export default function DisplayProducts() {
   useEffect(() => {
     getProducts();
   }, []);
+
   return (
     
     <ImageBackground source={require('../images/background2.png')} style={[styles.container, modalVisible ? {backgroundColor: 'rgba(0,0,0,0.7)'} : '']}>
@@ -170,6 +174,7 @@ export default function DisplayProducts() {
               title={item.name}
               titleStyle={getTitleStyle(item.quantity)}
               subtitleStyle={getSubtitleStyle(item.quantity)}
+
               left={(props) => {
                 const img = item.imageBase64;
                 return <Image 
@@ -177,6 +182,7 @@ export default function DisplayProducts() {
                   source={{ uri: img }} /> 
               }}
               right={(props) => <Text style={getTextStyle(item.quantity)}>{item.price} KM</Text>}
+
               style={styles.card}
             />
           </WingBlank>
@@ -185,10 +191,12 @@ export default function DisplayProducts() {
            
         )}
       )}
+
       </ScrollView>
                                       
     
     </ImageBackground>
+
   )             
 }
 
@@ -213,6 +221,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     width: 160,
   },
+
   centeredView: {
     flex: 1,
     justifyContent: "center",
@@ -266,6 +275,7 @@ const styles = StyleSheet.create({
   height: '75%', 
   resizeMode: 'stretch', 
   opacity: 0.9},
+
 
   rightIcon : {
     position: 'absolute',

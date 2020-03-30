@@ -29,7 +29,9 @@ export default function Login ({navigation}) {
                  Accept: 'application/json',
                  'Content-Type': 'application/json',
              },
+
              body: JSON.stringify({
+
                  username: username,
                  password: password,
              })
@@ -57,7 +59,9 @@ export default function Login ({navigation}) {
          }    
      
      } 
+
     
+
 
  
     return (
