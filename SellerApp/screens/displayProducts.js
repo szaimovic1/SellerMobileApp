@@ -124,6 +124,9 @@ export default function DisplayProducts() {
     getProducts();
   }, []);
 
+   const updateList = (specificProducts) => {
+      setProducts(specificProducts);
+    }
 
   return (
     
@@ -156,12 +159,7 @@ export default function DisplayProducts() {
           </View>
         </View>
       </Modal>
-      const updateList = (specificProducts) => {
-    setProducts(specificProducts);
-  }
 
-  return (
-    <View style={styles.container}>
       <Filter updateList={updateList} />
       <ScrollView
         refreshControl={
@@ -169,65 +167,35 @@ export default function DisplayProducts() {
         }>
         {products.map((item) => {
           return (
-            <TouchableOpacity key={item.id}>
+            <TouchableOpacity key={item.id}
+                onPress={ () => {
+                ModalFetcher(item.id); 
+                setModalVisible(true);}}>
               <WingBlank size="lg">
-                <Card.Title
+                <Card.Title            
                   title={item.name}
-                  titleStyle={{ color: 'black', paddingTop: 10 }}
-                  subtitleStyle={{ color: 'black', paddingBottom: 10 }}
+                  titleStyle={getTitleStyle(item.quantity)}
+                  subtitleStyle={getSubtitleStyle(item.quantity)}
+
                   left={(props) => {
                     const img = item.imageBase64;
-                    return <Image
-                      style={{ width: 35, height: 35 }}
-                      source={{ uri: img }} />
+                    return <Image 
+                      style={[{width: 35, height: 35}, modalVisible ? {opacity: 0} : '1']}
+                      source={{ uri: img }} /> 
                   }}
-
-                  right={(props) => <Text>{item.price} KM</Text>}
-                  style={styles.card}
+                  right={(props) => <Text style={[getTextStyle(item.quantity),
+                     modalVisible ? {color: 'rgba(0,0,0,0.7)'} : '']}>{item.price} KM</Text>}
+                  style={[styles.card, 
+                    modalVisible ? {backgroundColor: 'rgba(0,0,0,0.7)'} : '', 
+                    modalVisible ? {borderColor: 'rgba(0,0,0,0.7)'} : '']}
                 />
               </WingBlank>
               <WhiteSpace size="lg" />
-            </TouchableOpacity>
+              </TouchableOpacity>
 
           )
         }
         )}
-      </ScrollView>
-    </View>
-  )
-      <ScrollView refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={getProducts} />}
-          style={modalVisible ? {backgroundColor: 'rgba(0,0,0,0.7)'} : ''}>
-      {products.map((item) => {
-        return (
-          <TouchableOpacity key={item.id}
-            onPress={ () => {
-            ModalFetcher(item.id); 
-            setModalVisible(true);}}>
-          <WingBlank size="lg">
-            <Card.Title            
-              title={item.name}
-              titleStyle={getTitleStyle(item.quantity)}
-              subtitleStyle={getSubtitleStyle(item.quantity)}
-
-              left={(props) => {
-                const img = item.imageBase64;
-                return <Image 
-                  style={[{width: 35, height: 35}, modalVisible ? {opacity: 0} : '1']}
-                  source={{ uri: img }} /> 
-              }}
-              right={(props) => <Text style={[getTextStyle(item.quantity),
-                 modalVisible ? {color: 'rgba(0,0,0,0.7)'} : '']}>{item.price} KM</Text>}
-              style={[styles.card, 
-                modalVisible ? {backgroundColor: 'rgba(0,0,0,0.7)'} : '', 
-                modalVisible ? {borderColor: 'rgba(0,0,0,0.7)'} : '']}
-            />
-          </WingBlank>
-          <WhiteSpace size="lg" />
-          </TouchableOpacity>
-           
-        )}
-      )}
       </ScrollView>
     </ImageBackground>
 
