@@ -19,9 +19,10 @@ export default function DisplayProducts() {
   const ModalFetcher = (id) =>{
     products.map((item) => {
       if(id == item.id){
+        const img = item.imageBase64;
         setModalData({name: item.name,
             price: item.price, 
-            image: item.imageBase64, 
+            image: img, 
             unit: item.measurementUnit, 
             discount: item.discount, 
             quantity: item.quantity
@@ -65,15 +66,15 @@ export default function DisplayProducts() {
         <View style={styles.modal}>
             <Image
               style={styles.modalImage}
-              source={{ uri: 'data:image/gif;base64,${modalData.image}' }}
+              source={{ uri: modalData.image }}
             />
         </View>
         <View style={styles.centeredView}>
           <View style={{...styles.modalView, marginBottom: '80%'}}>
               <Text style={styles.modalTitle}>{modalData.name}</Text>
-            <Text style={styles.modalText}>Cijena: <Text style={{fontWeight: "bold"}}>{modalData.price} KM</Text></Text>
-            <Text style={styles.modalText}>Količina: <Text style={{fontWeight: "bold"}}>{modalData.quantity} {modalData.unit}</Text></Text>
-            <Text style={styles.modalText}>Popust: <Text style={{fontWeight: "bold"}}>{modalData.discount} %</Text></Text>
+            <Text style={styles.modalText}>Price: <Text style={{fontWeight: "bold"}}>{modalData.price} KM</Text></Text>
+            <Text style={styles.modalText}>Quantity: <Text style={{fontWeight: "bold"}}>{modalData.quantity} {modalData.unit}</Text></Text>
+            <Text style={styles.modalText}>Discount: <Text style={{fontWeight: "bold"}}>{modalData.discount} %</Text></Text>
             <TouchableHighlight
               style={{ ...styles.openButton, backgroundColor: 'rgba(0,0,0,0.7)' }}
               onPress={() => {
@@ -102,7 +103,7 @@ export default function DisplayProducts() {
               subtitleStyle={{color:'black', paddingBottom: 10}}
               left={(props) => <Image 
                 style={{width: 35, height: 35}}
-                source={{ uri: 'data:image/gif;base64,${item.imageBase64}'}}></Image>}
+                source={{ uri: item.imageBase64}}></Image>}
               right={(props) => <Text>{item.price} {item.measurementUnit}</Text>}
               style={styles.card}
             />
