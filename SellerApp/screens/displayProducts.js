@@ -1,4 +1,4 @@
-import React, { useState }  from 'react';
+import React, { useState, useEffect }  from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, RefreshControl} from 'react-native';
 import { WingBlank, WhiteSpace } from '@ant-design/react-native';
 import { Card } from 'react-native-paper';
@@ -6,7 +6,6 @@ import {AsyncStorage} from 'react-native';
 
 export default function DisplayProducts() {  
   const [products, setProducts] = useState ([]);
-  const [productsLoaded, setProductsLoaded] = useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
 
   getProducts = async () => {
@@ -22,16 +21,15 @@ export default function DisplayProducts() {
     .then((products) => {
       console.log(products);
       setProducts(products);
-      setProductsLoaded(true);
       setRefreshing(false);
       return products;
     })
     .done();
   }
    
-  if (!productsLoaded) {
+  useEffect(() => {
     getProducts();
-  }
+  }, []);
   
   return (
     <View style={styles.container}>
