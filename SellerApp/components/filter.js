@@ -24,17 +24,19 @@ export default function Filter({ updateList }) {
     
     return (
         <View>
-            <TextInput value={text} onChangeText={onChangeInput} placeholder="Enter product's name" style={styles.input} />
+            <TextInput value={text} onChangeText={onChangeInput} placeholder="Enter product's name"  placeholderTextColor = "#f0ffff" style={styles.input} />
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     input: {
-        borderBottomWidth: 1,
+        borderBottomWidth: 2,
         borderBottomColor: '#ddd',
         marginBottom: 10,
         paddingHorizontal: 8,
         paddingVertical: 6,
+        fontWeight:'bold',
+        color:'#f0ffff'
     },
 });

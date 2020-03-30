@@ -289,5 +289,5 @@ const styles = StyleSheet.create({
     left: 20,
     marginTop: 20,
     marginBottom: 30,
-  }
+  },
 });
