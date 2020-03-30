@@ -19,4 +19,6 @@ export default function Header ({ navigation, title, reload }) {
         </View>
         
     )
+
 }
+

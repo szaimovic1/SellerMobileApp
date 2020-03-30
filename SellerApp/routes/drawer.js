@@ -4,8 +4,9 @@ import HomeStack from './homeStack';
 import LoginStack from './loginStack';
 
 const RootDrawerNavigator = createDrawerNavigator({
-    LogIn: {
+    LogOut: {
         screen: LoginStack,
+        navigationOptions: () => ( { title: 'Log out' } )
     },
     Products: {
         screen: HomeStack,

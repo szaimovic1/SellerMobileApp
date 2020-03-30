@@ -1,4 +1,6 @@
-import { StyleSheet } from 'react-native'
+
+import { StyleSheet, Dimensions } from 'react-native'
+
 
 export default StyleSheet.create({
     header: {
@@ -8,7 +10,11 @@ export default StyleSheet.create({
         flexDirection: 'row',      
         alignItems: 'center',
         justifyContent: 'space-evenly',
+
+        width: Dimensions.get('window').width-35,
+
         alignContent: 'space-between'
+
     },
     headerText: {
         color: 'white',
@@ -23,3 +29,4 @@ export default StyleSheet.create({
     },
     
 })
+
