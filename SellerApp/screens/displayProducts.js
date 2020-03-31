@@ -170,7 +170,7 @@ export default function DisplayProducts() {
         {products.map((item) => {
           return (
             <TouchableOpacity key={item.id}
-                onPress={ () => {
+                onLongPress={ () => {
                 ModalFetcher(item.id); 
                 setModalVisible(true);}}>
               <WingBlank size="lg">
