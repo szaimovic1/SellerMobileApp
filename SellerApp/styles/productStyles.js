@@ -4,7 +4,7 @@ import { StyleSheet, Dimensions } from 'react-native';
 export default StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: 80,
+        paddingTop: 30,
       },
       card: {
         height: 60,
@@ -87,4 +87,22 @@ export default StyleSheet.create({
         marginTop: 20,
         marginBottom: 30,
       },
+      endBtn: {
+        marginRight:20,
+        marginLeft:20,
+        marginBottom: 30,
+        paddingTop:20,
+        paddingBottom:20,
+        backgroundColor:'#237804',
+        borderRadius:10,
+        borderWidth: 1,
+      },
+      sumbitText: {
+        color:'#fff',
+        fontWeight:'bold',
+        fontSize:16,
+        textAlign:'center',
+        paddingLeft : 10,
+        paddingRight : 10
+      }
 });
