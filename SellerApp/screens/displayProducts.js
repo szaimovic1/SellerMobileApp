@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect }  from 'react';
 import { Text, View, TouchableOpacity, ScrollView, Image, ImageBackground, 
         Modal, TouchableHighlight, RefreshControl, 
@@ -6,10 +5,9 @@ import { Text, View, TouchableOpacity, ScrollView, Image, ImageBackground,
 import { WingBlank, WhiteSpace } from '@ant-design/react-native';
 import { Card } from 'react-native-paper';
 import {AsyncStorage} from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
 import Filter from '../components/filter';
 import styles from '../styles/productStyles';
-
+import { getStyle, getTitleStyle, getSubtitleStyle, getTextStyle, isProductQuantitySmall } from '../functions/productStyleFunc';
 
 export default function DisplayProducts() {
   const [products, setProducts] = useState([]);
@@ -39,72 +37,7 @@ export default function DisplayProducts() {
       }
     )
   }
-  const getStyle = (quantitiy) => {
-    if(Number(quantitiy)>=0 && Number(quantitiy)<10) {
-      return { //ukoliko bude potrebno i za kritične
-        marginBottom: 15,
-        textAlign: "center",
-        fontSize: 20,
-        color: 'red'
-       }
-    }
-    else {
-      return {
-        marginBottom: 15,
-        textAlign: "center",
-        fontSize: 20
-      }
-    }
-  }
-  const getTitleStyle = (quantitiy) => {
-    if(Number(quantitiy) == 0) {
-      return {
-        paddingTop: 10,
-        color: '#e6e6e6',
-      }
-    } 
-    
-    else {
-      return {
-        paddingTop: 10,
-        color: '#000000'
-      }
-    }
-  }
-  const getSubtitleStyle = (quantitiy) => {
-    if(Number(quantitiy) == 0) {
-      return {
-        paddingBottom: 10,
-        color: '#e6e6e6'
-      }
-    } else {
-      return {
-        paddingBottom: 10,
-        color: '#000000'
-      }
-    }
-  }
-  const getTextStyle = (quantitiy) => {
-    if(Number(quantitiy) == 0) {
-      return {
-        color: '#e6e6e6'
-      }
-    } else {
-      return {
-        color: '#000000'
-      }
-    }
-  }
   
-  const isProductQuantitySmall = (quantity) => {
-    var small=false;
-    if(Number(quantity)>=0 && Number(quantity)<10) {
-      small=true;
-    }
-    if(small) {
-      return(<FontAwesome name='exclamation-circle' color='red' size={25}/>);
-    }
-  }
   getProducts = async () => {
     setRefreshing(true);
     var TOKEN = await AsyncStorage.getItem('token');
