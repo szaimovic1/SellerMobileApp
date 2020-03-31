@@ -130,7 +130,9 @@ export default function DisplayProducts() {
 
   return (
     
-    <ImageBackground source={require('../images/background2.png')} style={styles.container}>
+    <ImageBackground source={require('../images/background2.png')} 
+      style={[styles.container, 
+      modalVisible ? {opacity: 0.05} : '1']}>
       <Modal
         style={styles.centeredView}
         animationType="fade"
@@ -143,13 +145,13 @@ export default function DisplayProducts() {
             />
         </View>
         <View style={styles.centeredView}>
-          <View style={{...styles.modalView, marginBottom: '80%'}}>
+          <View style={{...styles.modalView, marginBottom: '50%'}}>
               <Text style={styles.modalTitle}>{modalData.name}</Text>
             <Text style={styles.modalText}>Price: <Text style={{fontWeight: "bold"}}>{modalData.price} KM</Text></Text>
             <Text style={getStyle(modalData.quantity)}>Quantity: <Text style={{fontWeight: "bold"}}>{modalData.quantity} {modalData.unit}</Text><Text> {isProductQuantitySmall(modalData.quantity)}</Text></Text>
             <Text style={styles.modalText}>Discount: <Text style={{fontWeight: "bold"}}>{modalData.discount} %</Text></Text>
             <TouchableHighlight
-              style={{ ...styles.openButton, backgroundColor: 'rgba(0,0,0,0.7)' }}
+              style={{ ...styles.openButton, backgroundColor: 'rgba(0,0,55,50)' }}
               onPress={() => {
                 setModalVisible(false);
               }}
@@ -205,7 +207,6 @@ export default function DisplayProducts() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     paddingTop: 80,
   },
   card: {
@@ -241,14 +242,14 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 35,
     alignItems: "center",
-    shadowColor: "#000",
+    shadowColor: "rgba(0,0,55,50)",
     shadowOffset: {
       width: 0,
       height: 2
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5
+    elevation: 5,
   },
   openButton: {
     backgroundColor: "#F194FF",
@@ -270,7 +271,7 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     color: "white", 
-    backgroundColor: 'rgba(0,0,0,0.7)', 
+    backgroundColor: 'rgba(0,0,55,50)', 
     fontWeight: "bold", 
     fontSize: 30, 
     marginBottom: 30, 
@@ -279,11 +280,10 @@ const styles = StyleSheet.create({
     width: 250
   },
   modalImage: { width: Dimensions.get('window').width, 
-  height: '75%', 
+  height: '55%', 
   resizeMode: 'stretch', 
-  opacity: 0.9},
-
-
+  marginTop: '20%',
+  },
   rightIcon : {
     position: 'absolute',
     left: 20,
