@@ -91,6 +91,8 @@ export default function DisplayProducts( { navigation } ) {
         'times' : timesPressed,
         'price' : item.price,
         'imageBase64': item.imageBase64,
+        'tableNr' : 0,
+        'served' : null
     }]);        
   }
 
