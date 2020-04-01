@@ -1,16 +1,16 @@
 import React, { useState, useEffect }  from 'react';
 import { Text, View, TouchableOpacity, ScrollView, Image, ImageBackground, 
         Modal, TouchableHighlight, RefreshControl, 
-        Platform, TouchableWithoutFeedback, Keyboard, TextInput } from 'react-native';
+        TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { WingBlank, WhiteSpace, Button } from '@ant-design/react-native';
 import { Card } from 'react-native-paper';
 import {AsyncStorage} from 'react-native';
 import Filter from '../components/filter';
 import styles from '../styles/productStyles';
 import { getStyle, getTitleStyle, getSubtitleStyle, getTextStyle, isProductQuantitySmall } from '../functions/productStyleFunc';
-import { createOrders, saveNewOrder } from '../functions/storage';
+import { createOrders } from '../functions/storage';
 
-export default function DisplayProducts() {
+export default function DisplayProducts( { navigation } ) {
   const [products, setProducts] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -71,14 +71,32 @@ export default function DisplayProducts() {
   useEffect( () => {
     //Nakon što se promijeni newOrder, izvršava se sljedeće
     if (newOrder.length != 0) { // ali ne i prilikom prvog učitavanja ekrana
-      console.log(newOrder);
       setButtonVisible(true); // postavlja se na true da bi se dole izrendala komponenta s količinom
     }
   }, [newOrder]);
 
-   const updateList = (specificProducts) => {
+  const addNewItemToOrder = (item, timesPressed) => {
+    // ako je element već u nizu, obriše se
+    newOrder.map( (orderObject) => {
+      if (orderObject.name === item.name) {    
+        var index = newOrder.indexOf(orderObject);
+        newOrder.splice(index, 1);
+        return;
+      }                         
+    });
+    // sada se doda novi objekat
+    setNewOrder( selectedProducts => [...selectedProducts, {
+        'id' : item.id,
+        'name' : item.name,
+        'times' : timesPressed,
+        'price' : item.price,
+        'imageBase64': item.imageBase64,
+    }]);        
+  }
+
+  const updateList = (specificProducts) => {
       setProducts(specificProducts);
-    }
+  }
 
   return (
     <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss();}}>
@@ -115,15 +133,14 @@ export default function DisplayProducts() {
         </Modal>
 
         {buttonVisible && <TouchableOpacity
-          style={styles.endBtn}
+          style={styles.proceedBtn}
           onPress={ () => {
-            // treba i otvoriti novi prozor još
-            saveNewOrder(); // spašava u AsyncStorage
-            setNewOrder([]); // prazni lokalnu narudžbu
+            navigation.navigate('AddNewOrder', { data: {newOrder} } );
+            setNewOrder([]);
             setButtonVisible(false);
           }}
           underlayColor='#fff'>
-          <Text style={styles.sumbitText}>End order</Text>
+          <Text style={styles.sumbitText}>Proceed</Text>
         </TouchableOpacity>}
 
         <Filter updateList={updateList} />
@@ -151,21 +168,8 @@ export default function DisplayProducts() {
                     }
                   }
                   onPress={ () => {                      
-                      timesPressed++;   
-                      // ako je element već u nizu, obriše se
-                      newOrder.map( (orderObject) => {
-                        if (orderObject.name === item.name) {    
-                          var index = newOrder.indexOf(orderObject);
-                          newOrder.splice(index, 1);
-                          return;
-                        }                         
-                      });
-                      // sada se doda novi objekat
-                      setNewOrder( selectedProducts => [...selectedProducts, {
-                          'id' : item.id,
-                          'name' : item.name,
-                          'times' : timesPressed,
-                      }]);                                      
+                      timesPressed++;  
+                      addNewItemToOrder(item, timesPressed);                               
                     }
                   }
               >
