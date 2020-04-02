@@ -60,7 +60,7 @@ export default function AddNewOrder ({ navigation }) {
                     <Text style={styles.sumbitText}>Cancel</Text>
                 </TouchableOpacity></View>
             </View>
-            <TextInput on multiline placeholder='Note' style={styles.input} onChangeText={text => checkTableNumberAndServed(text)}/>
+            <TextInput multiline placeholder='Note' style={styles.input} onChangeText={text => checkTableNumberAndServed(text)}/>
             <ScrollView>
                 {navigation.state.params.data.newOrder.products.map(( item ) => {
                     return (
