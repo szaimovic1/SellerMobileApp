@@ -15,7 +15,12 @@ export default function DisplayProducts( { navigation } ) {
   const [refreshing, setRefreshing] = React.useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [buttonVisible, setButtonVisible] = useState(false);
-  const [newOrder, setNewOrder] = useState([]); // lokalna narudžba za ovaj screen koja se tek kreira
+  const [orderProducts, setOrderProducts] = useState([]);
+  const [newOrder, setNewOrder] = useState({
+    'products': orderProducts,
+    'tableNr': 0,
+    'served': null,
+  }); // lokalna narudžba za ovaj screen koja se tek kreira
 
   /* Podaci o proizvodu za koji tražimo dodatne informacije. */
   const [modalData, setModalData] = useState({name: null, 
@@ -70,31 +75,37 @@ export default function DisplayProducts( { navigation } ) {
 
   useEffect( () => {
     //Nakon što se promijeni newOrder, izvršava se sljedeće
-    if (newOrder.length != 0) { // ali ne i prilikom prvog učitavanja ekrana
+    if (orderProducts.length != 0) { // ali ne i prilikom prvog učitavanja ekrana
       setButtonVisible(true); // postavlja se na true da bi se dole izrendala komponenta s količinom
     }
-  }, [newOrder]);
+  }, [orderProducts]);
 
   const addNewItemToOrder = (item, timesPressed) => {
     // ako je element već u nizu, obriše se
-    newOrder.map( (orderObject) => {
+    orderProducts.map( (orderObject) => {
       if (orderObject.name === item.name) {    
-        var index = newOrder.indexOf(orderObject);
-        newOrder.splice(index, 1);
+        var index = orderProducts.indexOf(orderObject);
+        orderProducts.splice(index, 1);
         return;
       }                         
     });
     // sada se doda novi objekat
-    setNewOrder( selectedProducts => [...selectedProducts, {
+    setOrderProducts( selectedProducts => [...selectedProducts, {
         'id' : item.id,
         'name' : item.name,
         'times' : timesPressed,
         'price' : item.price,
         'imageBase64': item.imageBase64,
-        'tableNr' : 0,
-        'served' : null
-    }]);        
+    }]);            
   }
+
+  useEffect(() => {
+    setNewOrder({
+      'products': orderProducts,
+      'tableNr': 0,
+      'served': null,
+    })
+  }, [orderProducts]);
 
   const updateList = (specificProducts) => {
       setProducts(specificProducts);
@@ -138,7 +149,8 @@ export default function DisplayProducts( { navigation } ) {
           style={styles.proceedBtn}
           onPress={ () => {
             navigation.navigate('AddNewOrder', { data: {newOrder} } );
-            setNewOrder([]);
+            setOrderProducts([]);
+            setNewOrder({});
             setButtonVisible(false);
           }}
           underlayColor='#fff'>
@@ -154,7 +166,7 @@ export default function DisplayProducts( { navigation } ) {
           {products.map((item) => { 
             //update količine proizvoda
             var timesPressed = '0';
-            newOrder.map( (orderObject) => {
+            orderProducts.map( (orderObject) => {
               if (orderObject.name === item.name) {
                 timesPressed = orderObject.times.toString();
                 return;

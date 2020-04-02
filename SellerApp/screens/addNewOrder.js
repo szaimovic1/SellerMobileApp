@@ -15,7 +15,7 @@ export default function AddNewOrder ({ navigation }) {
                 <TouchableOpacity
                     style={styles.saveBtn}
                     onPress={ () => {                    
-                        saveNewOrder(); // spašava u AsyncStorage
+                        saveNewOrder(navigation.state.params.data.newOrder); // spašava u AsyncStorage
                         navigation.navigate('DisplayProducts');
                     }}
                     underlayColor='#fff'>
@@ -33,7 +33,7 @@ export default function AddNewOrder ({ navigation }) {
             </View>
 
             <ScrollView>
-                {navigation.state.params.data.newOrder.map(( item ) => {
+                {navigation.state.params.data.newOrder.products.map(( item ) => {
                     return (
                         <WingBlank size="lg" key={item.id}>
                         <Card.Title            

@@ -25,6 +25,7 @@ export const saveNewOrder = async (newOrder) => {
       await AsyncStorage.setItem('orders', JSON.stringify(ordersRec) )
         .then( ()=>{
           console.log('New order saved succesfully');
+          console.log(ordersRec);
         } )
         .catch( ()=>{
         console.log('Error saving new order');
