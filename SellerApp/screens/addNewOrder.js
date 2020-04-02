@@ -1,34 +1,40 @@
 import React from 'react'
-import { View, Text, ScrollView, Image, ImageBackground, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, ScrollView, Image, ImageBackground, TouchableOpacity} from 'react-native';
 import { WingBlank, WhiteSpace } from '@ant-design/react-native';
 import styles from '../styles/productStyles';
-import { Card } from 'react-native-paper';
+import { Card,  TextInput  } from 'react-native-paper';
 import { saveNewOrder } from '../functions/storage';
 
 export default function AddNewOrder ({ navigation }) {
     const param = navigation.getParam('data');
     const order = param.newOrder; // objekat koji sadrzi kao atribute: products-niz proizvoda,tableNr i served
-    const getTableNumber = (note) => {
-        var words = note.split('');
+    order.served = false; // ako se ne unese napomena znaci da nije usluzeno
+    const isServed = (orderNote) => {
+        if((orderNote.includes('served') || orderNote.includes('usluzena') || orderNote.includes('uslužena') || orderNote.includes('usluženo') || orderNote.includes('usluzeno')) && 
+        !(orderNote.includes('not served') || orderNote.includes('neusluzena') || orderNote.includes('neuslužena') || orderNote.includes('neusluženo') || orderNote.includes('neusluzeno'))) {
+            return true;
+        }
+        return false;
+    }
+    const checkTableNumber = (note) => {
+        var orderNote = note;
+        var words = orderNote.replace( /\n/g, " " ).split(' ');
         words.forEach(word => {
             if(!isNaN(word)) {
-                //console.log('ima broj stola ' + word);
-                return Number(word);
+                order.tableNr = Number(word);
             }
         });
-        return 0;
     }
-    const checkTableNumberAndServed = (note) => {
-        note = note.toLowerCase();
-        //trazimo rijec koja naznacava da je narudzba usluzena
-        if(note.includes('served') || note.includes('usluzena') || note.includes('uslužena') || note.includes(usluzeno) || note.includes(usluženo)) {
+    const checkTableNumberAndServed = (note) => {  
+        var orderNote = note;
+        orderNote = orderNote.toLowerCase();
+        if(isServed(orderNote)) {
             order.served = true;
         }
         else {
             order.served = false;
         }
-
-        note.tableNr = getTableNumber(note);
+        checkTableNumber(note);
     } 
     return (
         <ImageBackground source={require('../images/background2.png')} 
@@ -54,7 +60,7 @@ export default function AddNewOrder ({ navigation }) {
                     <Text style={styles.sumbitText}>Cancel</Text>
                 </TouchableOpacity></View>
             </View>
-            <TextInput multiline placeholder='Note' style={styles.input} onChangeText={text => checkTableNumberAndServed(text)}/>
+            <TextInput on multiline placeholder='Note' style={styles.input} onChangeText={text => checkTableNumberAndServed(text)}/>
             <ScrollView>
                 {navigation.state.params.data.newOrder.products.map(( item ) => {
                     return (
