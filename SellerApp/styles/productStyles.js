@@ -123,5 +123,9 @@ export default StyleSheet.create({
         borderWidth: 1,
         height: 70,
         justifyContent: 'center'
+      },
+      input: {
+        backgroundColor: '#bae7ff',
+        margin: 15
       }
 });
