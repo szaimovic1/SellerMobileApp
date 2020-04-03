@@ -8,7 +8,7 @@ import {AsyncStorage} from 'react-native';
 import Filter from '../components/filter';
 import styles from '../styles/productStyles';
 import { getStyle, getTitleStyle, getSubtitleStyle, getTextStyle, isProductQuantitySmall } from '../functions/productStyleFunc';
-import { createOrders } from '../functions/storage';
+import { checkIfOrdersEmpty } from '../functions/storage';
 
 export default function DisplayProducts( { navigation } ) {
   const [products, setProducts] = useState([]);
@@ -66,7 +66,7 @@ export default function DisplayProducts( { navigation } ) {
   }
 
   useEffect( () => {
-    createOrders();
+    checkIfOrdersEmpty();
   }, []);
 
   useEffect(() => {
