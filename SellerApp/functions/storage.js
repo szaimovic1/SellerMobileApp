@@ -9,6 +9,21 @@ export const createOrders = async () => {
     }
 }
 
+export const checkIfAlreadyLoggedIn = async (navigation) => {
+  const TOKEN = await AsyncStorage.getItem('token');
+  if (TOKEN != undefined) navigation.navigate('DisplayProducts');
+}
+
+export const checkIfOrdersEmpty = async () => {
+  const orders = await AsyncStorage.getItem('orders');
+
+  //console.log(JSON.parse(orders));
+
+  if (orders.length === 0) {
+    createOrders();
+  }
+}
+
 export const saveNewOrder = async (newOrder) => {
     // spašavaju se podaci iz newOrder u AsyncStorage
     try {
