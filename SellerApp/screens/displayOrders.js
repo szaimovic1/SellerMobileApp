@@ -1,33 +1,24 @@
-import React, { useState, useEffect }  from 'react';
-import { Text, View, TouchableOpacity, ScrollView, Image, ImageBackground, 
-        Modal, TouchableHighlight, RefreshControl, 
-        TouchableWithoutFeedback, Keyboard } from 'react-native';
+import React, { useState, useEffect}  from 'react';
+import { Text, View, TouchableOpacity, ScrollView, Image, ImageBackground} from 'react-native';
 import { WingBlank, WhiteSpace, Button } from '@ant-design/react-native';
 import { Card } from 'react-native-paper';
 import {AsyncStorage} from 'react-native';
 import styles from '../styles/productStyles';
 import { MaterialIcons } from '@expo/vector-icons';
+import { NavigationEvents } from 'react-navigation';
 
 export default function DisplayOrders( { navigation } ) {
   const [orders, setOrders] = useState([]);
-  const [refreshing, setRefreshing] = React.useState(false);
-  //const [tableNrExists, setTableNrExists] = useState("Shopping");
-  //const [price, setPrice] = useState(0);
-  //var id = 0;
-
-  const getOrders = async ()=>{
-    setRefreshing(true);
-    id=0;
+  const getOrders = async () => {
     const listOfOrders = JSON.parse(await AsyncStorage.getItem('orders'));
-    console.log(listOfOrders);
+    console.log(listOfOrders.length);
     setOrders(listOfOrders);
   }
-
   useEffect(() => {
-    getOrders();
+    getOrders()
   }, []);
   const setText = (num) => {
-    if(num != null)
+    if(num != 0)
       return ("Table: " + num);
     else return "Shopping"
   }
@@ -36,17 +27,20 @@ export default function DisplayOrders( { navigation } ) {
     {singleOrder.products.map((singleProduct) =>{
       ammount += singleProduct.times*singleProduct.price
     });}  
-    return ammount;
+    return Math.round(ammount*100)/100;
   }
 
   return (
 
       <ImageBackground source={require('../images/background2.png')} 
         style={styles.container}>
+        <NavigationEvents
+          onDidFocus={getOrders}
+        />
         <ScrollView>
           {orders.map((item) => { 
             return (
-              <TouchableOpacity key = {new Date().getTime()}
+              <TouchableOpacity key = {Math.random()}
               onPress={ () => {
                 navigation.navigate('OrderContent', { data: {item} });
               }}>

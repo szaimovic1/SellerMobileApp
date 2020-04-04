@@ -19,7 +19,7 @@ export const checkIfOrdersEmpty = async () => {
 
   //console.log(JSON.parse(orders));
 
-  if (orders.length === 0) {
+  if (typeof orders === 'undefined') {
     createOrders();
   }
 }
@@ -40,7 +40,7 @@ export const saveNewOrder = async (newOrder) => {
       await AsyncStorage.setItem('orders', JSON.stringify(ordersRec) )
         .then( ()=>{
           console.log('New order saved succesfully');
-          console.log(ordersRec);
+          //console.log(ordersRec);
         } )
         .catch( ()=>{
         console.log('Error saving new order');
