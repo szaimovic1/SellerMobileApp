@@ -122,10 +122,71 @@ export default StyleSheet.create({
         borderRadius:10,
         borderWidth: 1,
         height: 70,
+        justifyContent: 'center',
+      },
+      showPrice: {
+        marginRight:10,
+        marginLeft:10,
+        marginBottom: 10,
+        paddingTop:10,
+        backgroundColor:'#237804',
+        borderRadius:10,
+        borderWidth: 1,
+        height: 50,
         justifyContent: 'center'
       },
+
+      shopping: {
+        borderColor: "white",
+        marginRight: 10, 
+        paddingVertical: 8,
+        backgroundColor: 'white',
+        borderRadius: 10,
+        borderWidth: 0.2,
+        width: "12%",
+        marginBottom: 12,
+        color: '#237804',
+      },
+      editIcon: {
+        borderColor: "white",
+        marginLeft: 10,  
+        paddingVertical: 8,
+        backgroundColor: '#237804',
+        borderRadius: 10,
+        borderWidth: 0.2,
+        width: "12%",
+        marginBottom: 12,
+        borderColor: '#237804',
+        textAlign: 'center',
+        color: "white"
+      },
+      addIcon: {
+        borderColor: "white",
+        marginRight: 10, 
+        //paddingHorizontal: 10, 
+        paddingVertical: 8,
+        backgroundColor: '#237804',
+        borderRadius: 10,
+        borderWidth: 0.2,
+        width: "12%",
+        marginBottom: 12,
+        borderColor: '#237804',
+        textAlign: 'center',
+        color: "white",
+        position: 'absolute',
+        right: 0
+      },
+      tableNum: {
+        marginRight: 30, 
+        paddingHorizontal: 10, 
+        paddingVertical: 10,
+        backgroundColor: '#bae7ff',
+        borderRadius: 10,
+        borderWidth: 0.2,
+        borderColor: '#bae7ff'
+    },    
       input: {
         backgroundColor: '#bae7ff',
         margin: 15
-      }
+      },
 });
