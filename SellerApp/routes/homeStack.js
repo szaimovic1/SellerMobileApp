@@ -6,6 +6,7 @@ import Header from '../components/header';
 import React from 'react';
 
 
+
 const screens = {
     DisplayProducts: {
         screen: DisplayProducts,
@@ -23,7 +24,8 @@ const screens = {
                 headerBackTitle: 'Back',
             }
         }
-    }
+    },
+    
     /* Ovdje dodati screen za dodatne informacije o proizvodima, ali umjesto headerTitle treba imati prop title koji prima obicni string */
 };
 

@@ -10,6 +10,7 @@ import styles from '../styles/productStyles';
 import { getStyle, getTitleStyle, getSubtitleStyle, getTextStyle, isProductQuantitySmall } from '../functions/productStyleFunc';
 import { checkIfOrdersEmpty } from '../functions/storage';
 
+
 export default function DisplayProducts( { navigation } ) {
   const [products, setProducts] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
@@ -204,15 +205,7 @@ export default function DisplayProducts( { navigation } ) {
                     right={(props) => (
                       <View {...props} style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
                         {buttonVisible && 
-                          <View style={{
-                              marginRight: 30, 
-                              paddingHorizontal: 10, 
-                              paddingVertical: 10,
-                              backgroundColor: '#bae7ff',
-                              borderRadius: 10,
-                              borderWidth: 0.2,
-                              borderColor: '#bae7ff'
-                          }}>
+                          <View style={styles.tableNum}>
                           <Text>{timesPressed}</Text>
                           </View>}                      
                         <Text style={[getTextStyle(item.quantity),

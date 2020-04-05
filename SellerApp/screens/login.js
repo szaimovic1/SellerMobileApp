@@ -16,6 +16,7 @@ export default function Login ({navigation}) {
     
     setItemStorage = async(key, value) => {
         try{
+            //AsyncStorage.clear();
             await AsyncStorage.setItem(key, value);
             console.log(value);
         }
