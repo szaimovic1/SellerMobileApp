@@ -184,9 +184,28 @@ export default StyleSheet.create({
         borderRadius: 10,
         borderWidth: 0.2,
         borderColor: '#bae7ff'
-    },    
-      input: {
-        backgroundColor: '#bae7ff',
-        margin: 15
-      },
+    },
+    submitOrderButton: {
+      borderColor: "white",
+      backgroundColor: '#237804',
+      paddingVertical: 14,
+      paddingHorizontal: 10,
+      borderRadius: 10,
+      borderWidth: 0.2,
+      marginHorizontal: 80,
+      marginBottom: 12,
+      borderColor: '#237804',
+    },
+    submitOrderButtonText: {
+      fontWeight: 'bold',
+      textAlign: 'center',
+      fontSize: 18,
+      color: 'white',
+    },
+    input: {
+      backgroundColor: '#bae7ff',
+      margin: 15,
+    },
+       
+      
 });
