@@ -135,6 +135,7 @@ export default StyleSheet.create({
         height: 50,
         justifyContent: 'center'
       },
+
       shopping: {
         borderColor: "white",
         marginRight: 10, 
@@ -183,6 +184,9 @@ export default StyleSheet.create({
         borderRadius: 10,
         borderWidth: 0.2,
         borderColor: '#bae7ff'
-    },
-    
+    },    
+      input: {
+        backgroundColor: '#bae7ff',
+        margin: 15
+      },
 });
