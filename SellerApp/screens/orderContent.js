@@ -6,16 +6,22 @@ import { Card } from 'react-native-paper';
 import { saveNewOrder } from '../functions/storage';
 import { MaterialIcons } from '@expo/vector-icons';
 import {AsyncStorage, Alert} from 'react-native';
+import { NavigationEvents } from 'react-navigation';
 
 export default function OrderContent ({navigation}) {
     const [products, setProducts] = useState(navigation.state.params.data.item.products);
     const [price, setPrice] = useState();
-    const [tableNr, setTableNr] = useState(navigation.state.params.data.item.tableNr);
+    const [brojStola, setTableNr] = useState(navigation.state.params.data.item.tableNr);
     const [servirano, setServirano] = useState(navigation.state.params.data.item.Serverd)
+    const [narudzba, setNarudzba] = useState(navigation.state.params.data.item)
     var receiptItems = [];
     var pomocniObjekat = {};
+    //var zaBrisanje = {};
+    //var orders = [];
+    //var newOrder = [];
+    //var tableNr = 0;
     useEffect(() => {
-      console.log('broj stola', tableNr);
+    
       var toPay = 0;
       receiptItems=[];
       pomocniObjekat = {};
@@ -29,24 +35,73 @@ export default function OrderContent ({navigation}) {
       pomocniObjekat = {receiptItems};
         setPrice(toPay);
     }, [price]);
+    
 
+    const deleteOrder = async (order) => {
+     let indexOfOrder=0;
+     try {
+       // uzmemo postojeće orders iz AsyncStorage
+       const existingOrders = await AsyncStorage.getItem('orders');
+       let ordersRec = JSON.parse(existingOrders);
+      //pretrazimo da nadjemo nasu narudzbu
+       for(let i=0; i<ordersRec.length; i++){
+         indexOfOrder=i;
+         if(ordersRec[i].products.length != order.products.length) continue;
+         if(ordersRec[i].tableNr != order.tableNr) continue;
+         for(var j=0;j<ordersRec[i].products.length; j++){
+             if(ordersRec[i].products[j].id!=order.products[j].id) break;
+             if(ordersRec[i].products[j].times!=order.products[j].times) break;
+         }
+         if(j==ordersRec[i].products.length){
+           //znaci da je nasao istu narudzbu i da je treba obrisati
+           ordersRec.splice(indexOfOrder, 1);
+           break;
+         }
+       }
+       // spasimo novi niz narudžbi
+      await AsyncStorage.setItem('orders', JSON.stringify(ordersRec) )
+         .then( ()=>{
+          console.log('Uspjesno obrisana narudzba');
+         } )
+         .catch( ()=>{
+          Alert.alert ('Error', 'Error deleting order!',[{
+            text: 'Okay'
+          }]);
+         } )
+     } catch (error) {
+      Alert.alert ('Error', 'Error deleting order!',[{
+      text: 'Okay'
+    }]);
+     } 
+   
+ }    
 
-    async function removeCurrentOrder(id) {
+  /*
+   async function removeCurrentOrder(id) {
+      newOrder = {
+        tableNr : id
+      }
+      orders = [newOrder];
+      console.log(newOrder);
       try {
-          await AsyncStorage.removeItem(id);
-          console.log('izbrisalo');
+          //const TOKEN = await AsyncStorage.getItem('token');
+          await AsyncStorage.removeItem('orders', () => { console.log('izbrisano')});
+          
           return true;
       }
       catch(exception) {
         console.log('nije izbrisalo');
           return false;
       }
-  }
+    }
+    */
+
     /* POST zahtjev serveru za slanje narudzbe*/
 
     async function postOrder () {
       
       var data = pomocniObjekat;
+      console.log(data);
       var TOKEN = await AsyncStorage.getItem('token');
       fetch("https://cash-register-server-si.herokuapp.com/api/orders", {
         method: "POST",
@@ -59,13 +114,15 @@ export default function OrderContent ({navigation}) {
       })
       .then((response) => response.text())
       .then((res) => {
+        //removeCurrentOrder(brojStola);
+        deleteOrder(narudzba);
         console.log(res);
         Alert.alert('Submited!', 'Order was successfully submitted.', [
           {
-            text: 'OK', onPress: () => console.log('alert close')
+            text: 'OK'
           }])
-          console.log('table broj: ', tableNr);
-          removeCurrentOrder(tableNr);
+          navigation.navigate('DisplayOrders');
+          console.log('table broj: ', brojStola);
       }).catch((error) => console.error(error))
         .done();
     }
@@ -74,8 +131,7 @@ export default function OrderContent ({navigation}) {
     const submitOrder = () => {
     
       postOrder();
-      
-      
+
     }
     return (
         <ImageBackground source={require('../images/background2.png')} 
