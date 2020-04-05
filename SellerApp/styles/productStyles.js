@@ -185,16 +185,28 @@ export default StyleSheet.create({
         borderWidth: 0.2,
         borderColor: '#bae7ff'
     },
+    btnContainer2: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: 12,
+      marginHorizontal: 20,
+    },
+    deleteBtn: {
+      paddingTop:18,
+      paddingBottom:18,
+      backgroundColor:'#237804',
+      borderRadius:10,
+      borderWidth: 0.2,
+      height: 60,
+      justifyContent: 'center',
+    },
     submitOrderButton: {
-      borderColor: "white",
       backgroundColor: '#237804',
-      paddingVertical: 14,
-      paddingHorizontal: 10,
       borderRadius: 10,
       borderWidth: 0.2,
-      marginHorizontal: 80,
-      marginBottom: 12,
-      borderColor: '#237804',
+      height: 60,
+      justifyContent: 'center'
     },
     submitOrderButtonText: {
       fontWeight: 'bold',
