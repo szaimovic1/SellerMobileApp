@@ -5,16 +5,19 @@ import styles from '../styles/productStyles';
 import { Card } from 'react-native-paper';
 import { saveNewOrder } from '../functions/storage';
 import { MaterialIcons } from '@expo/vector-icons';
-import {AsyncStorage} from 'react-native';
+import {AsyncStorage, Alert} from 'react-native';
 
 export default function OrderContent ({navigation}) {
     const [products, setProducts] = useState(navigation.state.params.data.item.products);
     const [price, setPrice] = useState();
+    const [tableNr, setTableNr] = useState(navigation.state.params.data.item.tableNr);
+    const [servirano, setServirano] = useState(navigation.state.params.data.item.Serverd)
     var receiptItems = [];
     var pomocniObjekat = {};
     useEffect(() => {
+      console.log('broj stola', tableNr);
       var toPay = 0;
-      receiptItems.length=0;
+      receiptItems=[];
       pomocniObjekat = {};
       {products.map((item) => {
         toPay = toPay + item.times*item.price;
@@ -27,6 +30,18 @@ export default function OrderContent ({navigation}) {
         setPrice(toPay);
     }, [price]);
 
+
+    async function removeCurrentOrder(id) {
+      try {
+          await AsyncStorage.removeItem(id);
+          console.log('izbrisalo');
+          return true;
+      }
+      catch(exception) {
+        console.log('nije izbrisalo');
+          return false;
+      }
+  }
     /* POST zahtjev serveru za slanje narudzbe*/
 
     async function postOrder () {
@@ -42,17 +57,20 @@ export default function OrderContent ({navigation}) {
         },
         body: JSON.stringify(data)
       })
-        .then(function(response){
-          console.log(JSON.stringify(response, null, 4));
-          console.log(data);
-          return response.json();
-        })
-        .then(function(data){
-          console.log("dada");
-        })
+      .then((response) => response.text())
+      .then((res) => {
+        console.log(res);
+        Alert.alert('Submited!', 'Order was successfully submitted.', [
+          {
+            text: 'OK', onPress: () => console.log('alert close')
+          }])
+          console.log('table broj: ', tableNr);
+          removeCurrentOrder(tableNr);
+      }).catch((error) => console.error(error))
         .done();
     }
 
+    
     const submitOrder = () => {
     
       postOrder();
