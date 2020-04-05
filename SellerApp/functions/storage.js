@@ -1,4 +1,16 @@
-import {AsyncStorage} from 'react-native';
+import {AsyncStorage, Alert} from 'react-native';
+
+export const checkIfAlreadyLoggedIn = async (navigation) => {
+  const TOKEN = await AsyncStorage.getItem('token');
+  if (TOKEN != undefined) navigation.navigate('DisplayProducts');
+}
+
+export const checkIfOrdersEmpty = async () => {
+  const orders = await AsyncStorage.getItem('orders');
+  if (orders.length === 0) {
+    createOrders();
+  }
+}
 
 export const createOrders = async () => {
     try {
@@ -39,13 +51,18 @@ export const saveNewOrder = async (newOrder) => {
       // spasimo novi niz narudžbi
       await AsyncStorage.setItem('orders', JSON.stringify(ordersRec) )
         .then( ()=>{
-          console.log('New order saved succesfully');
-          //console.log(ordersRec);
+          Alert.alert ('Success', 'New order saved successfully!',[{
+              text: 'Okay'
+          }]);
         } )
         .catch( ()=>{
-        console.log('Error saving new order');
+            Alert.alert ('Error', 'Error saving new order!',[{
+              text: 'Okay'
+            }]);
         } )
     } catch (error) {
-      console.log("Error saving new order");
+      Alert.alert ('Error', 'Error saving new order!',[{
+        text: 'Okay'
+      }]);
     }    
 }        
