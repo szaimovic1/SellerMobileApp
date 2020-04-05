@@ -181,9 +181,11 @@ export default function DisplayProducts( { navigation } ) {
                       setModalVisible(true);
                     }
                   }
-                  onPress={ () => {                      
-                      timesPressed++;  
-                      addNewItemToOrder(item, timesPressed);                               
+                  onPress={ () => {   
+                      if (item.quantity != 0) {                   
+                        timesPressed++;  
+                        addNewItemToOrder(item, timesPressed); 
+                      }                              
                     }
                   }
               >
