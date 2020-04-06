@@ -148,76 +148,97 @@ export default StyleSheet.create({
         color: '#237804',
       },
       editIcon: {
-        borderColor: "white",
-        marginLeft: 10,  
-        paddingVertical: 8,
-        backgroundColor: '#237804',
-        borderRadius: 10,
-        borderWidth: 0.2,
-        width: "12%",
-        marginBottom: 12,
-        borderColor: '#237804',
-        textAlign: 'center',
-        color: "white"
-      },
-      addIcon: {
-        borderColor: "white",
-        marginRight: 10, 
-        //paddingHorizontal: 10, 
-        paddingVertical: 8,
-        backgroundColor: '#237804',
-        borderRadius: 10,
-        borderWidth: 0.2,
-        width: "12%",
-        marginBottom: 12,
-        borderColor: '#237804',
-        textAlign: 'center',
-        color: "white",
-        position: 'absolute',
-        right: 0
-      },
-      tableNum: {
-        marginRight: 30, 
-        paddingHorizontal: 10, 
-        paddingVertical: 10,
-        backgroundColor: '#bae7ff',
-        borderRadius: 10,
-        borderWidth: 0.2,
-        borderColor: '#bae7ff'
-    },
-    btnContainer2: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginBottom: 12,
-      marginHorizontal: 20,
-    },
-    deleteBtn: {
-      paddingTop:18,
-      paddingBottom:18,
-      backgroundColor:'#237804',
-      borderRadius:10,
-      borderWidth: 0.2,
-      height: 60,
-      justifyContent: 'center',
-    },
-    submitOrderButton: {
-      backgroundColor: '#237804',
-      borderRadius: 10,
-      borderWidth: 0.2,
-      height: 60,
-      justifyContent: 'center'
-    },
-    submitOrderButtonText: {
-      fontWeight: 'bold',
-      textAlign: 'center',
-      fontSize: 18,
-      color: 'white',
-    },
+    borderColor: "white",
+    //paddingVertical: 8,
+    backgroundColor: '#237804',
+    //borderRadius: 10,
+    //borderWidth: 0.2,
+    //width: "20%",
+    //marginBottom: 12,
+    borderColor: '#237804',
+    //textAlign: 'center',
+    color: "white",
+    
+  },
+  addIcon: {
+    borderColor: "white",
+    marginRight: 10,
+    //paddingHorizontal: 10, 
+    paddingVertical: 8,
+    backgroundColor: '#237804',
+    borderRadius: 10,
+    borderWidth: 0.2,
+    width: "12%",
+    marginBottom: 12,
+    borderColor: '#237804',
+    textAlign: 'center',
+    color: "white",
+    position: 'absolute',
+    right: 0
+  },
+  confirmIcon: {
+    borderColor: "white",
+    marginRight: 10,
+    paddingHorizontal: 10, 
+    paddingVertical: 8,
+    backgroundColor: '#237804',
+    borderRadius: 10,
+    borderWidth: 0.2,
+    width: "12%",
+    marginBottom: 12,
+    borderColor: '#237804',
+    textAlign: 'center',
+    color: "white",
+    position: 'absolute',
+    right: 0
+  },
+  tableNum: {
+    marginRight: 30,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    backgroundColor: '#bae7ff',
+    borderRadius: 10,
+    borderWidth: 0.2,
+    borderColor: '#bae7ff'
+  },
+  editButton: {
+    marginBottom: 20, 
+    marginLeft: 15
+  },
+  addButton: {
+    position: 'absolute',
+    right: 15
+  },
+  confirmButton: {
+    
+  },
+  productQuantity: {
+    backgroundColor: '#237804',
+    borderRadius: 20,
+    borderWidth: 0.1,
+    marginRight: 30,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    borderColor: 'white',
+    height: 50
+  },
+  inputQuantity: {
+    height: 30,
+    backgroundColor: 'white',
+    borderRadius: 5,
+    textAlign: 'center'
+  },
+  modalProducts: {
+    backgroundColor: "#237804",
+  },
+  addButtonDisabled: {
+    backgroundColor: "#237804",
+    position: 'absolute',
+    right: 15
+  },
     input: {
       backgroundColor: '#bae7ff',
       margin: 15,
     },
        
-      
 });
