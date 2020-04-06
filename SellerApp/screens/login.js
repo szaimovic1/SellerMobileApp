@@ -3,12 +3,9 @@ import { View, TextInput, Text, Button, Alert, Image, ImageBackground, Touchable
 import styles from '../styles/loginStyles.js';
 import {AsyncStorage} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-import { checkIfAlreadyLoggedIn } from '../functions/storage';
-
 export default function Login ({navigation}) {
-    checkIfAlreadyLoggedIn(navigation); // ako je već ulogovan, nema potrebe za prikazom ovog ekrana
-
     const { heading, input, parent, employeeImage, userPass, loginScreenButton, loginText } = styles;
+
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
@@ -16,7 +13,6 @@ export default function Login ({navigation}) {
     
     setItemStorage = async(key, value) => {
         try{
-            //AsyncStorage.clear();
             await AsyncStorage.setItem(key, value);
             console.log(value);
         }
