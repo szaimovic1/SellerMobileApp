@@ -25,6 +25,7 @@ export const checkIfOrdersEmpty = async () => {
 
 export const saveNewOrder = async (newOrder) => {
     // spašavaju se podaci iz newOrder u AsyncStorage
+    if(Number(newOrder.tableNr) === parseInt(Number(newOrder.tableNr))) {
     try {
       // uzmemo postojeće orders iz AsyncStorage
       const existingOrders = await AsyncStorage.getItem('orders');
@@ -52,6 +53,7 @@ export const saveNewOrder = async (newOrder) => {
         text: 'Okay'
       }]);
     }    
+  }
 }   
 
 

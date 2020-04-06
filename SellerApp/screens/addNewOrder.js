@@ -16,26 +16,12 @@ export default function AddNewOrder ({ navigation }) {
         }
         return false;
     }
-    const checkTableNumber = (note) => {
-        var orderNote = note;
-        var words = orderNote.replace( /\n/g, " " ).split(' ');
-        words.forEach(word => {
-            if(!isNaN(word)) {
-                order.tableNr = Number(word);
-            }
-        });
+    const checkTableNumber = (number) => {
+       
+        if(number!=null) {
+            order.tableNr = number;
+        }
     }
-    const checkTableNumberAndServed = (note) => {  
-        var orderNote = note;
-        orderNote = orderNote.toLowerCase();
-        if(isServed(orderNote)) {
-            order.served = true;
-        }
-        else {
-            order.served = false;
-        }
-        checkTableNumber(note);
-    } 
     return (
         <ImageBackground source={require('../images/background2.png')} 
         style={styles.container}>
@@ -60,7 +46,7 @@ export default function AddNewOrder ({ navigation }) {
                     <Text style={styles.sumbitText}>Cancel</Text>
                 </TouchableOpacity></View>
             </View>
-            <TextInput multiline placeholder='Note' style={styles.input} onChangeText={text => checkTableNumberAndServed(text)}/>
+            <TextInput keyboardType={'numeric'} placeholder='Table number' style={styles.input} onChangeText={text => checkTableNumber(text)}/>
             <ScrollView>
                 {navigation.state.params.data.newOrder.products.map(( item ) => {
                     return (
