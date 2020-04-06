@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { View, Text, ScrollView, Image, ImageBackground, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, Image, ImageBackground, TouchableOpacity, CheckBox } from 'react-native';
 import { WingBlank, WhiteSpace, Button } from '@ant-design/react-native';
 import styles from '../styles/productStyles';
 import { Card } from 'react-native-paper';
@@ -7,13 +7,17 @@ import { deleteUnservedOrder } from '../functions/storage';
 import { MaterialIcons } from '@expo/vector-icons';
 import {AsyncStorage, Alert} from 'react-native';
 import { NavigationEvents } from 'react-navigation';
+import orderStyles from '../styles/orderStyles';
 
 export default function OrderContent ({navigation}) {
     const [products, setProducts] = useState(navigation.state.params.data.item.products);
     const [price, setPrice] = useState();
     const [brojStola, setTableNr] = useState(navigation.state.params.data.item.tableNr);
-    const [servirano, setServirano] = useState(navigation.state.params.data.item.Serverd)
-    const [narudzba, setNarudzba] = useState(navigation.state.params.data.item)
+    const [servirano, setServirano] = useState(navigation.state.params.data.item.served);
+    const [narudzba, setNarudzba] = useState(navigation.state.params.data.item);
+    const [served, setServed] = useState(navigation.state.params.data.item.served);
+    var orderServed = navigation.state.params.data.item.served;
+    
     var receiptItems = [];
     var pomocniObjekat = {};
     //var zaBrisanje = {};
@@ -122,16 +126,56 @@ export default function OrderContent ({navigation}) {
             text: 'OK'
           }])
           navigation.navigate('DisplayOrders');
-          console.log('table broj: ', brojStola);
+          //console.log('table broj: ', brojStola);
       }).catch((error) => console.error(error))
         .done();
     }
-
-    
     const submitOrder = () => {
     
       postOrder();
 
+    }
+    const updateOrderState = async (order) => {
+      let indexOfOrder=0;
+      try {
+        // uzmemo postojeće orders iz AsyncStorage
+        const existingOrders = await AsyncStorage.getItem('orders');
+        let ordersRec = JSON.parse(existingOrders);
+       //pretrazimo da nadjemo nasu narudzbu
+        for(let i=0; i<ordersRec.length; i++){
+          indexOfOrder=i;
+          if(ordersRec[i].products.length != order.products.length) continue;
+          if(ordersRec[i].tableNr != order.tableNr) continue;
+          for(var j=0;j<ordersRec[i].products.length; j++){
+              if(ordersRec[i].products[j].id!=order.products[j].id) break;
+              if(ordersRec[i].products[j].times!=order.products[j].times) break;
+          }
+          if(j==ordersRec[i].products.length){
+            //znaci da je nasao istu narudzbu i azurira njenu usluzenost
+            ordersRec[indexOfOrder].served = !ordersRec[indexOfOrder].served;
+            break;
+          }
+        }
+        // spasimo novi niz narudžbi
+       await AsyncStorage.setItem('orders', JSON.stringify(ordersRec) )
+          .then( ()=>{
+           console.log('Uspjesno editovana usluzenost narudzbe');
+          } )
+          .catch( ()=>{
+           Alert.alert ('Error', 'Error updating order!',[{
+             text: 'Okay'
+           }]);
+          } )
+      } catch (error) {
+       Alert.alert ('Error', 'Error updatig order!',[{
+       text: 'Okay'
+     }]);
+      } 
+    }
+    const changeOrderServeState = () => {
+      orderServed = !orderServed;
+      updateOrderState(navigation.state.params.data.item);
+      
     }
     return (
         <ImageBackground source={require('../images/background2.png')} 
@@ -140,8 +184,12 @@ export default function OrderContent ({navigation}) {
          <Text style={{...styles.sumbitText, fontSize: 18}}>To pay: {price + " KM"}</Text>
          </View>
          <View style={{flexDirection: "row"}}>
-         <MaterialIcons name='edit' size={30} style={styles.editIcon} />
-           <MaterialIcons name='add' size={30} style={styles.addIcon} />
+            <MaterialIcons name='edit' size={30} style={styles.editIcon} />
+            <View style = {orderStyles.orderServedView}>
+              <Text style={orderStyles.textServed}>Served: </Text>
+              <CheckBox value={navigation.state.params.data.item.served} onChange={changeOrderServeState}></CheckBox>
+            </View>
+            <MaterialIcons name='add' size={30} style={styles.addIcon} />
          </View>
          
         <ScrollView>
