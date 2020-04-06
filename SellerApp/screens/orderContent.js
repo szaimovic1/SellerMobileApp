@@ -20,10 +20,6 @@ export default function OrderContent ({navigation}) {
     
     var receiptItems = [];
     var pomocniObjekat = {};
-    //var zaBrisanje = {};
-    //var orders = [];
-    //var newOrder = [];
-    //var tableNr = 0;
     useEffect(() => {
     
       var toPay = 0;
@@ -78,27 +74,7 @@ export default function OrderContent ({navigation}) {
     }]);
      } 
    
- }    
-
-  /*
-   async function removeCurrentOrder(id) {
-      newOrder = {
-        tableNr : id
-      }
-      orders = [newOrder];
-      console.log(newOrder);
-      try {
-          //const TOKEN = await AsyncStorage.getItem('token');
-          await AsyncStorage.removeItem('orders', () => { console.log('izbrisano')});
-          
-          return true;
-      }
-      catch(exception) {
-        console.log('nije izbrisalo');
-          return false;
-      }
-    }
-    */
+ }   
 
     /* POST zahtjev serveru za slanje narudzbe*/
 

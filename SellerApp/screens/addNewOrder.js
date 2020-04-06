@@ -17,28 +17,11 @@ export default function AddNewOrder ({ navigation }) {
         return false;
     }
     const checkTableNumber = (number) => {
-       /* var orderNote = note;
-        var words = orderNote.replace( /\n/g, " " ).split(' ');
-        words.forEach(word => {
-            if(!isNaN(word)) {
-                order.tableNr = Number(word);
-            }
-        });*/
+       
         if(number!=null) {
             order.tableNr = number;
         }
     }
-    /*const checkTableNumberAndServed = (note) => {  
-        var orderNote = note;
-        orderNote = orderNote.toLowerCase();
-        if(isServed(orderNote)) {
-            order.served = true;
-        }
-        else {
-            order.served = false;
-        }
-        checkTableNumber(note);
-    } */
     return (
         <ImageBackground source={require('../images/background2.png')} 
         style={styles.container}>
