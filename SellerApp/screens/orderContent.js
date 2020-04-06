@@ -3,7 +3,7 @@ import { View, Text, ScrollView, Image, ImageBackground, TouchableOpacity } from
 import { WingBlank, WhiteSpace, Button } from '@ant-design/react-native';
 import styles from '../styles/productStyles';
 import { Card } from 'react-native-paper';
-import { saveNewOrder } from '../functions/storage';
+import { deleteUnservedOrder } from '../functions/storage';
 import { MaterialIcons } from '@expo/vector-icons';
 import {AsyncStorage, Alert} from 'react-native';
 import { NavigationEvents } from 'react-navigation';
@@ -178,11 +178,26 @@ export default function OrderContent ({navigation}) {
           }
           )}
         </ScrollView>
-        <TouchableOpacity onPress={submitOrder}>
-          <View style={styles.submitOrderButton}>
-           <Text style={styles.submitOrderButtonText}>Submit order</Text>
-           </View>
-         </TouchableOpacity>
+        <View style={styles.btnContainer2}>
+          <View style={{flex: 1}}>
+            <TouchableOpacity onPress={submitOrder}>
+              <View style={styles.submitOrderButton}>
+              <Text style={styles.submitOrderButtonText}>Submit order</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={{flex: 1}}>
+            <TouchableOpacity
+                      style={styles.deleteBtn}
+                      onPress={ () => {          
+                        deleteUnservedOrder(navigation.state.params.data.item);             
+                        navigation.navigate('DisplayOrders');
+                      }}
+                      underlayColor='#fff'>
+                      <Text style={styles.submitOrderButtonText}>Delete order</Text>
+              </TouchableOpacity>
+            </View>
+        </View>
       </ImageBackground>
     );
 }
