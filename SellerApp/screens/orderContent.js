@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { View, Text, ScrollView, Image, ImageBackground, TouchableOpacity, CheckBox } from 'react-native';
+import { View, Text, ScrollView, Image, ImageBackground, TouchableOpacity} from 'react-native';
 import { WingBlank, WhiteSpace, Button } from '@ant-design/react-native';
 import styles from '../styles/productStyles';
 import { Card } from 'react-native-paper';
@@ -8,7 +8,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import {AsyncStorage, Alert} from 'react-native';
 import { NavigationEvents } from 'react-navigation';
 import orderStyles from '../styles/orderStyles';
-
+import CheckBox from 'react-native-check-box';
 export default function OrderContent ({navigation}) {
     const [products, setProducts] = useState(navigation.state.params.data.item.products);
     const [price, setPrice] = useState();
@@ -173,7 +173,7 @@ export default function OrderContent ({navigation}) {
       } 
     }
     const changeOrderServeState = () => {
-      orderServed = !orderServed;
+      setServed(!served);
       updateOrderState(navigation.state.params.data.item);
       
     }
@@ -187,7 +187,7 @@ export default function OrderContent ({navigation}) {
             <MaterialIcons name='edit' size={30} style={styles.editIcon} />
             <View style = {orderStyles.orderServedView}>
               <Text style={orderStyles.textServed}>Served: </Text>
-              <CheckBox value={navigation.state.params.data.item.served} onChange={changeOrderServeState}></CheckBox>
+              <CheckBox isChecked={served} onClick={changeOrderServeState}/>
             </View>
             <MaterialIcons name='add' size={30} style={styles.addIcon} />
          </View>
