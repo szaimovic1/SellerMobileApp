@@ -1,9 +1,10 @@
 import { StyleSheet, Dimensions } from 'react-native';
 
+
 export default StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: 30,
+        paddingTop: 80,
       },
       card: {
         height: 60,
@@ -14,6 +15,13 @@ export default StyleSheet.create({
         borderRadius: 20,
         backgroundColor:'white'
       },
+      refreshBtn: {
+        alignSelf: "center",
+        marginTop: 20,
+        marginBottom: 30,
+        width: 160,
+      },
+    
       centeredView: {
         flex: 1,
         justifyContent: "center",
@@ -79,145 +87,4 @@ export default StyleSheet.create({
         marginTop: 20,
         marginBottom: 30,
       },
-      proceedBtn: {
-        marginRight:20,
-        marginLeft:20,
-        marginBottom: 30,
-        paddingTop:20,
-        paddingBottom:20,
-        backgroundColor:'#237804',
-        borderRadius:10,
-        borderWidth: 1,
-        height: 70,
-        justifyContent: 'center'
-      },
-      sumbitText: {
-        color:'#fff',
-        fontWeight:'bold',
-        fontSize:16,
-        textAlign:'center',
-        paddingLeft : 10,
-        paddingRight : 10
-      },
-      btnContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: 30,
-        marginHorizontal: 15, 
-      },
-      saveBtn: {
-        paddingTop:20,
-        paddingBottom:20,
-        backgroundColor:'#237804',
-        borderRadius:10,
-        borderWidth: 1,
-        height: 70,
-        justifyContent: 'center'
-      },
-      cancelBtn: {
-        paddingTop:20,
-        paddingBottom:20,
-        backgroundColor:'#8c8c8c',
-        borderRadius:10,
-        borderWidth: 1,
-        height: 70,
-        justifyContent: 'center',
-      },
-      showPrice: {
-        marginRight:10,
-        marginLeft:10,
-        marginBottom: 10,
-        paddingTop:10,
-        backgroundColor:'#237804',
-        borderRadius:10,
-        borderWidth: 1,
-        height: 50,
-        justifyContent: 'center'
-      },
-
-      shopping: {
-        borderColor: "white",
-        marginRight: 10, 
-        paddingVertical: 8,
-        backgroundColor: 'white',
-        borderRadius: 10,
-        borderWidth: 0.2,
-        width: "12%",
-        marginBottom: 12,
-        color: '#237804',
-      },
-      editIcon: {
-        borderColor: "white",
-        marginLeft: 10,  
-        paddingVertical: 8,
-        backgroundColor: '#237804',
-        borderRadius: 10,
-        borderWidth: 0.2,
-        width: "12%",
-        marginBottom: 12,
-        borderColor: '#237804',
-        textAlign: 'center',
-        color: "white"
-      },
-      addIcon: {
-        borderColor: "white",
-        marginRight: 10, 
-        //paddingHorizontal: 10, 
-        paddingVertical: 8,
-        backgroundColor: '#237804',
-        borderRadius: 10,
-        borderWidth: 0.2,
-        width: "12%",
-        marginBottom: 12,
-        borderColor: '#237804',
-        textAlign: 'center',
-        color: "white",
-        position: 'absolute',
-        right: 0
-      },
-      tableNum: {
-        marginRight: 30, 
-        paddingHorizontal: 10, 
-        paddingVertical: 10,
-        backgroundColor: '#bae7ff',
-        borderRadius: 10,
-        borderWidth: 0.2,
-        borderColor: '#bae7ff'
-    },
-    btnContainer2: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginBottom: 12,
-      marginHorizontal: 20,
-    },
-    deleteBtn: {
-      paddingTop:18,
-      paddingBottom:18,
-      backgroundColor:'#237804',
-      borderRadius:10,
-      borderWidth: 0.2,
-      height: 60,
-      justifyContent: 'center',
-    },
-    submitOrderButton: {
-      backgroundColor: '#237804',
-      borderRadius: 10,
-      borderWidth: 0.2,
-      height: 60,
-      justifyContent: 'center'
-    },
-    submitOrderButtonText: {
-      fontWeight: 'bold',
-      textAlign: 'center',
-      fontSize: 18,
-      color: 'white',
-    },
-    input: {
-      backgroundColor: '#bae7ff',
-      margin: 15,
-    },
-       
-      
 });
