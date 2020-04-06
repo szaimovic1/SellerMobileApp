@@ -8,6 +8,7 @@ import Toaster, { ToastStyles } from 'react-native-toaster';
 import ModalProductPicker from '../components/modalProductPicker';
 import { updateOrders } from '../functions/storage';
 import { AsyncStorage } from 'react-native';
+import Swipeout from 'react-native-swipeout';
 
 export default function OrderContent({ navigation }) {
   const [products, setProducts] = useState(navigation.state.params.data.item.products);
@@ -126,7 +127,14 @@ export default function OrderContent({ navigation }) {
 
       <ScrollView>
         {products.map((item) => {
-          return (
+          return (<Swipeout  right={ [{
+            text: 'Delete',
+            backgroundColor: 'red',
+            onPress: () => { 
+             var newProducts = products.filter( p => {return p.id != item.id} );
+             setProducts(newProducts);
+            }
+          }] } autoClose= 'true' backgroundColor= 'transparent'>
             <TouchableOpacity key={item.id}
             >
               <WingBlank size="lg">
@@ -157,7 +165,7 @@ export default function OrderContent({ navigation }) {
                 />
               </WingBlank>
               <WhiteSpace size="lg" />
-            </TouchableOpacity>
+            </TouchableOpacity></Swipeout>
           )
         }
         )}
