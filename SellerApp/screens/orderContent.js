@@ -135,7 +135,7 @@ const deleteOrder = async (order) => {
    Alert.alert ('Error', 'Error deleting order!',[{
    text: 'Okay'
  }]);
-  } 
+  } }
 
 
   const updateOrderProducts = async (order, newProducts) => {
@@ -259,4 +259,4 @@ const deleteOrder = async (order) => {
       </ScrollView>
     </ImageBackground>
   );
-}}
+}
