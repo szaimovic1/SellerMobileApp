@@ -66,3 +66,5 @@ export const updateOrders = async (newOrders) => {
 export const clearAsyncStorage = async() => {
   AsyncStorage.clear();
 }
+
+

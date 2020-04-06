@@ -6,7 +6,7 @@ import { Card, TextInput } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
 import Toaster, { ToastStyles } from 'react-native-toaster';
 import ModalProductPicker from '../components/modalProductPicker';
-import { updateOrders } from '../functions/storage';
+import { updateOrders, deleteOrder } from '../functions/storage';
 import { AsyncStorage } from 'react-native';
 import Swipeout from 'react-native-swipeout';
 
@@ -100,6 +100,88 @@ export default function OrderContent({ navigation }) {
     else setModalVisible(true);
   }
 
+const deleteOrder = async (order) => {
+  let indexOfOrder=0;
+  try {
+    // uzmemo postojeće orders iz AsyncStorage
+    const existingOrders = await AsyncStorage.getItem('orders');
+    let ordersRec = JSON.parse(existingOrders);
+   //pretrazimo da nadjemo nasu narudzbu
+    for(let i=0; i<ordersRec.length; i++){
+      indexOfOrder=i;
+      if(ordersRec[i].products.length != order.products.length) continue;
+      if(ordersRec[i].tableNr != order.tableNr) continue;
+      for(var j=0;j<ordersRec[i].products.length; j++){
+          if(ordersRec[i].products[j].id!=order.products[j].id) break;
+          if(ordersRec[i].products[j].times!=order.products[j].times) break;
+      }
+      if(j==ordersRec[i].products.length){
+        //znaci da je nasao istu narudzbu i da je treba obrisati
+        ordersRec.splice(indexOfOrder, 1);
+        break;
+      }
+    }
+    // spasimo novi niz narudžbi
+   await AsyncStorage.setItem('orders', JSON.stringify(ordersRec) )
+      .then( ()=>{
+       console.log('Uspjesno obrisana narudzba');
+      } )
+      .catch( ()=>{
+       Alert.alert ('Error', 'Error deleting order!',[{
+         text: 'Okay'
+       }]);
+      } )
+  } catch (error) {
+   Alert.alert ('Error', 'Error deleting order!',[{
+   text: 'Okay'
+ }]);
+  } 
+
+
+  const updateOrderProducts = async (order, newProducts) => {
+    if(newProducts.length==0) {
+      deleteOrder(navigation.state.params.data.item);
+      navigation.navigate('DisplayOrders');
+      return;
+    }
+    let indexOfOrder=0;
+    try {
+      // uzmemo postojeće orders iz AsyncStorage
+      const existingOrders = await AsyncStorage.getItem('orders');
+      let ordersRec = JSON.parse(existingOrders);
+     //pretrazimo da nadjemo nasu narudzbu
+      for(let i=0; i<ordersRec.length; i++){
+        indexOfOrder=i;
+        if(ordersRec[i].products.length != order.products.length) continue;
+        if(ordersRec[i].tableNr != order.tableNr) continue;
+        for(var j=0;j<ordersRec[i].products.length; j++){
+            if(ordersRec[i].products[j].id!=order.products[j].id) break;
+            if(ordersRec[i].products[j].times!=order.products[j].times) break;
+        }
+        if(j==ordersRec[i].products.length){
+          ordersRec[indexOfOrder].products = newProducts;
+          calculateTotalPrice();
+          break;
+        }
+      }
+      // spasimo novi niz narudžbi
+     await AsyncStorage.setItem('orders', JSON.stringify(ordersRec) )
+        .then( ()=>{
+         console.log('Uspjesno obrisana proizvod iz narudzbe');
+        } )
+        .catch( ()=>{
+         Alert.alert ('Error', 'Error deleting product!',[{
+           text: 'Okay'
+         }]);
+        } )
+    } catch (error) {
+     Alert.alert ('Error', 'Error deleting product!',[{
+     text: 'Okay'
+   }]);
+    } 
+  
+}
+
   return (
 
     <ImageBackground source={require('../images/background2.png')}
@@ -127,14 +209,19 @@ export default function OrderContent({ navigation }) {
 
       <ScrollView>
         {products.map((item) => {
-          return (<Swipeout  right={ [{
+          return (
+          <Swipeout  right={ [{
             text: 'Delete',
             backgroundColor: 'red',
             onPress: () => { 
              var newProducts = products.filter( p => {return p.id != item.id} );
              setProducts(newProducts);
+             updateOrderProducts(navigation.state.params.data.item, newProducts);
+             calculateTotalPrice();
+             invokeUpdateOrders();
             }
           }] } autoClose= 'true' backgroundColor= 'transparent'>
+            
             <TouchableOpacity key={item.id}
             >
               <WingBlank size="lg">
@@ -172,4 +259,4 @@ export default function OrderContent({ navigation }) {
       </ScrollView>
     </ImageBackground>
   );
-}
+}}
