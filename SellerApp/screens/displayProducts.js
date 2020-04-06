@@ -1,18 +1,28 @@
 import React, { useState, useEffect }  from 'react';
 import { Text, View, TouchableOpacity, ScrollView, Image, ImageBackground, 
         Modal, TouchableHighlight, RefreshControl, 
-        Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { WingBlank, WhiteSpace } from '@ant-design/react-native';
+        TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { WingBlank, WhiteSpace, Button } from '@ant-design/react-native';
 import { Card } from 'react-native-paper';
 import {AsyncStorage} from 'react-native';
 import Filter from '../components/filter';
 import styles from '../styles/productStyles';
 import { getStyle, getTitleStyle, getSubtitleStyle, getTextStyle, isProductQuantitySmall } from '../functions/productStyleFunc';
+import { checkIfOrdersEmpty } from '../functions/storage';
 
-export default function DisplayProducts() {
+
+export default function DisplayProducts( { navigation } ) {
   const [products, setProducts] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [buttonVisible, setButtonVisible] = useState(false);
+  const [orderProducts, setOrderProducts] = useState([]);
+  const [newOrder, setNewOrder] = useState({
+    'products': orderProducts,
+    'tableNr': 0,
+    'served': null,
+  }); // lokalna narudžba za ovaj screen koja se tek kreira
+
   /* Podaci o proizvodu za koji tražimo dodatne informacije. */
   const [modalData, setModalData] = useState({name: null, 
     price: null, 
@@ -56,13 +66,51 @@ export default function DisplayProducts() {
       .done();
   }
 
+  useEffect( () => {
+    checkIfOrdersEmpty();
+  }, []);
+
   useEffect(() => {
     getProducts();
   }, []);
 
-   const updateList = (specificProducts) => {
-      setProducts(specificProducts);
+  useEffect( () => {
+    //Nakon što se promijeni newOrder, izvršava se sljedeće
+    if (orderProducts.length != 0) { // ali ne i prilikom prvog učitavanja ekrana
+      setButtonVisible(true); // postavlja se na true da bi se dole izrendala komponenta s količinom
     }
+  }, [orderProducts]);
+
+  const addNewItemToOrder = (item, timesPressed) => {
+    // ako je element već u nizu, obriše se
+    orderProducts.map( (orderObject) => {
+      if (orderObject.name === item.name) {    
+        var index = orderProducts.indexOf(orderObject);
+        orderProducts.splice(index, 1);
+        return;
+      }                         
+    });
+    // sada se doda novi objekat
+    setOrderProducts( selectedProducts => [...selectedProducts, {
+        'id' : item.id,
+        'name' : item.name,
+        'times' : timesPressed,
+        'price' : item.price,
+        'imageBase64': item.imageBase64,
+    }]);            
+  }
+
+  useEffect(() => {
+    setNewOrder({
+      'products': orderProducts,
+      'tableNr': 0,
+      'served': null,
+    })
+  }, [orderProducts]);
+
+  const updateList = (specificProducts) => {
+      setProducts(specificProducts);
+  }
 
   return (
     <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss();}}>
@@ -98,17 +146,50 @@ export default function DisplayProducts() {
           </View>
         </Modal>
 
+        {buttonVisible && <TouchableOpacity
+          style={styles.proceedBtn}
+          onPress={ () => {
+            navigation.navigate('AddNewOrder', { data: {newOrder} } );
+            setOrderProducts([]);
+            setNewOrder({});
+            setButtonVisible(false);
+          }}
+          underlayColor='#fff'>
+          <Text style={styles.sumbitText}>Proceed</Text>
+        </TouchableOpacity>}
+
         <Filter updateList={updateList} />
         <ScrollView
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={getProducts} />
           }>
-          {products.map((item) => {
+          
+          {products.map((item) => { 
+            //update količine proizvoda
+            var timesPressed = '0';
+            orderProducts.map( (orderObject) => {
+              if (orderObject.name === item.name) {
+                timesPressed = orderObject.times.toString();
+                return;
+              } 
+              
+            });
+
             return (
               <TouchableOpacity key={item.id}
                   onLongPress={ () => {
-                  ModalFetcher(item.id); 
-                  setModalVisible(true);}}>
+                      ModalFetcher(item.id); 
+                      setModalVisible(true);
+                    }
+                  }
+                  onPress={ () => {   
+                      if (item.quantity != 0) {                   
+                        timesPressed++;  
+                        addNewItemToOrder(item, timesPressed); 
+                      }                              
+                    }
+                  }
+              >
                 <WingBlank size="lg">
                   <Card.Title            
                     title={item.name}
@@ -117,12 +198,20 @@ export default function DisplayProducts() {
 
                     left={(props) => {
                       const img = item.imageBase64;
-                      return <Image 
+                      return <Image {...props} 
                         style={[{width: 35, height: 35}, modalVisible ? {opacity: 0} : '1']}
                         source={{ uri: img }} /> 
                     }}
-                    right={(props) => <Text style={[getTextStyle(item.quantity),
-                      modalVisible ? {color: 'rgba(0,0,0,0.7)'} : '']}>{item.price} KM</Text>}
+                    right={(props) => (
+                      <View {...props} style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                        {buttonVisible && 
+                          <View style={styles.tableNum}>
+                          <Text>{timesPressed}</Text>
+                          </View>}                      
+                        <Text style={[getTextStyle(item.quantity),
+                           modalVisible ? {color: 'rgba(0,0,0,0.7)'} : '']}>{item.price} KM</Text>
+                      </View>
+                    )}
                     style={[styles.card, 
                       modalVisible ? {backgroundColor: 'rgba(0,0,0,0.7)'} : '', 
                       modalVisible ? {borderColor: 'rgba(0,0,0,0.7)'} : '']}
@@ -130,7 +219,6 @@ export default function DisplayProducts() {
                 </WingBlank>
                 <WhiteSpace size="lg" />
                 </TouchableOpacity>
-
             )
           }
           )}
