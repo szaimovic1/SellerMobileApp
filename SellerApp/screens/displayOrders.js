@@ -11,7 +11,7 @@ export default function DisplayOrders( { navigation } ) {
   const [orders, setOrders] = useState([]);
   const getOrders = async () => {
     const listOfOrders = JSON.parse(await AsyncStorage.getItem('orders'));
-    console.log(listOfOrders.length);
+    //console.log(listOfOrders.length);
     setOrders(listOfOrders);
   }
   useEffect(() => {
@@ -42,7 +42,7 @@ export default function DisplayOrders( { navigation } ) {
             return (
               <TouchableOpacity key = {Math.random()}
               onPress={ () => {
-                navigation.navigate('OrderContent', { data: {item} });
+                navigation.navigate('OrderContent', { data: {item}, orders: {orders} });
               }}>
                 <WingBlank size="lg">
                   <Card.Title            

@@ -67,7 +67,6 @@ export default function DisplayProducts( { navigation } ) {
 
   useEffect( () => {
     checkIfOrdersEmpty();
-    //createOrders();
   }, []);
 
   useEffect(() => {
