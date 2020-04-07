@@ -5,24 +5,19 @@ export const checkIfAlreadyLoggedIn = async (navigation) => {
   if (TOKEN != undefined) navigation.navigate('DisplayProducts');
 }
 export const createOrders = async () => {
-    try {
-        const orders = [];
-        await AsyncStorage.setItem('orders', JSON.stringify(orders));
-    } catch (error) {
-        console.log("Error saving orders");
-    }
+  try {
+    const orders = [];
+    await AsyncStorage.setItem('orders', JSON.stringify(orders));
+  } catch (error) {
+    console.log("Error saving orders");
+  }
 }
-
 export const checkIfOrdersEmpty = async () => {
   const orders = await AsyncStorage.getItem('orders');
-
-  //console.log(JSON.parse(orders));
-
   if (typeof orders === 'undefined') {
     createOrders();
   }
 }
-
 export const saveNewOrder = async (newOrder) => {
     // spašavaju se podaci iz newOrder u AsyncStorage
     if(Number(newOrder.tableNr) === parseInt(Number(newOrder.tableNr))) {
@@ -55,8 +50,6 @@ export const saveNewOrder = async (newOrder) => {
     }    
   }
 }   
-
-
 export const deleteUnservedOrder = async (order) => {
   //ne treba obrisat usluzenu narudzbu
    if( order.served == true ){
@@ -105,3 +98,19 @@ export const deleteUnservedOrder = async (order) => {
      } 
    }  
  }     
+
+export const updateOrders = async (newOrders) => {
+  try {
+    await AsyncStorage.setItem('orders', JSON.stringify(newOrders)).then(() => {
+      //console.log("Orders updated succesfully");
+    }).catch((err) => {
+      console.log(err);
+    })
+  }
+  catch (err) {
+    console.log(err);
+  }
+}
+export const clearAsyncStorage = async() => {
+  AsyncStorage.clear();
+}
