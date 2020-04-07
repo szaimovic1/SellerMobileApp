@@ -12,6 +12,7 @@ export default function DisplayOrders({ navigation }) {
   const getOrders = async () => {
     const listOfOrders = JSON.parse(await AsyncStorage.getItem('orders'));
     console.log(listOfOrders.length);
+    if(listOfOrders == null || typeof listOfOrders === 'undefined')listOfOrders = [];
     setOrders(listOfOrders);
   }
 
