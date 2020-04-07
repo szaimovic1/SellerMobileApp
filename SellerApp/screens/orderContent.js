@@ -8,10 +8,9 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { NavigationEvents } from 'react-navigation';
 import orderStyles from '../styles/orderStyles';
 import CheckBox from 'react-native-check-box';
+import { updateOrders } from '../functions/storage';
 import Toaster, { ToastStyles } from 'react-native-toaster';
 import ModalProductPicker from '../components/modalProductPicker';
-import { updateOrders, deleteOrder } from '../functions/storage';
-import Swipeout from 'react-native-swipeout';
 
 
 export default function OrderContent ({navigation}) {
@@ -221,51 +220,6 @@ export default function OrderContent ({navigation}) {
     if (listEmpty == true) Alert.alert('EMPTY LIST', 'No more products available', [{text: 'OK'}]);
     else setModalVisible(true);
   }
-
-  const updateOrderProducts = async (order, newProducts) => {
-    if(newProducts.length==0) {
-      deleteOrder(navigation.state.params.data.item);
-      navigation.navigate('DisplayOrders');
-      return;
-    }
-    let indexOfOrder=0;
-    try {
-      // uzmemo postojeće orders iz AsyncStorage
-      const existingOrders = await AsyncStorage.getItem('orders');
-      let ordersRec = JSON.parse(existingOrders);
-     //pretrazimo da nadjemo nasu narudzbu
-      for(let i=0; i<ordersRec.length; i++){
-        indexOfOrder=i;
-        if(ordersRec[i].products.length != order.products.length) continue;
-        if(ordersRec[i].tableNr != order.tableNr) continue;
-        for(var j=0;j<ordersRec[i].products.length; j++){
-            if(ordersRec[i].products[j].id!=order.products[j].id) break;
-            if(ordersRec[i].products[j].times!=order.products[j].times) break;
-        }
-        if(j==ordersRec[i].products.length){
-          ordersRec[indexOfOrder].products = newProducts;
-          calculateTotalPrice();
-          break;
-        }
-      }
-      // spasimo novi niz narudžbi
-     await AsyncStorage.setItem('orders', JSON.stringify(ordersRec) )
-        .then( ()=>{
-         console.log('Uspjesno obrisan proizvod iz narudzbe');
-        } )
-        .catch( ()=>{
-         Alert.alert ('Error', 'Error deleting product!',[{
-           text: 'Okay'
-         }]);
-        } )
-    } catch (error) {
-     Alert.alert ('Error', 'Error deleting product!',[{
-     text: 'Okay'
-   }]);
-    } 
-  
-}
-
   return (
     <ImageBackground source={require('../images/background2.png')} style={styles.container}>
       <ModalProductPicker modalVisible={modalVisible} setModalVisible={setModalVisible} orders={orders} products={products}
@@ -300,18 +254,6 @@ export default function OrderContent ({navigation}) {
       <ScrollView>
         {products.map((item) => {
           return (
-          <Swipeout  right={ [{
-            text: 'Delete',
-            backgroundColor: 'red',
-            onPress: () => { 
-             var newProducts = products.filter( p => {return p.id != item.id} );
-             setProducts(newProducts);
-             updateOrderProducts(navigation.state.params.data.item, newProducts);
-             calculateTotalPrice();
-             invokeUpdateOrders();
-            }
-          }] } autoClose= 'true' backgroundColor= 'transparent'>
-            
             <TouchableOpacity key={item.id}
             >
               <WingBlank size="lg">
@@ -342,7 +284,7 @@ export default function OrderContent ({navigation}) {
                 />
               </WingBlank>
               <WhiteSpace size="lg" />
-            </TouchableOpacity></Swipeout>
+            </TouchableOpacity>
           )
         }
         )}
