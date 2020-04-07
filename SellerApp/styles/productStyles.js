@@ -12,7 +12,7 @@ export default StyleSheet.create({
     borderWidth: 0.2,
     borderColor: '#d9d9d9',
     borderRadius: 20,
-    backgroundColor: 'white',
+    backgroundColor:'white'
   },
   centeredView: {
     flex: 1,
@@ -44,13 +44,13 @@ export default StyleSheet.create({
     backgroundColor: "#F194FF",
     justifyContent: "center",
     height: 40,
-    width: 40,
-    borderRadius: 400
+    width: 40,  
+    borderRadius:400
   },
   textStyle: {
     color: "white",
     fontWeight: "bold",
-    textAlign: "center",
+    textAlign: "center", 
     fontSize: 30
   },
   modalText: {
@@ -59,86 +59,120 @@ export default StyleSheet.create({
     fontSize: 20
   },
   modalTitle: {
-    color: "white",
-    backgroundColor: 'rgba(0,0,55,50)',
-    fontWeight: "bold",
-    fontSize: 30,
-    marginBottom: 30,
+    color: "white", 
+    backgroundColor: 'rgba(0,0,55,50)', 
+    fontWeight: "bold", 
+    fontSize: 30, 
+    marginBottom: 30, 
     padding: 10,
-    textAlign: "center",
+    textAlign: "center", 
     width: 250
   },
-  modalImage: {
-    width: Dimensions.get('window').width,
-    height: '55%',
-    resizeMode: 'stretch',
+  modalImage: { 
+    width: Dimensions.get('window').width, 
+    height: '55%', 
+    resizeMode: 'stretch', 
     marginTop: '20%',
   },
-  rightIcon: {
+  rightIcon : {
     position: 'absolute',
     left: 20,
     marginTop: 20,
     marginBottom: 30,
   },
   proceedBtn: {
-    marginRight: 20,
-    marginLeft: 20,
+    marginRight:20,
+    marginLeft:20,
     marginBottom: 30,
-    paddingTop: 20,
-    paddingBottom: 20,
-    backgroundColor: '#237804',
-    borderRadius: 10,
+    paddingTop:20,
+    paddingBottom:20,
+    backgroundColor:'#237804',
+    borderRadius:10,
     borderWidth: 1,
     height: 70,
     justifyContent: 'center'
   },
-  sumbitText: {
-    color: '#fff',
+  submitOrderButton: {
+    backgroundColor: '#237804',
+    borderRadius: 10,
+    borderWidth: 0.2,
+    height: 60,
+    justifyContent: 'center'
+  },
+  submitOrderButtonText: {
     fontWeight: 'bold',
-    fontSize: 16,
     textAlign: 'center',
-    paddingLeft: 10,
-    paddingRight: 10
+    fontSize: 18,
+    color: 'white',
+  },
+  input: {
+    backgroundColor: '#bae7ff',
+    margin: 15,
+  },
+  sumbitText: {
+    color:'#fff',
+    fontWeight:'bold',
+    fontSize:16,
+    textAlign:'center',
+    paddingLeft : 10,
+    paddingRight : 10
+  },
+  btnContainer2: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 12,
+    marginHorizontal: 20,
+  },
+  deleteBtn: {
+    paddingTop:18,
+    paddingBottom:18,
+    backgroundColor:'#237804',
+    borderRadius:10,
+    borderWidth: 0.2,
+    height: 60,
+    justifyContent: 'center',
   },
   btnContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 30,
-    marginHorizontal: 15,
+    marginHorizontal: 15, 
   },
   saveBtn: {
-    paddingTop: 20,
-    paddingBottom: 20,
-    backgroundColor: '#237804',
-    borderRadius: 10,
+    paddingTop:20,
+    paddingBottom:20,
+    backgroundColor:'#237804',
+    borderRadius:10,
     borderWidth: 1,
     height: 70,
     justifyContent: 'center'
   },
   cancelBtn: {
-    paddingTop: 20,
-    paddingBottom: 20,
-    backgroundColor: '#8c8c8c',
-    borderRadius: 10,
+    paddingTop:20,
+    paddingBottom:20,
+    backgroundColor:'#8c8c8c',
+    borderRadius:10,
     borderWidth: 1,
     height: 70,
     justifyContent: 'center',
   },
   showPrice: {
-    marginRight: 10,
-    marginLeft: 10,
+    marginRight:10,
+    marginLeft:10,
     marginBottom: 10,
-    paddingTop: 10,
-    backgroundColor: '#237804',
-    borderRadius: 10,
+    paddingTop:10,
+    backgroundColor:'#237804',
+    borderRadius:10,
     borderWidth: 1,
     height: 50,
     justifyContent: 'center'
   },
+
   shopping: {
     borderColor: "white",
-    marginRight: 10,
+    marginRight: 10, 
     paddingVertical: 8,
     backgroundColor: 'white',
     borderRadius: 10,
@@ -148,22 +182,13 @@ export default StyleSheet.create({
     color: '#237804',
   },
   editIcon: {
-    borderColor: "white",
-    //paddingVertical: 8,
     backgroundColor: '#237804',
-    //borderRadius: 10,
-    //borderWidth: 0.2,
-    //width: "20%",
-    //marginBottom: 12,
     borderColor: '#237804',
-    //textAlign: 'center',
-    color: "white",
-    
+    color: "white", 
   },
   addIcon: {
     borderColor: "white",
     marginRight: 10,
-    //paddingHorizontal: 10, 
     paddingVertical: 8,
     backgroundColor: '#237804',
     borderRadius: 10,
@@ -235,6 +260,6 @@ export default StyleSheet.create({
     backgroundColor: "#237804",
     position: 'absolute',
     right: 15
-  }
-
+  },
+      
 });
