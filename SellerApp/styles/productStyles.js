@@ -1,5 +1,4 @@
 import { StyleSheet, Dimensions } from 'react-native';
-import { AuthSession } from 'expo';
 
 export default StyleSheet.create({
   container: {

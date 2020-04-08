@@ -17,8 +17,7 @@ const screens = {
     },
     OrderContent: {
         screen: OrderContent,
-        navigationOptions: ({ navigation }) => {
-            //navigation.navigate('DisplayOrders');
+        navigationOptions: () => {
             return {
                 title: 'Order',
                 headerBackTitle: 'Back',
@@ -31,7 +30,6 @@ const OrderStack = createStackNavigator (screens, {
     defaultNavigationOptions: {
         headerStyle: { backgroundColor: '#05132e', height: 80, },
         headerTintColor: '#fff',
-        //componen: DisplayOrders
    }
 });
 
