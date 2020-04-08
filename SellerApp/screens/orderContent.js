@@ -24,6 +24,7 @@ export default function OrderContent({ navigation }) {
   const [clickedOrder, setClickedOrder] = useState(navigation.state.params.data.item);
   const [listEmpty, setListEmpty] = useState(false);
   const [addButtonDisabled, setAddButtonDisabled] = useState(true);
+  const [swipeOpened, setSwipeOpened] = useState(false);
 
   var receiptItems = [];
   var backupObject = {};
@@ -48,7 +49,7 @@ export default function OrderContent({ navigation }) {
 
   useEffect(() => {
     invokeUpdate();
-  });
+  },[products]);
 
   useEffect(() => {
     receiptItems = [];
@@ -168,7 +169,7 @@ export default function OrderContent({ navigation }) {
       <ScrollView>
         {products.map((item) => {
           return (
-            <Swipeout  key = {item.id} right={ [{
+            <Swipeout style={styles.swipeDeleteButton} key = {item.id} right={ [{
               text: 'Delete',
               backgroundColor: 'red',
               onPress: () => { 

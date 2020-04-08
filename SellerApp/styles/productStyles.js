@@ -13,7 +13,8 @@ export default StyleSheet.create({
     borderWidth: 0.2,
     borderColor: '#d9d9d9',
     borderRadius: 20,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    paddingBottom: 5
   },
   centeredView: {
     flex: 1,
@@ -251,6 +252,9 @@ export default StyleSheet.create({
     borderWidth: 0.2,
     height: 60,
     justifyContent: 'center',
+  },
+  swipeDeleteButton: {
+    height: 60, 
+    marginBottom: 15,
   }
-
 });
