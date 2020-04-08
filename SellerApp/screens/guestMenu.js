@@ -82,8 +82,9 @@ export default function GuestMenu({ navigation }) {
                   return (
                     <View style={styles.container} key={item.id}>  
                         <View style={styles.btnContainer}>
-                            <TouchableOpacity onPress={() => navigation.navigate('Start')}>
-                                <MaterialIcons name='close' size={30} style={{marginLeft: 10,}}/>
+                            <TouchableOpacity style = {{borderStyle: "solid", borderColor: 'grey', borderWidth: 2, marginLeft: 5, height: 45,
+                              borderRadius: 10, padding: 0, margin: 0}} onPress={() => navigation.navigate('Start')}>
+                                <MaterialIcons name='close' size={30} style={{marginLeft: 10, paddingRight: 10, paddingTop: 5, opacity: 0.5}}/>
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.shoppingCart}>
                                 <MaterialIcons name='shopping-cart' size={30} style={styles.shopping} />

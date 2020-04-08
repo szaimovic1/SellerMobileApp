@@ -21,12 +21,18 @@ export default StyleSheet.create({
         },
         shopping: {
             alignSelf: 'center',
+            opacity: 0.5,
         },
         numberInput: {
           backgroundColor: 'white',
           borderWidth: 1,
           borderColor: '#696969',
           width: 60,
+          height: 45,
+          textAlign: 'center',
+          opacity: 0.8,
+          borderRadius: 10,
+          paddingLeft: 7,
         },    
         finishBtn: {
             width: 100, 
