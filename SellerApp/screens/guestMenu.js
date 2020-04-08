@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Image, Dimensions, AsyncStorage } from 'react-native';
+import { Text, View, Image, AsyncStorage } from 'react-native';
 import Swiper from 'react-native-swiper';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 import { MaterialIcons } from '@expo/vector-icons';
 import { TextInput } from 'react-native-paper';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import styles from '../styles/menuStyles';
 
 
 const getFonts = () => {
@@ -131,97 +132,4 @@ export default function GuestMenu({ navigation }) {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white', 
-    //backgroundColor: 'rgb(154, 145, 172)',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  btnContainer: {
-      flex: 1, 
-      width: '100%',
-      flexDirection: 'row', 
-      alignContent: 'space-between',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-    },
-    shoppingCart: { 
-        borderColor: "white", 
-        flexDirection: 'row',
-    },
-    shopping: {
-        alignSelf: 'center',
-    },
-    numberInput: {
-      backgroundColor: 'white',
-      borderWidth: 1,
-      borderColor: '#696969',
-      width: 60,
-    },    
-    finishBtn: {
-        width: 100, 
-        height: 50, 
-        backgroundColor: 'grey',
-        marginRight: 10, 
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-  image: {
-    flex: 3,
-    width: Dimensions.get('window').width, 
-    
-  },
-  textContainer: {
-    flex: 1,
-    //backgroundColor: 'rgba(0,0,55,50)',
-    backgroundColor: 'white',
-    marginBottom: 20,
-    borderColor: '#C0C0C0',
-    borderWidth: 1,
-    borderRadius: 10,
-    overflow: 'hidden',
-  },  
-  headingText: {
-    flexDirection: 'row', 
-    justifyContent: 'space-between', 
-    borderBottomWidth: 1, 
-    borderBottomColor: '#C0C0C0',
-    backgroundColor: 'white',
-  },
-  text: {
-    flex: 1,
-    color: "#696969",  
-    fontWeight: "bold", 
-    fontSize: 30, 
-    padding: 10,
-    textAlign: "left",
-    fontFamily: 'courgette-regular',
-    //backgroundColor: 'rgba(0,0,55,50)'
-  },
-  price: {
-    flex: 1,
-    color: '#696969',
-    padding: 10,
-    fontWeight: "bold",
-    textAlign: 'right',
-    fontSize: 20,
-    marginRight: 10,
-    alignSelf: 'flex-end',
-    fontFamily: 'courgette-regular',
-  },
-  smallerText: { // probati da nije bold
-    flex: 1,
-    color: "#696969",  
-    fontWeight: "bold", 
-    fontSize: 18, 
-    padding: 10,
-    textAlign: "left",
-    //backgroundColor: '#7eb0cf',
-    fontFamily: 'courgette-regular',
-  },
-  
-});
 
