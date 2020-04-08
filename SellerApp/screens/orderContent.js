@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, ScrollView, Image, ImageBackground, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, ScrollView, Image, ImageBackground, TouchableOpacity, TextInput, Alert } from 'react-native';
 import { WingBlank, WhiteSpace, Button } from '@ant-design/react-native';
 import styles from '../styles/productStyles';
 import { Card } from 'react-native-paper';
@@ -220,7 +220,7 @@ export default function OrderContent({ navigation }) {
                calculateTotalPrice();
                invokeUpdate();
               }
-            }] } autoClose= 'true' backgroundColor= 'transparent'>
+            }] } autoClose={true} backgroundColor= 'transparent'>
 
             <TouchableOpacity key={item.id}
             >
