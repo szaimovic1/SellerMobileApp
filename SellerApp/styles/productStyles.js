@@ -150,13 +150,13 @@ export default StyleSheet.create({
   },
   editIcon: {
     borderColor: "white",
-    backgroundColor: '#237804',
-    color: "white",
+    color: '#237804',
+    backgroundColor: "white",
   },
   addIcon: {
     borderColor: "white",
-    backgroundColor: '#237804',
-    color: "white",
+    color: '#237804',
+    backgroundColor: "white",
   },
   confirmIcon: {
     borderColor: "white",
@@ -189,7 +189,8 @@ export default StyleSheet.create({
   },
   addButton: {
     position: 'absolute',
-    right: 15
+    right: 15,
+    backgroundColor: "white",
   },
   productQuantity: {
     backgroundColor: '#237804',
@@ -215,7 +216,8 @@ export default StyleSheet.create({
   addButtonDisabled: {
     backgroundColor: "#237804",
     position: 'absolute',
-    right: 15
+    right: 15,
+    backgroundColor: "white",
   },
   input: {
     backgroundColor: '#bae7ff',
