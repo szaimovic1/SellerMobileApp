@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, ScrollView, Image, ImageBackground, TouchableOpacity, TextInput, Alert } from 'react-native';
+import { View, Text, ScrollView, Image, ImageBackground, TouchableOpacity, TextInput, Alert, AsyncStorage } from 'react-native';
 import { WingBlank, WhiteSpace, Button } from '@ant-design/react-native';
 import styles from '../styles/productStyles';
 import { Card } from 'react-native-paper';
