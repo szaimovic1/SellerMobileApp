@@ -210,7 +210,7 @@ export default function OrderContent({ navigation }) {
       <ScrollView>
         {products.map((item) => {
           return (
-            <Swipeout  right={ [{
+            <Swipeout  key = {item.id} right={ [{
               text: 'Delete',
               backgroundColor: 'red',
               onPress: () => { 
