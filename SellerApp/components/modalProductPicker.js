@@ -26,7 +26,6 @@ export default function ModalProductPicker({ modalVisible, setModalVisible, setP
                 item
             ];
         });
-
         invokeUpdate();
 
         setForbiddenProducts((prevForbiddenProducts) => {
