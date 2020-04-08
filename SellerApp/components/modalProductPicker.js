@@ -41,7 +41,6 @@ export default function ModalProductPicker({ modalVisible, setModalVisible, setP
             setModalVisible(!modalVisible);
         }
     }
-
     const getAllProducts = async () => {
         var TOKEN = await AsyncStorage.getItem('token');
         fetch("https://cash-register-server-si.herokuapp.com/api/products", {
