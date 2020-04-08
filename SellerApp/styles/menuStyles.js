@@ -37,7 +37,7 @@ export default StyleSheet.create({
             alignItems: 'center',
         },
       image: {
-        flex: 3,
+        flex: 2,
         width: Dimensions.get('window').width, 
         
       },
@@ -58,7 +58,7 @@ export default StyleSheet.create({
         backgroundColor: 'white',
       },
       text: {
-        flex: 1,
+        flex: 3,
         color: "#696969",  
         fontWeight: "bold", 
         fontSize: 30, 

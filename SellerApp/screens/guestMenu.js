@@ -5,7 +5,7 @@ import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 import { MaterialIcons } from '@expo/vector-icons';
 import { TextInput } from 'react-native-paper';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import styles from '../styles/menuStyles';
 
 
@@ -69,7 +69,7 @@ export default function GuestMenu({ navigation }) {
       <Swiper
           loop={false}
           showsPagination={false}
-          index={1}>
+          index={0}>
               {products != undefined && products.map((item) => {
                   var timesPressed = '0';
                   orderProducts.map((orderObject) => {
@@ -99,7 +99,7 @@ export default function GuestMenu({ navigation }) {
                                     }}>                    
                                 </TextInput>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.finishBtn}> 
+                            <TouchableOpacity style={styles.finishBtn} > 
                                 <Text style={{color:"white", fontWeight: 'bold',}}>Finish</Text>
                             </TouchableOpacity>
                         </View>
@@ -111,15 +111,16 @@ export default function GuestMenu({ navigation }) {
                     <View style={styles.textContainer}>
                         <View style={styles.headingText}>
                         <Text style={styles.text}>{item.name}</Text>
-                        <Text style={styles.price}>{item.price}</Text>
+                        <Text style={styles.price}>{item.price} KM</Text>
                         </View>      
-                        <Text style={styles.smallerText}>Ingredients: sugar, coffein, sugar, sugar, sugar, sugar</Text>
+                        <ScrollView>
+                        <Text style={styles.smallerText}>Ingredients: sugar, coffein, sugar, sugar, sugar, sugar,fds,fds,fmfrjfdjfjijfkdjsmkfsdlmfsd,fsdkfdlslfksdkfjdsfjdsfjidsjifsdfkdskdsjjdskdskadkfjsjfsdjkdsfjdsjjfdkfsdjfdsjij</Text>
+                        </ScrollView>
                     </View>
                     
                     </View>
                   );
               })}
-              
         
       </Swiper>
     );
