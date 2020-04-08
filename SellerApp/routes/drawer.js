@@ -15,7 +15,6 @@ const RootDrawerNavigator = createDrawerNavigator({
     Orders: {
         screen: OrderStack,
     },
-    /* Ovdje ubaciti ostale prozore koji trebaju biti opcija u meniju */ 
 });
 
 export default createAppContainer(RootDrawerNavigator);

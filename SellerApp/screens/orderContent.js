@@ -24,7 +24,6 @@ export default function OrderContent({ navigation }) {
   const [clickedOrder, setClickedOrder] = useState(navigation.state.params.data.item);
   const [listEmpty, setListEmpty] = useState(false);
   const [addButtonDisabled, setAddButtonDisabled] = useState(true);
-  const [swipeOpened, setSwipeOpened] = useState(false);
 
   var receiptItems = [];
   var backupObject = {};
@@ -54,9 +53,7 @@ export default function OrderContent({ navigation }) {
   useEffect(() => {
     receiptItems = [];
     backupObject = {};
-
     calculateTotalPrice(receiptItems);
-
     /* backupObject je objekat koji sadrzi niz reciptItems, jer ga kao takvog saljemo serveru */
     backupObject = { receiptItems };
   }, [price]);
@@ -69,12 +66,10 @@ export default function OrderContent({ navigation }) {
     setEditButtonVisible(!editButtonVisible);
     setEditInputVisible(!editInputVisible);
     setAddButtonDisabled(!addButtonDisabled);
-
     let newProductsQuantity = [];
     products.map(product => {
       newProductsQuantity.push({ id: product.id, quantity: product.times });
     });
-
     setPrevProductsQuantity(newProductsQuantity);
   }
 
@@ -82,7 +77,6 @@ export default function OrderContent({ navigation }) {
     setEditButtonVisible(!editButtonVisible);
     setEditInputVisible(!editInputVisible);
     setAddButtonDisabled(!addButtonDisabled);
-
     updateProducts(products.filter(p => {
       return (p.times != 0)
     }));
