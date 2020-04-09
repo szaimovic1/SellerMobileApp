@@ -52,6 +52,7 @@ export default StyleSheet.create({
     },
     textContainer: {
       flex: 1,
+      width: "90%",
       backgroundColor: 'white',
       marginBottom: 20,
       borderColor: '#C0C0C0',
