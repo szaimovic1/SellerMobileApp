@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, Image, AsyncStorage, Modal, ImageBackground} from 'react-native';
+import { Text, View, Image, AsyncStorage, Modal, ImageBackground, Alert} from 'react-native';
 import Swiper from 'react-native-swiper';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
@@ -50,7 +50,7 @@ export default function GuestMenu({ navigation }) {
       getProducts();
   }, [])
 
-  // neki useEffect za spremanje id-a i broja itema
+  // neki useEffect za spremanje id-a i kolicine itema
   useEffect(() => {
     if(orderProducts.length!=0)
     orderProducts.map((item) => {
@@ -84,10 +84,23 @@ export default function GuestMenu({ navigation }) {
 
       //console.log(timesPressed);
   }
-
+  
   //slanje guest narudzbe na server
   const submitToServer = () => {
-    console.log('na server se submita: ', backupObject);
+    if(receiptItems.length == 0){
+      Alert.alert('OOPS!', 'Your order is empty!', [
+      {
+        text: 'OK', onPress: () => navigation.navigate('Start')
+      }])
+      console.log('nije poslalo: ', backupObject);
+    }
+    else{
+      Alert.alert('Submited!', 'Your order is on its way!', [
+      {
+        text: 'OK', onPress: () => navigation.navigate('Start')
+      }])
+      console.log('na server se šalje: ', backupObject);
+    }
   }
 
   const [visibility, setVisibility] = useState(false);
@@ -124,7 +137,9 @@ export default function GuestMenu({ navigation }) {
                              letterSpacing: 1,
                              alignSelf: "center",
                              paddingLeft: 20}}>Your choice</Text>
-                            <MaterialIcons name='delete' size={40} style={styles.deleteIcon} />
+                             <TouchableOpacity onPress={() => {navigation.navigate('Start');}}>
+                              <MaterialIcons name='delete' size={40} style={styles.deleteIcon} />
+                             </TouchableOpacity>
                           </View>
                            <ScrollView>
                              {orderProducts.map((item) => {
@@ -211,7 +226,7 @@ export default function GuestMenu({ navigation }) {
                         </View>      
                         <ScrollView>
                         <Text style={{...styles.smallerText, color: '#404040'}}>Ingredients:
-                        <Text style={styles.smallerText}>{item.ingredients}</Text>
+                        <Text style={styles.smallerText}>{item.description}</Text>
                         </Text></ScrollView>
                     </View>
                     
