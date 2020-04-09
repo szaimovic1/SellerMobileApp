@@ -112,8 +112,9 @@ export default function GuestMenu({ navigation }) {
                         <Text style={styles.price}>{item.price} KM</Text>
                         </View>      
                         <ScrollView>
-                        <Text style={styles.smallerText}>Ingredients: sugar, coffein, sugar, sugar, sugar, sugar,fds,fds,fmfrjfdjfjijfkdjsmkfsdlmfsd,fsdkfdlslfksdkfjdsfjdsfjidsjifsdfkdskdsjjdskdskadkfjsjfsdjkdsfjdsjjfdkfsdjfdsjij</Text>
-                        </ScrollView>
+                        <Text style={{...styles.smallerText, color: '#404040'}}>Ingredients:
+                        <Text style={styles.smallerText}> sugar, coffein, sugar, sugar, sugar, sugar,fds,fds,fmfrjfdjfjijfkdjsmkfsdlmfsd,fsdkfdlslfksdkfjdsfjdsfjidsjifsdfkdskdsjjdskdskadkfjsjfsdjkdsfjdsjjfdkfsdjfdsjij</Text>
+                        </Text></ScrollView>
                     </View>
                     
                     </View>

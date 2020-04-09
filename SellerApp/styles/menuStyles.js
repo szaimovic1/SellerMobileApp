@@ -69,8 +69,7 @@ export default StyleSheet.create({
       },
       text: {
         flex: 3,
-        color: "#696969",  
-        fontWeight: "bold", 
+        color: "#404040",   
         fontSize: 30, 
         padding: 10,
         textAlign: "left",
@@ -80,7 +79,6 @@ export default StyleSheet.create({
         flex: 1,
         color: '#696969',
         padding: 10,
-        fontWeight: "bold",
         textAlign: 'right',
         fontSize: 20,
         marginRight: 10,
@@ -89,8 +87,7 @@ export default StyleSheet.create({
       },
       smallerText: { 
         flex: 1,
-        color: "#696969",  
-        fontWeight: "bold", 
+        color: "#696969",   
         fontSize: 18, 
         padding: 10,
         textAlign: "left",
