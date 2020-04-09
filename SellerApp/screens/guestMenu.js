@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, Image, AsyncStorage } from 'react-native';
+import { Text, View, Image, AsyncStorage, Modal, ImageBackground} from 'react-native';
 import Swiper from 'react-native-swiper';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 import { MaterialIcons } from '@expo/vector-icons';
-import { TextInput } from 'react-native-paper';
+import { TextInput, Button } from 'react-native-paper';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import styles from '../styles/menuStyles';
+import { WingBlank } from '@ant-design/react-native';
+import { Card } from 'react-native-paper';
 
 
 const getFonts = () => {
@@ -55,14 +57,21 @@ export default function GuestMenu({ navigation }) {
       }
     });
     // sada se doda novi objekat
-    setOrderProducts(selectedProducts => [...selectedProducts, {
-      'id': item.id,
-      'name': item.name,
-      'times': timesPressed,
-      'price': item.price,
-      'imageBase64': item.imageBase64,
-    }]);
+    if(timesPressed != 0)
+      setOrderProducts(selectedProducts => [...selectedProducts, {
+        'id': item.id,
+        'name': item.name,
+        'times': timesPressed,
+        'price': item.price,
+        'imageBase64': item.imageBase64,
+      }]);
+
+      //console.log(timesPressed);
   }
+
+  const [visibility, setVisibility] = useState(false);
+  const showModal = () => setVisibility(true);
+  const hideModal = () => setVisibility(false);
 
   if (fontsLoaded) {
     return (
@@ -80,7 +89,51 @@ export default function GuestMenu({ navigation }) {
       
                   });
                   return (
-                    <View style={styles.container} key={item.id}>  
+                    <View style={styles.container} key={item.id}> 
+                      <Modal 
+                      visible={visibility}
+                      style = {{presentationStyle: "fullScreen"}}>
+                        <ImageBackground 
+                         source={require('../images/greyBackground.jpg')}
+                         style = {{height: "100%", width: "100%",}}>
+                          <View style = {styles.headerForOrder}>
+                            <Button 
+                             onPress = {hideModal}
+                             style={styles.backBtn}>
+                              <Text style = {styles.btnText}>Go back to edit</Text>
+                            </Button>
+                            <MaterialIcons name='shopping-cart' size={40} style={styles.shoppingCartGreen} />
+                            <MaterialIcons name='delete' size={40} style={styles.deleteIcon} />
+                          </View>
+                           <ScrollView>
+                             {orderProducts.map((item) => {
+                               return(
+                                 <TouchableOpacity key={item.id}>
+                                   <WingBlank size="lg">
+                                     <Card.Title
+                                       title={item.name}
+                                       left={(props) => {
+                                        return <Image {...props}
+                                          style={{ width: 35, height: 35 }}
+                                          source={{ uri: item.imageBase64 }} />
+                                      }}
+                                      right={(props) => (
+                                        <View {...props} style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                                            <View style={styles.tableNum}>
+                                              <Text>{item.times}</Text>
+                                            </View>
+                                          <Text>{item.price} KM</Text>
+                                        </View>
+                                      )}
+                                      style={styles.card}
+                                     />
+                                   </WingBlank>
+                                 </TouchableOpacity>
+                               )
+                             })}
+                           </ScrollView>
+                        </ImageBackground>
+                      </Modal> 
                         <View style={styles.btnContainer}>
                             <TouchableOpacity onPress={() => navigation.navigate('Start')}>
                                 <MaterialIcons name='close' size={30} style={{marginLeft: 10,}}/>
@@ -92,14 +145,14 @@ export default function GuestMenu({ navigation }) {
                                     style={styles.numberInput}
                                     placeholder='0'
                                     onChange={(number) => {
-                                        if (item.quantity != 0) {
-                                            timesPressed = number;
-                                            addNewItemToOrder(item, timesPressed);
-                                        }
+                                      //console.log(number.nativeEvent.text);
+                                      addNewItemToOrder(item, number.nativeEvent.text);
                                     }}>                    
                                 </TextInput>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.finishBtn} > 
+                            <TouchableOpacity 
+                             onPress={showModal}
+                             style={styles.finishBtn} > 
                                 <Text style={{color:"white", fontWeight: 'bold',}}>Finish</Text>
                             </TouchableOpacity>
                         </View>

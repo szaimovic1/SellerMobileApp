@@ -5,6 +5,7 @@ import Start from '../screens/start';
 import Header from '../components/headerLogin';
 import React from 'react';
 import GuestMenu from '../screens/guestMenu';
+import { View } from 'native-base';
 
 const screens = {
     Start: {
@@ -31,6 +32,7 @@ const screens = {
             return {
                 title: '',
                 headerStyle: {height: 0,},
+                headerLeft: () => <View></View>
             }
         }
     },
