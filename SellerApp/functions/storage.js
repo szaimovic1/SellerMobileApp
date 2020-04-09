@@ -190,7 +190,35 @@ export const postOrder = async (navigation, narudzba, backupObject) => {
     }).catch((error) => console.error(error))
     .done();
 }
-
+// POST zahtjev za slanje narudzbe serveru OD STRANE GUESTA
+export const postGuestOrder = async (sendToServerObject) => {
+  var data = sendToServerObject;
+  //console.log(data);
+  var TOKEN = await AsyncStorage.getItem('token');
+  fetch("https://cash-register-server-si.herokuapp.com/api/orders", {
+    method: "POST",
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + TOKEN
+    },
+    body: JSON.stringify(data)
+  })
+    .then((response) => response.text())
+    .then((res) => {
+      //removeCurrentOrder(brojStola);
+      //deleteOrder(narudzba);
+      console.log(res);
+      Alert.alert('Submited!', 'Order was successfully submitted.', [
+        {
+          text: 'OK'
+        }])
+      navigation.navigate('DisplayOrders');
+      //console.log('table broj: ', brojStola);
+    }).catch((error) => console.error(error))
+    .done();
+}
+//
 export const updateOrderState = async (order) => {
   let indexOfOrder = 0;
   try {
