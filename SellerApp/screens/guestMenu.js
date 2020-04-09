@@ -97,12 +97,12 @@ export default function GuestMenu({ navigation }) {
                          source={require('../images/greyBackground.jpg')}
                          style = {{height: "100%", width: "100%",}}>
                           <View style = {styles.headerForOrder}>
-                            <Button 
-                             onPress = {hideModal}
-                             style={styles.backBtn}>
-                              <Text style = {styles.btnText}>Go back to edit</Text>
-                            </Button>
-                            <MaterialIcons name='shopping-cart' size={40} style={styles.shoppingCartGreen} />
+                            <Text style={{color: 'white',
+                             fontWeight: 'bold',
+                             fontSize: 20,
+                             letterSpacing: 1,
+                             alignSelf: "center",
+                             paddingLeft: 20}}>Your choice</Text>
                             <MaterialIcons name='delete' size={40} style={styles.deleteIcon} />
                           </View>
                            <ScrollView>
@@ -132,11 +132,34 @@ export default function GuestMenu({ navigation }) {
                                )
                              })}
                            </ScrollView>
+                           <View style = {styles.footerForOrder}>
+                            <Button 
+                             onPress = {hideModal}
+                             style={styles.backBtn}>
+                              <Text style = {styles.btnText}>Go back to edit</Text>
+                            </Button>
+                            <Button 
+                             //onPress = {hideModal}
+                             style={styles.orderBtn}>
+                              <Text style = {styles.btnText}>Order &#x2714;</Text>
+                            </Button>
+                          </View>
                         </ImageBackground>
                       </Modal> 
-                        <View style={styles.btnContainer}>
-                            <TouchableOpacity onPress={() => navigation.navigate('Start')}>
-                                <MaterialIcons name='close' size={30} style={{marginLeft: 10,}}/>
+                      <View style={styles.btnContainer}>
+                            <TouchableOpacity style = {{borderStyle: "solid", 
+                              borderColor: 'grey',
+                              borderWidth: 2,
+                              marginLeft: 5, 
+                              height: 45,
+                              borderRadius: 10, 
+                              padding: 0, 
+                              margin: 0}} 
+                              onPress={() => navigation.navigate('Start')}>
+                                <MaterialIcons name='close' size={30} style={{marginLeft: 10, 
+                                  paddingRight: 10, 
+                                  paddingTop: 5, 
+                                  opacity: 0.5}}/>
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.shoppingCart}>
                                 <MaterialIcons name='shopping-cart' size={30} style={styles.shopping} />
@@ -145,7 +168,6 @@ export default function GuestMenu({ navigation }) {
                                     style={styles.numberInput}
                                     placeholder='0'
                                     onChange={(number) => {
-                                      //console.log(number.nativeEvent.text);
                                       addNewItemToOrder(item, number.nativeEvent.text);
                                     }}>                    
                                 </TextInput>
@@ -154,7 +176,7 @@ export default function GuestMenu({ navigation }) {
                              onPress={showModal}
                              style={styles.finishBtn} > 
                                 <Text style={{color:"white", fontWeight: 'bold',}}>Finish</Text>
-                            </TouchableOpacity>
+                                </TouchableOpacity>
                         </View>
                     <Image
                         style={styles.image}
@@ -167,7 +189,9 @@ export default function GuestMenu({ navigation }) {
                         <Text style={styles.price}>{item.price} KM</Text>
                         </View>      
                         <ScrollView>
-                        <Text style={styles.smallerText}>Ingredients: sugar, coffein, sugar, sugar, sugar, sugar,fds,fds,fmfrjfdjfjijfkdjsmkfsdlmfsd,fsdkfdlslfksdkfjdsfjdsfjidsjifsdfkdskdsjjdskdskadkfjsjfsdjkdsfjdsjjfdkfsdjfdsjij</Text>
+                        <Text style={{...styles.smallerText, /*fontWeight: "bold",*/ color: "#404040",}}>Ingredients: 
+                         <Text style={styles.smallerText}> sugar, coffein, sugar, sugar, sugar, sugar,fds,fds,fmfrjfdjfjijfkdjsmkfsdlmfsd,fsdkfdlslfksdkfjdsfjdsfjidsjifsdfkdskdsjjdskdskadkfjsjfsdjkdsfjdsjjfdkfsdjfdsjij</Text> 
+                        </Text>
                         </ScrollView>
                     </View>
                     
@@ -179,9 +203,9 @@ export default function GuestMenu({ navigation }) {
     );
   } else {
     return (
-    <AppLoading
-      startAsync={getFonts}
-      onFinish={() => setFontsLoaded(true)}
+      <AppLoading
+        startAsync={getFonts}
+        onFinish={() => setFontsLoaded(true)}
     />
     );
   }
