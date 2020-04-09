@@ -2,15 +2,8 @@
 import React, {useEffect, useState} from 'react';
 import { View, Text, ImageBackground, StyleSheet, AsyncStorage, Image } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import * as Font from 'expo-font';
+import { getFonts } from '../functions/async';
 import { AppLoading } from 'expo';
-
-const getFonts = () => {
-    return Font.loadAsync({
-      'courgette-regular': require('../assets/fonts/Courgette-Regular.ttf')
-    });
-  }
-
 
 export default function Start ({ navigation }) {
     const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -82,7 +75,7 @@ export default function Start ({ navigation }) {
                         onPress={() => {
                             navigation.navigate('Offer');
                         }}>
-                        <Text style={{color: 'black', fontWeight: 'bold',}}>Check out the offer! ---></Text>
+                        <Text style={{color: 'black', fontWeight: 'bold',}}>CHECK OUT THE OFFER ---></Text>
                     </TouchableOpacity>
                 </View>
                 </View>

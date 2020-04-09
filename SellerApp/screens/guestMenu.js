@@ -93,10 +93,7 @@ export default function GuestMenu({ navigation }) {
                                     style={styles.numberInput}
                                     placeholder='0'
                                     onChange={(number) => {
-                                        if (item.quantity != 0) {
-                                            timesPressed = number;
-                                            addNewItemToOrder(item, timesPressed);
-                                        }
+                                      addNewItemToOrder(item, number.nativeEvent.text);
                                     }}>                    
                                 </TextInput>
                             </TouchableOpacity>
@@ -127,10 +124,10 @@ export default function GuestMenu({ navigation }) {
     );
   } else {
     return (
-    <AppLoading
-      startAsync={getFonts}
-      onFinish={() => setFontsLoaded(true)}
-    />
+      <AppLoading
+        startAsync={getFonts}
+        onFinish={() => setFontsLoaded(true)}
+      />
     );
   }
 }

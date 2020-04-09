@@ -1,5 +1,6 @@
 import { createStackNavigator } from 'react-navigation-stack';
 import { createAppContainer } from 'react-navigation';
+import { View } from 'react-native';
 import Login from '../screens/login';
 import Start from '../screens/start';
 import Header from '../components/headerLogin';
@@ -31,6 +32,7 @@ const screens = {
             return {
                 title: '',
                 headerStyle: {height: 0,},
+                headerLeft: () => <View></View>
             }
         }
     },

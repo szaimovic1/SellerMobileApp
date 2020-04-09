@@ -1,4 +1,7 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import { getFonts } from '../functions/async';
+
+getFonts();
 
 export default StyleSheet.create({
     container: {
@@ -41,6 +44,7 @@ export default StyleSheet.create({
             marginRight: 10, 
             justifyContent: 'center',
             alignItems: 'center',
+            borderRadius: 10,
         },
       image: {
         flex: 2,
