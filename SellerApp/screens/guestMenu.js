@@ -9,7 +9,7 @@ import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import styles from '../styles/menuStyles';
 import { WingBlank } from '@ant-design/react-native';
 import { Card } from 'react-native-paper';
-
+import { postGuestOrder} from '../functions/storage';
 
 const getFonts = () => {
   return Font.loadAsync({
@@ -29,7 +29,7 @@ export default function GuestMenu({ navigation }) {
   
   var receiptItems = []
   var backupObject = {};
-
+  var message = '';
   const getProducts = async () => {
     var TOKEN = await AsyncStorage.getItem('token');
     fetch("https://cash-register-server-si.herokuapp.com/api/products", {
@@ -58,9 +58,10 @@ export default function GuestMenu({ navigation }) {
     });
     console.log('receipt je: ', receiptItems);
     // backupObject se koristi za krajnje slanje na server
-    backupObject = {receiptItems};
+    backupObject = {message, receiptItems};
     console.log('backupObject je: ', backupObject);
-  });
+    
+  }, [receiptItems]);
   //
   
   const addNewItemToOrder = (item, timesPressed) => {
@@ -95,6 +96,7 @@ export default function GuestMenu({ navigation }) {
       console.log('nije poslalo: ', backupObject);
     }
     else{
+      postGuestOrder(backupObject);
       Alert.alert('Submited!', 'Your order is on its way!', [
       {
         text: 'OK', onPress: () => navigation.navigate('Start')
