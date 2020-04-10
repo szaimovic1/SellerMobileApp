@@ -103,7 +103,9 @@ export default function GuestMenu({ navigation }) {
                              letterSpacing: 1,
                              alignSelf: "center",
                              paddingLeft: 20}}>Your choice</Text>
-                            <MaterialIcons name='delete' size={40} style={styles.deleteIcon} />
+                             <TouchableOpacity onPress={() => {navigation.navigate('Start');}}>
+                              <MaterialIcons name='delete' size={40} style={styles.deleteIcon} />
+                             </TouchableOpacity>
                           </View>
                            <ScrollView>
                              {orderProducts.map((item) => {
