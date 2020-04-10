@@ -51,13 +51,14 @@ export default function GuestMenu({ navigation }) {
     // ako je element već u nizu, obriše se
     orderProducts.map((orderObject) => {
       if (orderObject.name === item.name) {
+        setPrice(Math.round((price - orderObject.price*orderObject.times)*100)/100);
         var index = orderProducts.indexOf(orderObject);
         orderProducts.splice(index, 1);
         return;
       }
     });
     // sada se doda novi objekat
-    if(timesPressed != 0)
+    if(timesPressed != 0){
       setOrderProducts(selectedProducts => [...selectedProducts, {
         'id': item.id,
         'name': item.name,
@@ -65,6 +66,8 @@ export default function GuestMenu({ navigation }) {
         'price': item.price,
         'imageBase64': item.imageBase64,
       }]);
+      setPrice(Math.round((price + item.price*timesPressed)*100)/100);
+    }
 
       //console.log(timesPressed);
   }
@@ -72,6 +75,8 @@ export default function GuestMenu({ navigation }) {
   const [visibility, setVisibility] = useState(false);
   const showModal = () => setVisibility(true);
   const hideModal = () => setVisibility(false);
+  const [price, setPrice] = useState(0);
+  const [tableNr, setTableNr] = useState('');
 
   if (fontsLoaded) {
     return (
@@ -105,6 +110,18 @@ export default function GuestMenu({ navigation }) {
                              paddingLeft: 20}}>Your choice</Text>
                             <MaterialIcons name='delete' size={40} style={styles.deleteIcon} />
                           </View>
+                          <View style = {styles.viewOfInput}>
+                           <Text style={styles.sumbitText2}>Enter table number &#x261E;</Text>
+                            <TextInput 
+                              keyboardType='number-pad' 
+                              style={styles.tableNrInput}
+                              placeholder = {tableNr}
+                              onChange={(number) => {
+                                newOrder.tableNr = number.nativeEvent.text;
+                                setTableNr(number.nativeEvent.text);
+                             }}>
+                             </TextInput>
+                           </View>
                            <ScrollView>
                              {orderProducts.map((item) => {
                                return(
@@ -132,6 +149,7 @@ export default function GuestMenu({ navigation }) {
                                )
                              })}
                            </ScrollView>
+                           <Text style={styles.sumbitText}>To pay: {price + " KM"}</Text>
                            <View style = {styles.footerForOrder}>
                             <Button 
                              onPress = {hideModal}
