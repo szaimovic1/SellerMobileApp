@@ -194,7 +194,7 @@ export const postOrder = async (navigation, narudzba, backupObject) => {
 export const postGuestOrder = async (sendToServerObject) => {
   var data = sendToServerObject;
   var TOKEN = await AsyncStorage.getItem('token');
-  fetch("https://cash-register-server-si.herokuapp.com/api/guestOrders", {
+  fetch("https://cash-register-server-si.herokuapp.com/api/orders", {
     method: "POST",
     headers: {
       Accept: 'application/json',

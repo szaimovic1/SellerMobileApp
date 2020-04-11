@@ -30,6 +30,7 @@ export default function GuestMenu({ navigation }) {
   var receiptItems = []
   var backupObject = {};
   var message = '';
+  var tableNumber = 0;
   const getProducts = async () => {
     var TOKEN = await AsyncStorage.getItem('token');
     fetch("https://cash-register-server-si.herokuapp.com/api/products", {
@@ -58,7 +59,10 @@ export default function GuestMenu({ navigation }) {
     });
     console.log('receipt je: ', receiptItems);
     // backupObject se koristi za krajnje slanje na server
+    tableNumber = tableNr;
+    message = tableNumber;
     backupObject = {message, receiptItems};
+    console.log('broj stola je: ', tableNumber);
     console.log('backupObject je: ', backupObject);
     
   }, [receiptItems]);
@@ -97,6 +101,13 @@ export default function GuestMenu({ navigation }) {
         text: 'OK', onPress: () => navigation.navigate('Start')
       }])
       console.log('nije poslalo: ', backupObject);
+    }
+    else if(tableNumber <= 0)
+    {
+      Alert.alert('OOPS!', 'Invalid table number!', [
+        {
+          text: 'OK'
+        }])
     }
     else{
       postGuestOrder(backupObject);

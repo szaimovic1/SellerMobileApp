@@ -40,6 +40,7 @@ export default function OrderContent({ navigation }) {
     else products.map((item) => {
       toPay = toPay + item.times * item.price;
     });
+    message = '';
     backupObject = {message, receiptItems};
     console.log('backupObject klijenta: ', backupObject);
     await setPrice(Math.round(toPay * 100) / 100);
