@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, Image, AsyncStorage, Modal, ImageBackground} from 'react-native';
+import { Text, View, Image, AsyncStorage, Modal, ImageBackground, Alert} from 'react-native';
 import Swiper from 'react-native-swiper';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
@@ -9,7 +9,7 @@ import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import styles from '../styles/menuStyles';
 import { WingBlank } from '@ant-design/react-native';
 import { Card } from 'react-native-paper';
-
+import { postGuestOrder} from '../functions/storage';
 
 const getFonts = () => {
   return Font.loadAsync({
@@ -26,7 +26,11 @@ export default function GuestMenu({ navigation }) {
     'tableNr': 0,
     'served': null,
   }); // lokalna narudžba
-
+  
+  var receiptItems = []
+  var backupObject = {};
+  var message = '';
+  var tableNumber = 0;
   const getProducts = async () => {
     var TOKEN = await AsyncStorage.getItem('token');
     fetch("https://cash-register-server-si.herokuapp.com/api/products", {
@@ -47,17 +51,35 @@ export default function GuestMenu({ navigation }) {
       getProducts();
   }, [])
 
+  // neki useEffect za spremanje id-a i kolicine itema
+  useEffect(() => {
+    if(orderProducts.length!=0)
+    orderProducts.map((item) => {
+      receiptItems.push({ id: item.id, quantity: item.times });
+    });
+    console.log('receipt je: ', receiptItems);
+    // backupObject se koristi za krajnje slanje na server
+    tableNumber = tableNr;
+    message = tableNumber;
+    backupObject = {message, receiptItems};
+    console.log('broj stola je: ', tableNumber);
+    console.log('backupObject je: ', backupObject);
+    
+  }, [receiptItems]);
+  //
+  
   const addNewItemToOrder = (item, timesPressed) => {
     // ako je element već u nizu, obriše se
     orderProducts.map((orderObject) => {
       if (orderObject.name === item.name) {
+        setPrice(Math.round((price - orderObject.price*orderObject.times)*100)/100);
         var index = orderProducts.indexOf(orderObject);
         orderProducts.splice(index, 1);
         return;
       }
     });
     // sada se doda novi objekat
-    if(timesPressed != 0)
+    if(timesPressed != 0){
       setOrderProducts(selectedProducts => [...selectedProducts, {
         'id': item.id,
         'name': item.name,
@@ -65,13 +87,43 @@ export default function GuestMenu({ navigation }) {
         'price': item.price,
         'imageBase64': item.imageBase64,
       }]);
+      setPrice(Math.round((price + item.price*timesPressed)*100)/100);
+    }
 
       //console.log(timesPressed);
+  }
+  
+  //slanje guest narudzbe na server
+  const submitToServer = () => {
+    if(receiptItems.length == 0){
+      Alert.alert('OOPS!', 'Your order is empty!', [
+      {
+        text: 'OK', onPress: () => navigation.navigate('Start')
+      }])
+      console.log('nije poslalo: ', backupObject);
+    }
+    else if(tableNumber <= 0)
+    {
+      Alert.alert('OOPS!', 'Invalid table number!', [
+        {
+          text: 'OK'
+        }])
+    }
+    else{
+      postGuestOrder(backupObject);
+      Alert.alert('Submited!', 'Your order is on its way!', [
+      {
+        text: 'OK', onPress: () => navigation.navigate('Start')
+      }])
+      console.log('na server se šalje: ', backupObject);
+    }
   }
 
   const [visibility, setVisibility] = useState(false);
   const showModal = () => setVisibility(true);
   const hideModal = () => setVisibility(false);
+  const [price, setPrice] = useState(0);
+  const [tableNr, setTableNr] = useState('');
 
   if (fontsLoaded) {
     return (
@@ -107,6 +159,18 @@ export default function GuestMenu({ navigation }) {
                               <MaterialIcons name='delete' size={40} style={styles.deleteIcon} />
                              </TouchableOpacity>
                           </View>
+                          <View style = {styles.viewOfInput}>
+                           <Text style={styles.sumbitText2}>Enter table number &#x261E;</Text>
+                            <TextInput 
+                              keyboardType='number-pad' 
+                              style={styles.tableNrInput}
+                              placeholder = {tableNr}
+                              onChange={(number) => {
+                                newOrder.tableNr = number.nativeEvent.text;
+                                setTableNr(number.nativeEvent.text);
+                             }}>
+                             </TextInput>
+                           </View>
                            <ScrollView>
                              {orderProducts.map((item) => {
                                return(
@@ -134,6 +198,7 @@ export default function GuestMenu({ navigation }) {
                                )
                              })}
                            </ScrollView>
+                           <Text style={styles.sumbitText}>To pay: {price + " KM"}</Text>
                            <View style = {styles.footerForOrder}>
                             <Button 
                              onPress = {hideModal}
@@ -141,7 +206,7 @@ export default function GuestMenu({ navigation }) {
                               <Text style = {styles.btnText}>Go back to edit</Text>
                             </Button>
                             <Button 
-                             //onPress = {hideModal}
+                             onPress = {submitToServer}
                              style={styles.orderBtn}>
                               <Text style = {styles.btnText}>Order &#x2714;</Text>
                             </Button>
