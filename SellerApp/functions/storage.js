@@ -1,8 +1,14 @@
 import { AsyncStorage, Alert } from 'react-native';
 
 export const checkIfAlreadyLoggedIn = async (navigation) => {
-  const TOKEN = await AsyncStorage.getItem('token');
-  if (TOKEN != undefined) navigation.navigate('DisplayProducts');
+  
+  const GUESTTOKEN = await AsyncStorage.getItem('guestToken');
+  if (GUESTTOKEN != undefined) {// guest je ulogovan
+    navigation.navigate('LogIn');
+  } else {
+    const TOKEN = await AsyncStorage.getItem('token');
+    if (TOKEN != undefined) navigation.navigate('DisplayProducts');
+  }
 }
 export const createOrders = async () => {
   try {
@@ -247,15 +253,67 @@ export const updateOrderState = async (order) => {
     }]);
   }
 }
+
+export const setItemStorage = async (key, value) => {
+  try {
+      await AsyncStorage.setItem(key, value);
+      console.log(value);
+  }
+  catch (err) {
+      console.log("greska u store");
+  }
+}
+
+export const guestLogIn = async () => {
+  const settings = {
+      method: 'POST',
+      headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+      },
+
+      body: JSON.stringify({
+          username: 'guest',
+          password: 'password',
+      })
+  };
+  try {
+      const fetchResponse = await fetch('https://cash-register-server-si.herokuapp.com/api/login', settings);
+      const data = await fetchResponse.json();
+
+      if (fetchResponse.ok) {
+          setItemStorage('guestToken', data.token);
+      }
+      else {
+          Alert.alert('Error', 'Bad credentials!', [{
+              text: 'Okay'
+          }])
+      }
+      return data;
+  } catch (e) {
+      Alert.alert('Error', 'Server timeout!', [{
+          text: 'Okay'
+      }])
+      return e;
+  }
+}
 //logout
 export const logOut = async () => {
   try{
     await AsyncStorage.removeItem('token');
-    
-    await AsyncStorage.setItem('role', 'guest');
-    
+    guestLogIn();    
   }
   catch(error){
       console.log('Greska prilikom logouta!');
   }
 };
+
+export const guestLogOut = async () => {
+  try{
+    await AsyncStorage.removeItem('guestToken');
+    await AsyncStorage.removeItem('token');
+  }
+  catch(error){
+      console.log('Greska prilikom logouta!');
+  }
+}

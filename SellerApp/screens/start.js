@@ -4,55 +4,15 @@ import { View, Text, ImageBackground, StyleSheet, AsyncStorage, Image } from 're
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { getFonts } from '../functions/async';
 import { AppLoading } from 'expo';
+import { guestLogIn } from '../functions/storage';
 
 export default function Start ({ navigation }) {
     const [fontsLoaded, setFontsLoaded] = useState(false);
-    //ULOGOVANJE GUESTA 
-    setItemStorage = async (key, value) => {
-        try {
-            await AsyncStorage.setItem(key, value);
-            console.log(value);
-        }
-        catch (err) {
-            console.log("greska u store");
-        }
-    }
-    const logIn = async () => {
-        const settings = {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-
-            body: JSON.stringify({
-                username: 'guest',
-                password: 'password',
-            })
-        };
-        try {
-            const fetchResponse = await fetch('https://cash-register-server-si.herokuapp.com/api/login', settings);
-            const data = await fetchResponse.json();
-
-            if (fetchResponse.ok) {
-                setItemStorage('guestToken', data.token);
-            }
-            else {
-                Alert.alert('Error', 'Bad credentials!', [{
-                    text: 'Okay'
-                }])
-            }
-            return data;
-        } catch (e) {
-            Alert.alert('Error', 'Server timeout!', [{
-                text: 'Okay'
-            }])
-            return e;
-        }
-    }
+    //ULOGOVANJE GUESTA     
     useEffect(() => {
-        
-    }, [])
+        guestLogIn();
+    }, []);
+
     if (fontsLoaded) {
     return (        
             <View style={styles.container}>
@@ -73,7 +33,6 @@ export default function Start ({ navigation }) {
                 <View style={styles.offerBtn}>
                     <TouchableOpacity
                         onPress={() => {
-                            logIn();
                             navigation.navigate('Offer');
                         }}>
                         <Text style={{color: 'black', fontWeight: 'bold',}}>CHECK OUT THE OFFER ---></Text>

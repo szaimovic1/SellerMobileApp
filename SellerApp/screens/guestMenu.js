@@ -9,7 +9,7 @@ import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import styles from '../styles/menuStyles';
 import { WingBlank } from '@ant-design/react-native';
 import { Card } from 'react-native-paper';
-import { postGuestOrder} from '../functions/storage';
+import { postGuestOrder, guestLogIn} from '../functions/storage';
 
 const getFonts = () => {
   return Font.loadAsync({
@@ -42,13 +42,15 @@ export default function GuestMenu({ navigation }) {
       .then((response) => response.json())
       .then((products) => {
         setProducts(products);
+        console.log("guestToken", TOKEN);
         return products;
       })
       .done();
   }
 
   useEffect(() => {
-      getProducts();
+    guestLogIn();
+    getProducts();
   }, [])
 
   // neki useEffect za spremanje id-a i kolicine itema
@@ -131,7 +133,7 @@ export default function GuestMenu({ navigation }) {
           loop={false}
           showsPagination={false}
           index={0}>
-              {products != undefined && products.map((item) => {
+              {products != undefined && products.length != 0 && products.map((item) => {
                   var timesPressed = '0';
                   orderProducts.map((orderObject) => {
                     if (orderObject.name === item.name) {

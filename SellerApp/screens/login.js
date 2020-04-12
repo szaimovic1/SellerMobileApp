@@ -45,8 +45,7 @@ export default function Login({ navigation }) {
 
             if (fetchResponse.ok) {
                 setItemStorage('token', data.token);
-                AsyncStorage.setItem('role', 'employee');
-
+                await AsyncStorage.removeItem('guestToken'); // brisemo guest token sada
                 navigation.navigate('DisplayProducts')
             }
             else {
