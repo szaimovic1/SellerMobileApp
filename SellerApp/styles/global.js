@@ -27,6 +27,11 @@ export default StyleSheet.create({
         left: 0,
         color: 'white'
     },
+    icon2: {
+        position: 'absolute',
+        right: 0,
+        color: 'white'
+    },
     
 })
 

@@ -7,7 +7,7 @@ import { AppLoading } from 'expo';
 
 export default function Start ({ navigation }) {
     const [fontsLoaded, setFontsLoaded] = useState(false);
-    //SAMO ZA POTREBE TESTIRANJA - KASNIJE ULOGOVATI GUESTA A NE KONOBARA
+    //ULOGOVANJE GUESTA 
     setItemStorage = async (key, value) => {
         try {
             await AsyncStorage.setItem(key, value);
@@ -26,7 +26,7 @@ export default function Start ({ navigation }) {
             },
 
             body: JSON.stringify({
-                username: 'mubina',
+                username: 'guest',
                 password: 'password',
             })
         };
@@ -35,7 +35,7 @@ export default function Start ({ navigation }) {
             const data = await fetchResponse.json();
 
             if (fetchResponse.ok) {
-                setItemStorage('token', data.token);
+                setItemStorage('guestToken', data.token);
             }
             else {
                 Alert.alert('Error', 'Bad credentials!', [{
@@ -51,7 +51,7 @@ export default function Start ({ navigation }) {
         }
     }
     useEffect(() => {
-        logIn();
+        
     }, [])
     if (fontsLoaded) {
     return (        
@@ -73,6 +73,7 @@ export default function Start ({ navigation }) {
                 <View style={styles.offerBtn}>
                     <TouchableOpacity
                         onPress={() => {
+                            logIn();
                             navigation.navigate('Offer');
                         }}>
                         <Text style={{color: 'black', fontWeight: 'bold',}}>CHECK OUT THE OFFER ---></Text>
