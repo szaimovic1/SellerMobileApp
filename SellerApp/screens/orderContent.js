@@ -10,6 +10,7 @@ import CheckBox from 'react-native-check-box';
 import ModalProductPicker from '../components/modalProductPicker';
 import { updateOrders, postOrder, updateOrderState, deleteOrder } from '../functions/storage';
 import Swipeout from 'react-native-swipeout';
+import Notification from '../components/notification';
 
 export default function OrderContent({ navigation }) {
   const [products, setProducts] = useState(navigation.state.params.data.item.products);
@@ -238,6 +239,7 @@ export default function OrderContent({ navigation }) {
           </TouchableOpacity>
         </View>
       </View>
+      <Notification></Notification>
     </ImageBackground>
   );
 }

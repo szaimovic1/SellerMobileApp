@@ -14,7 +14,7 @@ export default function Login({ navigation }) {
 
     const ACCESS_TOKEN = 'access_token';
 
-    setItemStorage = async (key, value) => {
+    const setItemStorage = async (key, value) => {
         try {
             //AsyncStorage.clear();
             await AsyncStorage.setItem(key, value);
@@ -25,7 +25,20 @@ export default function Login({ navigation }) {
         }
     }
 
-    checkLogin = async () => {
+    const setLastNotificationID = async () => {
+        var TOKEN = await AsyncStorage.getItem('token');
+        fetch('https://cash-register-server-si.herokuapp.com/api/notifications/0', {
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + TOKEN
+            }
+        }).then((res) => res.json()).then(async (res) => {
+            if (res.length === 0) await AsyncStorage.setItem('lastNotificationID', "0");
+            else await AsyncStorage.setItem('lastNotificationID', res[res.length - 1].id.toString());
+        }).done();
+    }
+
+    const checkLogin = async () => {
         // const location = window.location.hostname;
         const settings = {
             method: 'POST',
@@ -46,7 +59,10 @@ export default function Login({ navigation }) {
             if (fetchResponse.ok) {
                 setItemStorage('token', data.token);
                 await AsyncStorage.removeItem('guestToken'); // brisemo guest token sada
-                navigation.navigate('DisplayProducts')
+
+                setLastNotificationID();
+
+                navigation.navigate('DisplayProducts');
             }
             else {
                 Alert.alert('Error', 'Bad credentials!', [{

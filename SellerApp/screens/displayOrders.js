@@ -6,13 +6,13 @@ import { AsyncStorage } from 'react-native';
 import styles from '../styles/productStyles';
 import { MaterialIcons } from '@expo/vector-icons';
 import { NavigationEvents } from 'react-navigation';
+import Notification from '../components/notification';
 
 export default function DisplayOrders({ navigation }) {
   const [orders, setOrders] = useState([]);
   const getOrders = async () => {
-    const listOfOrders = JSON.parse(await AsyncStorage.getItem('orders'));
-    console.log(listOfOrders.length);
-    if(listOfOrders == null || typeof listOfOrders === 'undefined')listOfOrders = [];
+    let listOfOrders = JSON.parse(await AsyncStorage.getItem('orders'));
+    if(listOfOrders == null || typeof listOfOrders === 'undefined') listOfOrders = [];
     setOrders(listOfOrders);
   }
 
@@ -74,6 +74,7 @@ export default function DisplayOrders({ navigation }) {
         }
         )}
       </ScrollView>
+      <Notification></Notification>
     </ImageBackground>
   )
 }

@@ -4,6 +4,7 @@ import { WingBlank, WhiteSpace } from '@ant-design/react-native';
 import styles from '../styles/productStyles';
 import { Card, TextInput } from 'react-native-paper';
 import { saveNewOrder } from '../functions/storage';
+import Notification from '../components/notification';
 
 export default function AddNewOrder({ navigation }) {
     const param = navigation.getParam('data');
@@ -87,6 +88,7 @@ export default function AddNewOrder({ navigation }) {
 
                 <WhiteSpace size="lg" />
             </ScrollView>
+            <Notification></Notification>
         </ImageBackground>
     );
 }
