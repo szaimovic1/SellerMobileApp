@@ -193,7 +193,7 @@ export const postOrder = async (navigation, narudzba, backupObject) => {
 // POST zahtjev za slanje narudzbe serveru OD STRANE GUESTA
 export const postGuestOrder = async (sendToServerObject) => {
   var data = sendToServerObject;
-  var TOKEN = await AsyncStorage.getItem('token');
+  var TOKEN = await AsyncStorage.getItem('guestToken');
   fetch("https://cash-register-server-si.herokuapp.com/api/orders", {
     method: "POST",
     headers: {
@@ -247,3 +247,15 @@ export const updateOrderState = async (order) => {
     }]);
   }
 }
+//logout
+export const logOut = async () => {
+  try{
+    await AsyncStorage.removeItem('token');
+    
+    await AsyncStorage.setItem('role', 'guest');
+    
+  }
+  catch(error){
+      console.log('Greska prilikom logouta!');
+  }
+};

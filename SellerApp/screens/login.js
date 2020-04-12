@@ -45,6 +45,7 @@ export default function Login({ navigation }) {
 
             if (fetchResponse.ok) {
                 setItemStorage('token', data.token);
+                AsyncStorage.setItem('role', 'employee');
 
                 navigation.navigate('DisplayProducts')
             }

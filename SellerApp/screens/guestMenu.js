@@ -32,7 +32,7 @@ export default function GuestMenu({ navigation }) {
   var message = '';
   var tableNumber = 0;
   const getProducts = async () => {
-    var TOKEN = await AsyncStorage.getItem('token');
+    var TOKEN = await AsyncStorage.getItem('guestToken');
     fetch("https://cash-register-server-si.herokuapp.com/api/products", {
       method: "GET",
       headers: {
