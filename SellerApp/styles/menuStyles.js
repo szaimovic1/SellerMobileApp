@@ -106,14 +106,18 @@ export default StyleSheet.create({
         marginTop: 10,
       },
       tableNum: {
-        marginRight: 30,
-        paddingHorizontal: 10,
+        marginRight: 0,
+        paddingHorizontal: 5, 
         paddingVertical: 10,
         backgroundColor: '#fb5b5a',
         borderRadius: 10,
         borderWidth: 0.2,
         borderColor: '#fb5b5a',
-        opacity: 0.7
+        opacity: 0.7, 
+        marginBottom: 3,
+        flex: 2.5, 
+        textAlign: "center", 
+        marginLeft: 5,
       },
       backBtn: {
         backgroundColor: "white",
@@ -225,5 +229,11 @@ export default StyleSheet.create({
         height: 40,
         backgroundColor: "grey",
         paddingBottom: 10,
+      },
+      viewOfInputDisabled: {
+        flexDirection: 'row', 
+        backgroundColor: 'white', 
+        justifyContent: 'center', 
+        alignItems: 'center',
       },
 });
