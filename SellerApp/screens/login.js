@@ -62,7 +62,7 @@ export default function Login({ navigation }) {
 
                 setLastNotificationID();
 
-                navigation.navigate('DisplayProducts');
+                navigation.navigate('DisplayProducts')
             }
             else {
                 Alert.alert('Error', 'Bad credentials!', [{

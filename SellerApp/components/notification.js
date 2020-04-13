@@ -40,7 +40,7 @@ export default function Notification() {
     }
 
     const notifyTheWaiter = async () => {
-        if (notifications.length === 0) return;
+        if (notifications.length === 0 || typeof notifications === 'undefined' || notifications == null) return;
 
         notifications.map(notification => {
             let message = notification.message;
@@ -64,7 +64,7 @@ export default function Notification() {
     }
 
     useEffect(() => {
-        if (notifications.length !== 0) notifyTheWaiter();
+        notifyTheWaiter();
     }, [notifications]);
 
     return (

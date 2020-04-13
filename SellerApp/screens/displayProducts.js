@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   Text, View, TouchableOpacity, ScrollView, Image, ImageBackground, Modal, TouchableHighlight, RefreshControl,
-  TouchableWithoutFeedback, Keyboard, Alert
+  TouchableWithoutFeedback, Keyboard
 } from 'react-native';
 import { WingBlank, WhiteSpace, Button } from '@ant-design/react-native';
 import { Card } from 'react-native-paper';
@@ -10,7 +10,7 @@ import Filter from '../components/filter';
 import styles from '../styles/productStyles';
 import { getStyle, getTitleStyle, getSubtitleStyle, getTextStyle, isProductQuantitySmall } from '../functions/productStyleFunc';
 import { checkIfOrdersEmpty } from '../functions/storage';
-import Notification from '../components/notification';
+import Notification from '../components/notification'
 
 export default function DisplayProducts({ navigation }) {
   const [products, setProducts] = useState([]);
@@ -53,7 +53,7 @@ export default function DisplayProducts({ navigation }) {
     )
   }
 
-  const getProducts = async () => {
+  getProducts = async () => {
     setRefreshing(true);
     var TOKEN = await AsyncStorage.getItem('token');
     fetch("https://cash-register-server-si.herokuapp.com/api/products", {

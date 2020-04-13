@@ -1,7 +1,7 @@
 import { AsyncStorage, Alert } from 'react-native';
 
 export const checkIfAlreadyLoggedIn = async (navigation) => {
-
+  
   const GUESTTOKEN = await AsyncStorage.getItem('guestToken');
   if (GUESTTOKEN != undefined) {// guest je ulogovan
     navigation.navigate('LogIn');
@@ -256,64 +256,64 @@ export const updateOrderState = async (order) => {
 
 export const setItemStorage = async (key, value) => {
   try {
-    await AsyncStorage.setItem(key, value);
-    console.log(value);
+      await AsyncStorage.setItem(key, value);
+      console.log(value);
   }
   catch (err) {
-    console.log("greska u store");
+      console.log("greska u store");
   }
 }
 
 export const guestLogIn = async () => {
   const settings = {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
+      method: 'POST',
+      headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+      },
 
-    body: JSON.stringify({
-      username: 'guest',
-      password: 'password',
-    })
+      body: JSON.stringify({
+          username: 'guest',
+          password: 'password',
+      })
   };
   try {
-    const fetchResponse = await fetch('https://cash-register-server-si.herokuapp.com/api/login', settings);
-    const data = await fetchResponse.json();
+      const fetchResponse = await fetch('https://cash-register-server-si.herokuapp.com/api/login', settings);
+      const data = await fetchResponse.json();
 
-    if (fetchResponse.ok) {
-      setItemStorage('guestToken', data.token);
-    }
-    else {
-      Alert.alert('Error', 'Bad credentials!', [{
-        text: 'Okay'
-      }])
-    }
-    return data;
+      if (fetchResponse.ok) {
+          setItemStorage('guestToken', data.token);
+      }
+      else {
+          Alert.alert('Error', 'Bad credentials!', [{
+              text: 'Okay'
+          }])
+      }
+      return data;
   } catch (e) {
-    Alert.alert('Error', 'Server timeout!', [{
-      text: 'Okay'
-    }])
-    return e;
+      Alert.alert('Error', 'Server timeout!', [{
+          text: 'Okay'
+      }])
+      return e;
   }
 }
 //logout
 export const logOut = async () => {
-  try {
+  try{
     await AsyncStorage.removeItem('token');
-    guestLogIn();
+    guestLogIn();    
   }
-  catch (error) {
-    console.log('Greska prilikom logouta!');
+  catch(error){
+      console.log('Greska prilikom logouta!');
   }
 };
 
 export const guestLogOut = async () => {
-  try {
+  try{
     await AsyncStorage.removeItem('guestToken');
     await AsyncStorage.removeItem('token');
   }
-  catch (error) {
-    console.log('Greska prilikom logouta!');
+  catch(error){
+      console.log('Greska prilikom logouta!');
   }
 }

@@ -34,11 +34,6 @@ export default function GuestMenu({ navigation }) {
   }));
   const [dialogInputVisible, setDialogInputVisible] = useState(false);
 
-  var receiptItems = []
-  var backupObject = {};
-  var message = '';
-  var tableNumber = 0;
-
   const ringTheBell = () => {
     Animated.loop(
       Animated.sequence([
@@ -96,6 +91,11 @@ export default function GuestMenu({ navigation }) {
     ringTheBell();
   }
 
+
+  var receiptItems = []
+  var backupObject = {};
+  var message = '';
+  var tableNumber = 0;
   const getProducts = async () => {
     var TOKEN = await AsyncStorage.getItem('guestToken');
     fetch("https://cash-register-server-si.herokuapp.com/api/products", {
