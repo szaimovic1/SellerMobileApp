@@ -10,6 +10,7 @@ import Filter from '../components/filter';
 import styles from '../styles/productStyles';
 import { getStyle, getTitleStyle, getSubtitleStyle, getTextStyle, isProductQuantitySmall } from '../functions/productStyleFunc';
 import { checkIfOrdersEmpty } from '../functions/storage';
+import Notification from '../components/notification'
 
 export default function DisplayProducts({ navigation }) {
   const [products, setProducts] = useState([]);
@@ -227,6 +228,7 @@ export default function DisplayProducts({ navigation }) {
           }
           )}
         </ScrollView>
+        <Notification></Notification>
       </ImageBackground>
     </TouchableWithoutFeedback>
   )
