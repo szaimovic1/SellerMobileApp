@@ -13,8 +13,8 @@ export default function DisplayOrders({ navigation }) {
   const [guestOrders, setGuestOrders] = useState([]);
   const [products, setProducts] = useState([]);
   const getOrders = async () => {
-    const listOfOrders = JSON.parse(await AsyncStorage.getItem('orders'));
-    console.log(listOfOrders.length);
+    let listOfOrders = JSON.parse(await AsyncStorage.getItem('orders'));
+    
     if(listOfOrders == null || typeof listOfOrders === 'undefined')listOfOrders = [];
     setOrders(listOfOrders);
   }
