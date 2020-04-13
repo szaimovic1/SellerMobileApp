@@ -263,11 +263,9 @@ export default function GuestMenu({ navigation }) {
                                   source={{ uri: item.imageBase64 }} />
                               }}
                               right={(props) => (
-                                <View {...props} style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                                  <View style={styles.tableNum}>
-                                    <Text>{item.times}</Text>
-                                  </View>
-                                  <Text>{item.price} KM</Text>
+                                <View {...props} style={{...styles.viewOfInputDisabled, width: 130}}>  
+                                  <Text style={styles.tableNum}>{item.times}</Text>
+                                  <Text style = {{flex: 5, textAlign: "center", marginBottom: 3}}>{item.price} KM</Text>
                                 </View>
                               )}
                               style={styles.card}
