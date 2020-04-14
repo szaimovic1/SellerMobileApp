@@ -9,7 +9,7 @@ import React from 'react';
 const RootDrawerNavigator = createDrawerNavigator({
     LogOut: {
         screen: LoginStack,
-        navigationOptions: () => ( { title: 'Main pages:' } )
+        navigationOptions: () => ( { title: 'Main pages:', drawerLockMode: 'locked-closed', } )
     },
     Products: {
         screen: HomeStack,
