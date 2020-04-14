@@ -11,12 +11,13 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   btnContainer: {
-      flex: 1, 
       width: '100%',
       flexDirection: 'row', 
       alignContent: 'space-between',
       justifyContent: 'space-between',
       alignItems: 'center',
+      marginTop: 20,
+      marginBottom: 15,
     },
     shoppingCart: { 
         borderColor: "white", 

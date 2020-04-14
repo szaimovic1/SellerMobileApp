@@ -193,163 +193,166 @@ export default function GuestMenu({ navigation }) {
 
   if (fontsLoaded) {
     return (
-      <Swiper
-        loop={false}
-        showsPagination={false}
-        index={0}>
-        {products != undefined && products.length != 0 && products.map((item) => {
-          var timesPressed = '0';
-          orderProducts.map((orderObject) => {
-            if (orderObject.name === item.name) {
-              timesPressed = orderObject.times.toString();
-              return;
-            }
+      <View style={{flex: 1,}}>
+        <View style={styles.btnContainer}>
+          <TouchableOpacity style={{
+              borderStyle: "solid",
+              borderColor: 'grey',
+              borderWidth: 2,
+              marginLeft: 5,
+              height: 45,
+              borderRadius: 10,
+              padding: 0,
+              margin: 0
+            }}
+            onPress={() => navigation.navigate('Start')}>
+            <MaterialIcons name='close' size={30} style={{
+              marginLeft: 10,
+              paddingRight: 10,
+              paddingTop: 5,
+              opacity: 0.5
+            }} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={showModal}
+            style={styles.finishBtn} >
+            <Text style={{ color: "white", fontWeight: 'bold', }}>Finish</Text>
+          </TouchableOpacity>
+        </View>      
+        <Swiper
+          loop={false}
+          showsPagination={false}
+          index={0}>
+          {products != undefined && products.length != 0 && products.map((item) => {
+            var timesPressed = '0';
+            orderProducts.map((orderObject) => {
+              if (orderObject.name === item.name) {
+                timesPressed = orderObject.times.toString();
+                return;
+              }
 
-          });
-          return (
-            <View style={styles.container} key={item.id}>
-              <DialogInput isDialogVisible={dialogInputVisible}
-                modalStyle={{ backgroundColor: "orangered" }}
-                dialogStyle={{ borderColor: "black", borderRadius: 30 }}
-                textInputProps={{ keyboardType: 'numeric' }}
-                title={"WANT TO CALL THE WAITER?"}
-                message={"We are glad to be there for you!"}
-                hintInput={"Enter your table number"}
-                submitInput={(inputText) => { callTheWaiter(inputText); }}
-                closeDialog={() => { setDialogInputVisible(!dialogInputVisible); }}
-                submitText="MAKE A CALL">
-              </DialogInput>
-              <Modal
-                visible={visibility}
-                style={{ presentationStyle: "fullScreen" }}>
-                <ImageBackground
-                  source={require('../images/greyBackground.jpg')}
-                  style={{ height: "100%", width: "100%", }}>
-                  <View style={styles.headerForOrder}>
-                    <Text style={{
-                      color: 'white',
-                      fontWeight: 'bold',
-                      fontSize: 20,
-                      letterSpacing: 1,
-                      alignSelf: "center",
-                      paddingLeft: 20
-                    }}>Your choice</Text>
-                    <TouchableOpacity onPress={() => { navigation.navigate('Start'); }}>
-                      <MaterialIcons name='delete' size={40} style={styles.deleteIcon} />
-                    </TouchableOpacity>
-                  </View>
-                  <View style={styles.viewOfInput}>
-                    <Text style={styles.sumbitText2}>Enter table number &#x261E;</Text>
+            });
+            return (
+              <View style={styles.container} key={item.id}>
+                <DialogInput isDialogVisible={dialogInputVisible}
+                  modalStyle={{ backgroundColor: "orangered" }}
+                  dialogStyle={{ borderColor: "black", borderRadius: 30 }}
+                  textInputProps={{ keyboardType: 'numeric' }}
+                  title={"WANT TO CALL THE WAITER?"}
+                  message={"We are glad to be there for you!"}
+                  hintInput={"Enter your table number"}
+                  submitInput={(inputText) => { callTheWaiter(inputText); }}
+                  closeDialog={() => { setDialogInputVisible(!dialogInputVisible); }}
+                  submitText="MAKE A CALL">
+                </DialogInput>
+                <Modal
+                  visible={visibility}
+                  style={{ presentationStyle: "fullScreen" }}>
+                  <ImageBackground
+                    source={require('../images/greyBackground.jpg')}
+                    style={{ height: "100%", width: "100%", }}>
+                    <View style={styles.headerForOrder}>
+                      <Text style={{
+                        color: 'white',
+                        fontWeight: 'bold',
+                        fontSize: 20,
+                        letterSpacing: 1,
+                        alignSelf: "center",
+                        paddingLeft: 20
+                      }}>Your choice</Text>
+                      <TouchableOpacity onPress={() => { navigation.navigate('Start'); }}>
+                        <MaterialIcons name='delete' size={40} style={styles.deleteIcon} />
+                      </TouchableOpacity>
+                    </View>
+                    <View style={styles.viewOfInput}>
+                      <Text style={styles.sumbitText2}>Enter table number &#x261E;</Text>
+                      <TextInput
+                        keyboardType='number-pad'
+                        style={styles.tableNrInput}
+                        placeholder={tableNr}
+                        onChange={(number) => {
+                          newOrder.tableNr = number.nativeEvent.text;
+                          setTableNr(number.nativeEvent.text);
+                        }}>
+                      </TextInput>
+                    </View>
+                    <ScrollView>
+                      {orderProducts.map((item) => {
+                        return (
+                          <TouchableOpacity key={item.id}>
+                            <WingBlank size="lg">
+                              <Card.Title
+                                title={item.name}
+                                left={(props) => {
+                                  return <Image {...props}
+                                    style={{ width: 35, height: 35 }}
+                                    source={{ uri: item.imageBase64 }} />
+                                }}
+                                right={(props) => (
+                                  <View {...props} style={{...styles.viewOfInputDisabled, width: 130}}>  
+                                    <Text style={styles.tableNum}>{item.times}</Text>
+                                    <Text style = {{flex: 5, textAlign: "center", marginBottom: 3}}>{item.price} KM</Text>
+                                  </View>
+                                )}
+                                style={styles.card}
+                              />
+                            </WingBlank>
+                          </TouchableOpacity>
+                        )
+                      })}
+                    </ScrollView>
+                    <Text style={styles.sumbitText}>To pay: {price + " KM"}</Text>
+                    <View style={styles.footerForOrder}>
+                      <Button
+                        onPress={hideModal}
+                        style={styles.backBtn}>
+                        <Text style={styles.btnText}>Go back to edit</Text>
+                      </Button>
+                      <Button
+                        onPress={submitToServer}
+                        style={styles.orderBtn}>
+                        <Text style={styles.btnText}>Order &#x2714;</Text>
+                      </Button>
+                    </View>
+                  </ImageBackground>
+                </Modal>
+                
+                    <TouchableOpacity style={styles.shoppingCart}>
+                    <MaterialIcons name='shopping-cart' size={30} style={styles.shopping} />
                     <TextInput
                       keyboardType='number-pad'
-                      style={styles.tableNrInput}
-                      placeholder={tableNr}
+                      style={styles.numberInput}
+                      placeholder='0'
                       onChange={(number) => {
-                        newOrder.tableNr = number.nativeEvent.text;
-                        setTableNr(number.nativeEvent.text);
+                        addNewItemToOrder(item, number.nativeEvent.text);
                       }}>
                     </TextInput>
+                  </TouchableOpacity>
+                <Animated.View style={{ transform: [{ rotate: rotation }] }}>
+                  <MaterialIcons name="notifications-active" onPress={() => { setDialogInputVisible(!dialogInputVisible); }}
+                    size={80} style={{ marginBottom: 30, color: "#fb5b5a" }}></MaterialIcons>
+                </Animated.View>
+                <Image
+                  style={styles.image}
+                  source={{ uri: item.imageBase64 }}
+                  resizeMode="contain"
+                />
+                <View style={styles.textContainer}>
+                  <View style={styles.headingText}>
+                    <Text style={styles.text}>{item.name}</Text>
+                    <Text style={styles.price}>{item.price} KM</Text>
                   </View>
                   <ScrollView>
-                    {orderProducts.map((item) => {
-                      return (
-                        <TouchableOpacity key={item.id}>
-                          <WingBlank size="lg">
-                            <Card.Title
-                              title={item.name}
-                              left={(props) => {
-                                return <Image {...props}
-                                  style={{ width: 35, height: 35 }}
-                                  source={{ uri: item.imageBase64 }} />
-                              }}
-                              right={(props) => (
-                                <View {...props} style={{...styles.viewOfInputDisabled, width: 130}}>  
-                                  <Text style={styles.tableNum}>{item.times}</Text>
-                                  <Text style = {{flex: 5, textAlign: "center", marginBottom: 3}}>{item.price} KM</Text>
-                                </View>
-                              )}
-                              style={styles.card}
-                            />
-                          </WingBlank>
-                        </TouchableOpacity>
-                      )
-                    })}
+                    <Text style={styles.smallerText}>{item.description}</Text>
                   </ScrollView>
-                  <Text style={styles.sumbitText}>To pay: {price + " KM"}</Text>
-                  <View style={styles.footerForOrder}>
-                    <Button
-                      onPress={hideModal}
-                      style={styles.backBtn}>
-                      <Text style={styles.btnText}>Go back to edit</Text>
-                    </Button>
-                    <Button
-                      onPress={submitToServer}
-                      style={styles.orderBtn}>
-                      <Text style={styles.btnText}>Order &#x2714;</Text>
-                    </Button>
-                  </View>
-                </ImageBackground>
-              </Modal>
-              <View style={styles.btnContainer}>
-                <TouchableOpacity style={{
-                  borderStyle: "solid",
-                  borderColor: 'grey',
-                  borderWidth: 2,
-                  marginLeft: 5,
-                  height: 45,
-                  borderRadius: 10,
-                  padding: 0,
-                  margin: 0
-                }}
-                  onPress={() => navigation.navigate('Start')}>
-                  <MaterialIcons name='close' size={30} style={{
-                    marginLeft: 10,
-                    paddingRight: 10,
-                    paddingTop: 5,
-                    opacity: 0.5
-                  }} />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.shoppingCart}>
-                  <MaterialIcons name='shopping-cart' size={30} style={styles.shopping} />
-                  <TextInput
-                    keyboardType='number-pad'
-                    style={styles.numberInput}
-                    placeholder='0'
-                    onChange={(number) => {
-                      addNewItemToOrder(item, number.nativeEvent.text);
-                    }}>
-                  </TextInput>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={showModal}
-                  style={styles.finishBtn} >
-                  <Text style={{ color: "white", fontWeight: 'bold', }}>Finish</Text>
-                </TouchableOpacity>
-              </View>
-              <Animated.View style={{ transform: [{ rotate: rotation }] }}>
-                <MaterialIcons name="notifications-active" onPress={() => { setDialogInputVisible(!dialogInputVisible); }}
-                  size={80} style={{ marginBottom: 30, color: "#fb5b5a" }}></MaterialIcons>
-              </Animated.View>
-              <Image
-                style={styles.image}
-                source={{ uri: item.imageBase64 }}
-                resizeMode="contain"
-              />
-              <View style={styles.textContainer}>
-                <View style={styles.headingText}>
-                  <Text style={styles.text}>{item.name}</Text>
-                  <Text style={styles.price}>{item.price} KM</Text>
                 </View>
-                <ScrollView>
-                  <Text style={styles.smallerText}>{item.description}</Text>
-                </ScrollView>
+
               </View>
+            );
+          })}
 
-            </View>
-          );
-        })}
-
-      </Swiper>
+        </Swiper>
+      </View>
     );
   } else {
     return (
