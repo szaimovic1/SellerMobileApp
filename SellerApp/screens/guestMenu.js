@@ -26,7 +26,7 @@ export default function GuestMenu({ navigation }) {
   const [newOrder, setNewOrder] = useState({
     'products': orderProducts,
     'tableNr': 0,
-    'served': null,
+    'served': false,
   }); // lokalna narudžba
   const [animation, setAnimation] = useState(new Animated.Value(0));
   const [rotation, setRotation] = useState(animation.interpolate({

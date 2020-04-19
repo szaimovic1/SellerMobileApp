@@ -54,6 +54,7 @@ export default function DisplayProducts({ navigation }) {
 
   useEffect(() => {
     checkIfOrdersEmpty();
+   // clearAsyncStorage();
   }, []);
 
   useEffect(() => {

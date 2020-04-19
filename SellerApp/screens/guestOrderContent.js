@@ -1,25 +1,23 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, ScrollView, Image, ImageBackground, TouchableOpacity, TextInput, Alert } from 'react-native';
+import { View, Text, ScrollView, Image, ImageBackground, TouchableOpacity, TextInput, Alert, AsyncStorage } from 'react-native';
 import { WingBlank, WhiteSpace, Button } from '@ant-design/react-native';
 import styles from '../styles/productStyles';
 import { Card } from 'react-native-paper';
-import { deleteUnservedOrder } from '../functions/storage';
 import { MaterialIcons } from '@expo/vector-icons';
 import orderStyles from '../styles/orderStyles';
 import CheckBox from 'react-native-check-box';
 import ModalProductPicker from '../components/modalProductPicker';
-import { updateOrders, postOrder, updateOrderState } from '../functions/storage';
 import Swipeout from 'react-native-swipeout';
 import { useOrdersContext } from '../contexts/ordersContext';
 
-export default function OrderContent({ navigation }) {
+export default function GuestOrderContent({ navigation }) {
   const [products, setProducts] = useState(navigation.state.params.data.item.products); // ovo su proizvodi koji pripadaju odabranoj narudzbi
   const [price, setPrice] = useState();
   const [narudzba, setNarudzba] = useState(navigation.state.params.data.item);
   const [served, setServed] = useState(navigation.state.params.data.item.served);
   const [editInputVisible, setEditInputVisible] = useState(false);
   const [editButtonVisible, setEditButtonVisible] = useState(true);
-  const { orders, updateLocalOrder } = useOrdersContext();
+  const { guestOrders, updateGuestOrder, deleteGuestOrder, updateGuestOrderState, postOrderGuest } = useOrdersContext();
   const [prevProductsQuantity, setPrevProductsQuantity] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [clickedOrder, setClickedOrder] = useState(navigation.state.params.data.item);
@@ -74,6 +72,7 @@ export default function OrderContent({ navigation }) {
   }
 
   const checkButton = () => {
+    invokeUpdate();
     setEditButtonVisible(!editButtonVisible);
     setEditInputVisible(!editInputVisible);
     setAddButtonDisabled(!addButtonDisabled);
@@ -81,14 +80,13 @@ export default function OrderContent({ navigation }) {
     updateProducts(products.filter(p => {
       return (p.times != 0)
     }));
-    invokeUpdate();
+    
   }
 
   const invokeUpdate = () => {
     var newOrder = clickedOrder;
     newOrder.products = products;
-    updateLocalOrder(clickedOrder, newOrder);
-    updateOrders(orders);
+    updateGuestOrder(clickedOrder, newOrder);
     calculateTotalPrice();
   }
 
@@ -128,18 +126,18 @@ export default function OrderContent({ navigation }) {
   }
 
   const submitOrder = () => {
-    postOrder(navigation, narudzba, backupObject);
+    postOrderGuest(navigation, narudzba, backupObject);
   }
 
   const changeOrderServeState = () => {
     setServed(!served);
-    updateOrderState(navigation.state.params.data.item);
+    updateGuestOrderState(navigation.state.params.data.item);
   }
 
   return (
     <ImageBackground source={require('../images/background2.png')}
       style={styles.container}>
-      <ModalProductPicker modalVisible={modalVisible} setModalVisible={setModalVisible} orders={orders} products={products}
+      <ModalProductPicker modalVisible={modalVisible} setModalVisible={setModalVisible} guestOrders={guestOrders} products={products}
         setProducts={setProducts} invokeUpdate={invokeUpdate} products={products} listEmpty={listEmpty}
         setListEmpty={setListEmpty} ></ModalProductPicker>
       <View style={styles.showPrice}>
@@ -230,7 +228,7 @@ export default function OrderContent({ navigation }) {
                   [
                       {text: 'Cancel', onPress: () => {return null}},
                       {text: 'Confirm', onPress: () => { 
-                          deleteUnservedOrder(navigation.state.params.data.item);
+                          deleteGuestOrder(navigation.state.params.data.item.id);
                           navigation.navigate('DisplayOrders');
                       } }
                   ],

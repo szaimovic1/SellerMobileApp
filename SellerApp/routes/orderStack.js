@@ -4,7 +4,7 @@ import DisplayOrders from '../screens/displayOrders';
 import Header from '../components/header';
 import React from 'react';
 import OrderContent from '../screens/orderContent';
-
+import GuestOrderContent from '../screens/guestOrderContent';
 
 const screens = {
     DisplayOrders: {
@@ -18,7 +18,15 @@ const screens = {
     OrderContent: {
         screen: OrderContent,
         navigationOptions: ({ navigation }) => {
-            //navigation.navigate('DisplayOrders');
+            return {
+                title: 'Order',
+                headerBackTitle: 'Back',
+            }
+        }
+    },
+    GuestOrderContent: {
+        screen: GuestOrderContent,
+        navigationOptions: ({ navigation }) => {
             return {
                 title: 'Order',
                 headerBackTitle: 'Back',

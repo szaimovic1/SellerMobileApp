@@ -1,27 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Text, View, TouchableOpacity, ScrollView, Image, ImageBackground } from 'react-native';
 import { WingBlank, WhiteSpace, Button } from '@ant-design/react-native';
 import { Card } from 'react-native-paper';
-import { AsyncStorage } from 'react-native';
 import styles from '../styles/productStyles';
 import { MaterialIcons } from '@expo/vector-icons';
 import { NavigationEvents } from 'react-navigation';
 import { useProductsContext } from '../contexts/productsContext';
+import { useOrdersContext } from '../contexts/ordersContext';
 
 export default function DisplayOrders({ navigation }) {
-  const [orders, setOrders] = useState([]);
-  const [guestOrders, setGuestOrders] = useState([]);
+  const { orders, guestOrders, getOrders, getOrdersServer } = useOrdersContext();
   const { products, getProducts } = useProductsContext();
-  const getOrders = async () => {
-    let listOfOrders = JSON.parse(await AsyncStorage.getItem('orders'));
-    
-    if(listOfOrders == null || typeof listOfOrders === 'undefined')listOfOrders = [];
-    setOrders(listOfOrders);
-  }
 
   useEffect(() => {
-    getOrders()
-    getProducts()
+    getOrders();
+    getProducts();
   }, []);
 
   const setText = (num) => {
@@ -47,56 +40,6 @@ export default function DisplayOrders({ navigation }) {
     return () => clearTimeout(timer);
   }, [guestOrders]);  
 
-   const getOrdersServer = async() => {
-    var TOKEN = await AsyncStorage.getItem('token');
-    fetch("https://cash-register-server-si.herokuapp.com/api/guest-orders", {
-      method: "GET",
-      headers: {
-        'Authorization': 'Bearer ' + TOKEN
-      }
-    })
-  .then((response) => response.json())
-      .then((orde) => {
-      var guestOrdersArray = [];  
-        //ovo je lista narudzbi sa servera
-       for(var i =0;i<orde.length; i++) {
-          var tableNumber = orde[i].message; //kod njih pise da je message idstola --valjda je to to
-          var orderedItems = orde[i].receiptItems; // ovo su proizvodi i-te narudzbe
-          var orderProducts = [];
-          for(var j = 0; j< orderedItems.length; j++) {
-            //console.log(products.length);
-            var product = products.filter((item) =>{ // trazimo proizvod u listi proizvoda
-              return item.id==orderedItems[j].id;
-            });
-           if(product.length!=0) {
-              var trazeni = product[0];
-              var object= { // pravimo objekat tako da kombinujemo podatke sa servera i iz liste proizvoda
-                'id': trazeni.id,
-                'name': trazeni.name,
-                'times': orderedItems[j].quantity, //ovo je ponavljanje datog proizvoda u narudzbi
-                'price': trazeni.price,
-                'imageBase64': trazeni.imageBase64,
-              };
-              orderProducts.push(object);
-          }
-        }
-        var newGuestOrder = {
-          //ovdje moze ici i id koji ce se koristit za post
-          'products': orderProducts,
-          'tableNr': tableNumber,
-          'served': null,
-        };
-        guestOrdersArray.push(newGuestOrder);
-      }
-      
-      setGuestOrders(guestOrdersArray);
-      return guestOrdersArray;
-    })
-      .done();
-  }
-
-
-
   return (
     <ImageBackground source={require('../images/background2.png')}
       style={styles.container}>
@@ -108,7 +51,7 @@ export default function DisplayOrders({ navigation }) {
           return (
             <TouchableOpacity key={Math.random()}
               onPress={() => {
-                navigation.navigate('OrderContent', { data: { item }, orders: { orders } });
+                navigation.navigate('OrderContent', { data: { item } });
               }}>
               <WingBlank size="lg">
                 <Card.Title
@@ -145,7 +88,7 @@ export default function DisplayOrders({ navigation }) {
           return (
             <TouchableOpacity key={Math.random()}
               onPress={() => {
-                navigation.navigate('OrderContent', { data: { item }, orders: { guestOrders } });
+                navigation.navigate('GuestOrderContent', { data: { item } });
               }}>
               <WingBlank size="lg">
                 <Card.Title
