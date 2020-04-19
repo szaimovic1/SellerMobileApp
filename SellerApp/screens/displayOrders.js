@@ -6,12 +6,12 @@ import { AsyncStorage } from 'react-native';
 import styles from '../styles/productStyles';
 import { MaterialIcons } from '@expo/vector-icons';
 import { NavigationEvents } from 'react-navigation';
-
+import { useProductsContext } from '../contexts/productsContext';
 
 export default function DisplayOrders({ navigation }) {
   const [orders, setOrders] = useState([]);
   const [guestOrders, setGuestOrders] = useState([]);
-  const [products, setProducts] = useState([]);
+  const { products, getProducts } = useProductsContext();
   const getOrders = async () => {
     let listOfOrders = JSON.parse(await AsyncStorage.getItem('orders'));
     
@@ -45,26 +45,7 @@ export default function DisplayOrders({ navigation }) {
       getOrdersServer();
     }, 20000);
     return () => clearTimeout(timer);
-  }, [guestOrders]);
-
- 
-   const getProducts = async () => {
-    var TOKEN = await AsyncStorage.getItem('token');
-    fetch("https://cash-register-server-si.herokuapp.com/api/products", {
-      method: "GET",
-      headers: {
-        'Authorization': 'Bearer ' + TOKEN
-      }
-    })
-      .then((response) => response.json())
-      .then((products) => {
-        setProducts(products);
-        return products;
-      })
-      .done();
-  }
-   
-  
+  }, [guestOrders]);  
 
    const getOrdersServer = async() => {
     var TOKEN = await AsyncStorage.getItem('token');
