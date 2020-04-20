@@ -11,7 +11,6 @@ import { WingBlank } from '@ant-design/react-native';
 import { Card } from 'react-native-paper';
 import { postGuestOrder, guestLogIn } from '../functions/storage';
 import DialogInput from 'react-native-dialog-input';
-import { useProductsContext } from '../contexts/productsContext';
 
 const getFonts = () => {
   return Font.loadAsync({
@@ -21,7 +20,7 @@ const getFonts = () => {
 
 export default function GuestMenu({ navigation }) {
   const [fontsLoaded, setFontsLoaded] = useState(false);
-  const { products, getProducts } = useProductsContext();
+  const [products, setProducts] = useState([]);
   const [orderProducts, setOrderProducts] = useState([]);
   const [newOrder, setNewOrder] = useState({
     'products': orderProducts,
@@ -97,6 +96,23 @@ export default function GuestMenu({ navigation }) {
   var backupObject = {};
   var message = '';
   var tableNumber = 0;
+
+  const getProducts = async () => {
+    var TOKEN = await AsyncStorage.getItem('guestToken');
+    fetch("https://cash-register-server-si.herokuapp.com/api/products", {
+      method: "GET",
+      headers: {
+        'Authorization': 'Bearer ' + TOKEN
+      }
+    })
+      .then((response) => response.json())
+      .then((products) => {
+        setProducts(products);
+        console.log("guestToken", TOKEN);
+        return products;
+      })
+      .done();
+  }
 
   useEffect(() => {
     guestLogIn();

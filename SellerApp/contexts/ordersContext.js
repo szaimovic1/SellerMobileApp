@@ -76,9 +76,9 @@ export const OrdersContextProvider = (props) => {
         .then((response) => response.text())
         .then((res) => {
             console.log(res);
-            Alert.alert('Success', 'Order deleted successfully!', [{
+           /* Alert.alert('Success', 'Order deleted successfully!', [{
                 text: 'Okay'
-            }]);
+            }]);*/
         }) 
         .catch((error) => {
             console.error(error);
@@ -135,6 +135,7 @@ export const OrdersContextProvider = (props) => {
     }
 
     const getOrdersServer = async() => {
+        console.log("SERVER");
         var TOKEN = await AsyncStorage.getItem('token');
         fetch("https://cash-register-server-si.herokuapp.com/api/guest-orders", {
           method: "GET",
