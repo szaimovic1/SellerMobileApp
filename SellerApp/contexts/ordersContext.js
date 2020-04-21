@@ -105,7 +105,7 @@ export const OrdersContextProvider = (props) => {
         var data = backupObject;
         console.log(data);
         var TOKEN = await AsyncStorage.getItem('token');
-        fetch("https://cash-register-server-si.herokuapp.com/api/orders", {
+        fetch("https://cash-register-server-si.herokuapp.com/api/guest-orders", {
         method: "POST",
         headers: {
             Accept: 'application/json',
@@ -116,13 +116,22 @@ export const OrdersContextProvider = (props) => {
         })
         .then((response) => response.text())
         .then((res) => {
-            deleteGuestOrder(narudzba.id);
-            console.log(res);
-            Alert.alert('Submited!', 'Order was successfully submitted.', [
-            {
-                text: 'OK'
-            }])
-            navigation.navigate('DisplayOrders');
+            const data = JSON.parse(res);
+            console.log(data);
+            console.log(data.message);
+            if (data.message === "Order is successfully saved!") {
+                deleteGuestOrder(narudzba.id);                
+                Alert.alert('Submited!', 'Order was successfully submitted.', [
+                {
+                    text: 'OK'
+                }])
+                navigation.navigate('DisplayOrders');
+            } else {
+                Alert.alert('Error!', 'Error submiting order.', [
+                {
+                        text: 'OK'
+                }])
+            }
         }).catch((error) => console.error(error))
         .done();
     }

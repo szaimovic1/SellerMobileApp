@@ -38,8 +38,8 @@ export default function GuestOrderContent({ navigation }) {
     else products.map((item) => {
       toPay = toPay + item.times * item.price;
     });
-    message = '';
-    backupObject = {message, receiptItems};
+    id = clickedOrder.id;
+    backupObject = {id, receiptItems};
     console.log('backupObject klijenta: ', backupObject);
     await setPrice(Math.round(toPay * 100) / 100);
   }
@@ -50,8 +50,6 @@ export default function GuestOrderContent({ navigation }) {
 
   useEffect(() => {
     calculateTotalPrice(receiptItems);
-    /* backupObject je objekat koji sadrzi niz reciptItems, jer ga kao takvog saljemo serveru */
-    //backupObject = { receiptItems };
   }, [price]);
 
   const updateProducts = async (newProducts) => {
