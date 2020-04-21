@@ -11,7 +11,7 @@ import { WingBlank } from '@ant-design/react-native';
 import { Card } from 'react-native-paper';
 import { postGuestOrder, guestLogIn } from '../functions/storage';
 import DialogInput from 'react-native-dialog-input';
-
+import NumericInput from 'react-native-numeric-input';
 const getFonts = () => {
   return Font.loadAsync({
     'courgette-regular': require('../assets/fonts/Courgette-Regular.ttf')
@@ -318,17 +318,18 @@ export default function GuestMenu({ navigation }) {
                   </ImageBackground>
                 </Modal>
                 
-                    <TouchableOpacity style={styles.shoppingCart}>
-                    <MaterialIcons name='shopping-cart' size={30} style={styles.shopping} />
-                    <TextInput
-                      keyboardType='number-pad'
-                      style={styles.numberInput}
-                      placeholder='0'
-                      onChange={(number) => {
-                        addNewItemToOrder(item, number.nativeEvent.text);
-                      }}>
-                    </TextInput>
-                  </TouchableOpacity>
+          
+                  <NumericInput
+                    minValue={0}
+                    onChange={value => addNewItemToOrder(item, value)}
+                    rounded={true}
+                    rightButtonBackgroundColor='#FA8072'
+                    leftButtonBackgroundColor='grey'
+                    totalWidth={200} 
+                    totalHeight={50}
+                    iconStyle={{ color: 'white' }}
+                    containerStyle={{marginBottom:10}}
+                  />
                 <Animated.View style={{ transform: [{ rotate: rotation }] }}>
                   <MaterialIcons name="notifications-active" onPress={() => { setDialogInputVisible(!dialogInputVisible); }}
                     size={80} style={{ marginBottom: 30, color: "#fb5b5a" }}></MaterialIcons>
