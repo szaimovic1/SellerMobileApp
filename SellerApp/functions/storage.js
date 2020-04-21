@@ -22,8 +22,6 @@ export const createOrders = async () => {
 export const checkIfOrdersEmpty = async () => {
   const orders = await AsyncStorage.getItem('orders');
 
-  //console.log(JSON.parse(orders));
-
   if (typeof orders === 'undefined') {
     createOrders();
   }
@@ -196,6 +194,7 @@ export const postOrder = async (navigation, narudzba, backupObject) => {
     }).catch((error) => console.error(error))
     .done();
 }
+
 // POST zahtjev za slanje narudzbe serveru OD STRANE GUESTA
 export const postGuestOrder = async (sendToServerObject) => {
   var data = sendToServerObject;
@@ -248,7 +247,7 @@ export const updateOrderState = async (order) => {
         }]);
       })
   } catch (error) {
-    Alert.alert('Error', 'Error updatig order!', [{
+    Alert.alert('Error', 'Error updating order!', [{
       text: 'Okay'
     }]);
   }
