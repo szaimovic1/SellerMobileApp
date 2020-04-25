@@ -17,7 +17,7 @@ export default StyleSheet.create({
       justifyContent: 'space-between',
       alignItems: 'center',
       marginTop: 20,
-      marginBottom: 15,
+      //marginBottom: 15,
     },
     shoppingCart: { 
         borderColor: "white", 
@@ -39,7 +39,7 @@ export default StyleSheet.create({
       paddingLeft: 7,
     },    
     finishBtn: {
-        width: 100, 
+        width: 70, 
         height: 50, 
         backgroundColor: 'grey',
         marginRight: 10, 
