@@ -194,7 +194,7 @@ export default function GuestMenu({ navigation }) {
 
   if (fontsLoaded) {
     return (
-      <View style={{flex: 1,}}>
+      <View style={{flex: 1,  backgroundColor: 'white',}}>
         <View style={styles.btnContainer}>
           <TouchableOpacity style={{
               borderStyle: "solid",
@@ -214,10 +214,14 @@ export default function GuestMenu({ navigation }) {
               opacity: 0.5
             }} />
           </TouchableOpacity>
+          <Animated.View style={{ transform: [{ rotate: rotation }], marginLeft: 20, marginTop: 20,}}>
+            <MaterialIcons name="notifications-active" onPress={() => { setDialogInputVisible(!dialogInputVisible); }}
+            size={80} style={{ marginBottom: 30, color: "#fb5b5a" }}></MaterialIcons>
+          </Animated.View>
           <TouchableOpacity
             onPress={showModal}
             style={styles.finishBtn} >
-            <Text style={{ color: "white", fontWeight: 'bold', }}>Finish</Text>
+            <Text style={{ color: "white", fontWeight: 'bold', }}>Buy</Text>
           </TouchableOpacity>
         </View>      
         <Swiper
@@ -317,8 +321,6 @@ export default function GuestMenu({ navigation }) {
                     </View>
                   </ImageBackground>
                 </Modal>
-                
-          
                   <NumericInput
                     minValue={0}
                     onChange={value => addNewItemToOrder(item, value)}
@@ -330,10 +332,6 @@ export default function GuestMenu({ navigation }) {
                     iconStyle={{ color: 'white' }}
                     containerStyle={{marginBottom:10}}
                   />
-                <Animated.View style={{ transform: [{ rotate: rotation }] }}>
-                  <MaterialIcons name="notifications-active" onPress={() => { setDialogInputVisible(!dialogInputVisible); }}
-                    size={80} style={{ marginBottom: 30, color: "#fb5b5a" }}></MaterialIcons>
-                </Animated.View>
                 <Image
                   style={styles.image}
                   source={{ uri: item.imageBase64 }}
