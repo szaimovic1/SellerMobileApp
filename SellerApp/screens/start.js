@@ -33,7 +33,7 @@ export default function Start ({ navigation }) {
                 <View style={styles.offerBtn}>
                     <TouchableOpacity
                         onPress={() => {
-                            navigation.navigate('Offer');
+                            navigation.navigate('Filter');
                         }}>
                         <Text style={{color: 'black', fontWeight: 'bold',}}>CHECK OUT THE OFFER ---></Text>
                     </TouchableOpacity>
