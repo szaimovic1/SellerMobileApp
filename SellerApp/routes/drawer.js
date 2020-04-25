@@ -3,6 +3,7 @@ import { createAppContainer } from 'react-navigation';
 import HomeStack from './homeStack';
 import LoginStack from './loginStack';
 import OrderStack from './orderStack';
+import TableStack from './tableStack';
 import { Image } from 'react-native';
 import React from 'react';
 
@@ -21,6 +22,12 @@ const RootDrawerNavigator = createDrawerNavigator({
         navigationOptions: {
             drawerIcon: (<Image style={{ width: 26, height: 26 }} source={require("../images/orders.png")}/> )}
     },
+    Tables: {
+        screen: TableStack,
+        navigationOptions: {
+            drawerIcon: (<Image style={{ width: 26, height: 26 }} source={require("../images/table.png")}/> )
+        }
+    }
     /* Ovdje ubaciti ostale prozore koji trebaju biti opcija u meniju */ 
 });
 
