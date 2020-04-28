@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { View, TextInput, Text, Button, Alert, Image, ImageBackground, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { View, TextInput, Text, Alert, Image, ImageBackground, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Platform } from 'react-native';
 import styles from '../styles/loginStyles.js';
 import { AsyncStorage } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { checkIfAlreadyLoggedIn } from '../functions/storage';
+import { Notifications } from 'expo';
+import * as Permissions from 'expo-permissions';
+import Constants from 'expo-constants';
 
 export default function Login({ navigation }) {
     checkIfAlreadyLoggedIn(navigation); // ako je već ulogovan, nema potrebe za prikazom ovog ekrana
@@ -38,6 +41,40 @@ export default function Login({ navigation }) {
         }).done();
     }
 
+    const registerForPushNotificationsAsync = async () => {
+        if (Constants.isDevice) {
+            const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+            let finalStatus = existingStatus;
+
+            if (existingStatus !== 'granted') {
+                const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+                finalStatus = status;
+            }
+
+            if (finalStatus !== 'granted') {
+                console.log('Error: cannot get push token for Push Notification!');
+                return;
+            }
+
+            let token = await Notifications.getExpoPushTokenAsync();
+            setItemStorage('expoPushToken', token);
+            const TOKEN = await AsyncStorage.getItem('expoPushToken');
+            console.log("expo push token: " + TOKEN);
+        }
+        else {
+            console.log('Error: You must use physical device for Push Notifications!');
+        }
+
+        if (Platform.OS === 'android') {
+            Notifications.createChannelAndroidAsync('default', {
+                name: 'default',
+                sound: true,
+                priority: 'max',
+                vibrate: [0, 250, 250, 250],
+            });
+        }
+    };
+
     const checkLogin = async () => {
         // const location = window.location.hostname;
         const settings = {
@@ -61,6 +98,7 @@ export default function Login({ navigation }) {
                 await AsyncStorage.removeItem('guestToken'); // brisemo guest token sada
 
                 setLastNotificationID();
+                registerForPushNotificationsAsync();
 
                 navigation.navigate('DisplayProducts')
             }
