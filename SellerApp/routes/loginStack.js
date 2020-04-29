@@ -42,9 +42,9 @@ const screens = {
         navigationOptions: ({ navigation }) => {
             return {
                 //title: 'Filter products',
-                headerTitle: <Text style={{fontFamily: 'IndieFlower-Regular', fontSize: 26,}}>Filter products</Text>,
+                headerTitle: () => <Text style={{fontFamily: 'IndieFlower-Regular', fontSize: 26,}}>Filter products</Text>,
                 headerStyle: {backgroundColor: '#F5F5F5', height: 80,},
-                headerBackTitle: <Text style={{fontFamily: 'IndieFlower-Regular', fontSize: 22,}}>Back</Text>,
+                headerBackTitle: () => <Text style={{fontFamily: 'IndieFlower-Regular', fontSize: 22,}}>Back</Text>,
             }
         }
     }

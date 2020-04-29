@@ -3,7 +3,6 @@ import { View, Text, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 import { useProductsContext } from '../contexts/productsContext';
-import { TextInput } from 'react-native-paper';
 import CheckBox from 'react-native-check-box';
 import CheckboxFormX from 'react-native-checkbox-form';
 import styles from '../styles/filterStyles';
@@ -19,34 +18,74 @@ export default function FilterIngredients({ navigation }) {
     const [checked, setChecked] = useState(false);
     const [fontsLoaded, setFontsLoaded] = useState(false);
     const [ingredients, setIngredients] = useState([]);
-    const [inputIngredient, setInputIngredient] = useState("");
+    const [mockData, setMockData] = useState([]);
+
+    setMockDataAsync = (state) => {
+        return new Promise((resolve) => {
+          setMockData(state, resolve)
+        });
+    };
+
+    const getIngredients = async () => {
+        setMockData([]);
+        var localData = [];
+        if (products != undefined && products.length > 0) {
+            var counter = 0;
+            for (var i = 0; i < products.length; i++) {
+                var index = products[i].description.indexOf('(Ingredients:');
+                if (index != -1) {
+                    var descIngredients = products[i].description.substring(index+14, products[i].description.length-1);
+                    var array = descIngredients.split(', ');
+                    for (var j = 0; j < array.length; j++) {
+                        var ingredientExists = false;
+                        if (counter < 20) { // ako jos uvijek nemamo 20 sastojaka, poredimo i ovaj trenutni
+                            console.log(localData.length);
+                            for (var k = 0; k < localData.length; k++) {
+                               // console.log(array[j].trim().toLowerCase());
+                                if (localData[k] != undefined && localData[k].label.trim().toLowerCase() === array[j].trim().toLowerCase()) {
+                                    ingredientExists = true;
+                                    break;
+                                }
+                            }        
+                            if (!ingredientExists) {
+                                counter++;
+                                console.log("counter uvecan", counter);
+                                localData.push({
+                                    'label': array[j].toLowerCase()
+                                });
+                            }
+                        } else if (counter >= 20) return;
+                    }
+                }
+                
+            }
+          /*  products.map(product => {
+                var index = product.description.indexOf('(Ingredients:');
+                var descIngredients = product.description.substring(index+12, product.description.length-1);
+                console.log(descIngredients);
+                var array = descIngredients.split(', ');
+                array.map(ingredient => {
+                    var newObject = {
+                        'label': ingredient.toLowerCase()
+                    };
+                    if (i < 20 && !mockData.includes(newObject)) {
+                        i++;
+                        setMockData(oldData => [...oldData, newObject]);
+                    } 
+                        
+                });
+
+            })*/
+            await setMockDataAsync(localData);
+        }
+        
+    }
+
 
     useEffect(() => {
         getProducts();
+        getIngredients();
     }, []);
-
-    const mockData = [
-        {
-            'label': 'sugar'
-        }, 
-        {
-            'label': 'salt'
-        },
-        {
-            'label': 'lactose'
-        },
-        {
-            'label': 'coffein'
-        },
-        {
-            'label': 'tomato'
-        },
-        {
-            'label': 'cheese'
-        },{
-            'label': 'paprika'
-        }
-    ];
 
     const onSelect = () => setChecked(!checked);
 
@@ -56,13 +95,7 @@ export default function FilterIngredients({ navigation }) {
         })
     }
 
-    const filterProducts = () => {
-        //provjera je li nesto upisano u input
-        if(inputIngredient != "") {
-            if (!ingredients.includes(inputIngredient)) { // provjeru napraviit da je case insesitive
-                setIngredients(oldIngredients => [...oldIngredients, inputIngredient]);
-            }   
-        }
+    const filterProducts = async () => {
         var filteredProducts = [];
         if (ingredients != undefined && ingredients.length > 0) {  // odabrali smo neke sastojke
             if (checked) {
@@ -71,7 +104,7 @@ export default function FilterIngredients({ navigation }) {
                     ingredients.map(ingredient => {
                         var index = product.description.indexOf('Ingredients');
                         var descIngredients = product.description.substring(index+12, product.description.length-1);
-                        if (!descIngredients.includes(ingredient)) containsIngr = false;
+                        if (!descIngredients.toLowerCase().includes(ingredient.toLowerCase())) containsIngr = false;
                     });
                     if (containsIngr) filteredProducts.push(product);
                 })
@@ -81,13 +114,13 @@ export default function FilterIngredients({ navigation }) {
                     ingredients.map(ingredient => {
                         var index = product.description.indexOf('Ingredients');
                         var descIngredients = product.description.substring(index+12, product.description.length-1);
-                        if (descIngredients.includes(ingredient)) notContains = false;
+                        if (descIngredients.toLowerCase().includes(inputIngredient.toLowerCase())) notContains = false;
                     });
                     if (notContains) filteredProducts.push(product);
                 })
             }
             navigation.navigate('Offer',  { data: { filteredProducts }});
-        } else  navigation.navigate('Offer', { data: undefined});
+        } else  navigation.navigate('Offer', { data: { products } });
        
     }
 
@@ -101,12 +134,6 @@ export default function FilterIngredients({ navigation }) {
                             <Text style={{fontSize: 18, marginLeft: 10, fontFamily: 'IndieFlower-Regular'}}>Contains</Text>
                         </View>
                         <View style={{flex: 4, width: '100%', alignItems: 'center'}}>
-                            <TextInput
-                                    style={styles.textInput}
-                                    clearTextOnFocus={true}
-                                    defaultValue="Enter ingredient"
-                                    onEndEditing={(input) => setInputIngredient(input.nativeEvent.text)} // kasno uzme ovaj sastojak
-                            ></TextInput>
                             <CheckboxFormX
                                 style={{ width: 350 - 30 }}
                                 dataSource={mockData}
@@ -116,7 +143,7 @@ export default function FilterIngredients({ navigation }) {
                                 iconColor='grey'
                                 formHorizontal={false}
                                 labelHorizontal={true}
-                                textStyle={{fontSize: 20, color: 'black', width: 80, marginLeft: 10,  fontFamily: 'IndieFlower-Regular', }}
+                                textStyle={{fontSize: 20, color: 'black', width: 120, marginLeft: 10, marginVertical: 5,  fontFamily: 'IndieFlower-Regular', }}
                                 onChecked={(items) => onSelectItem(items)}
                             />
                         </View>
@@ -125,7 +152,7 @@ export default function FilterIngredients({ navigation }) {
                         <TouchableOpacity onPress={filterProducts} style={styles.finishBtn}>
                             <Text style={styles.finishText}>FILTER</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => navigation.navigate('Offer', { data: undefined})} style={styles.finishBtn}>
+                        <TouchableOpacity onPress={() => navigation.navigate('Offer', { data: { products } })} style={styles.finishBtn}>
                             <Text style={styles.finishText}>SHOW ALL PRODUCTS</Text>
                         </TouchableOpacity>
                     </View>
