@@ -12,6 +12,7 @@ export const ProductsContextProvider = (props) => {
     const getProducts = async () => {
         setRefreshing(true);
         var TOKEN = await AsyncStorage.getItem('token');
+        if (TOKEN == null) TOKEN = await AsyncStorage.getItem('guestToken');
         fetch("https://cash-register-server-si.herokuapp.com/api/products", {
           method: "GET",
           headers: {
