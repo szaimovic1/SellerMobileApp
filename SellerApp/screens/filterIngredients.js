@@ -20,14 +20,7 @@ export default function FilterIngredients({ navigation }) {
     const [ingredients, setIngredients] = useState([]);
     const [mockData, setMockData] = useState([]);
 
-    setMockDataAsync = (state) => {
-        return new Promise((resolve) => {
-          setMockData(state, resolve)
-        });
-    };
-
-    const getIngredients = async () => {
-        setMockData([]);
+    const getIngredients = () => {
         var localData = [];
         if (products != undefined && products.length > 0) {
             var counter = 0;
@@ -39,9 +32,7 @@ export default function FilterIngredients({ navigation }) {
                     for (var j = 0; j < array.length; j++) {
                         var ingredientExists = false;
                         if (counter < 20) { // ako jos uvijek nemamo 20 sastojaka, poredimo i ovaj trenutni
-                            console.log(localData.length);
                             for (var k = 0; k < localData.length; k++) {
-                               // console.log(array[j].trim().toLowerCase());
                                 if (localData[k] != undefined && localData[k].label.trim().toLowerCase() === array[j].trim().toLowerCase()) {
                                     ingredientExists = true;
                                     break;
@@ -49,38 +40,20 @@ export default function FilterIngredients({ navigation }) {
                             }        
                             if (!ingredientExists) {
                                 counter++;
-                                console.log("counter uvecan", counter);
                                 localData.push({
                                     'label': array[j].toLowerCase()
                                 });
                             }
-                        } else if (counter >= 20) return;
+                        } else if (counter >= 20) {
+                            setMockData(localData);
+                            return;
+                        }
                     }
                 }
                 
             }
-          /*  products.map(product => {
-                var index = product.description.indexOf('(Ingredients:');
-                var descIngredients = product.description.substring(index+12, product.description.length-1);
-                console.log(descIngredients);
-                var array = descIngredients.split(', ');
-                array.map(ingredient => {
-                    var newObject = {
-                        'label': ingredient.toLowerCase()
-                    };
-                    if (i < 20 && !mockData.includes(newObject)) {
-                        i++;
-                        setMockData(oldData => [...oldData, newObject]);
-                    } 
-                        
-                });
-
-            })*/
-            await setMockDataAsync(localData);
         }
-        
     }
-
 
     useEffect(() => {
         getProducts();
@@ -114,7 +87,7 @@ export default function FilterIngredients({ navigation }) {
                     ingredients.map(ingredient => {
                         var index = product.description.indexOf('Ingredients');
                         var descIngredients = product.description.substring(index+12, product.description.length-1);
-                        if (descIngredients.toLowerCase().includes(inputIngredient.toLowerCase())) notContains = false;
+                        if (descIngredients.toLowerCase().includes(ingredient.toLowerCase())) notContains = false;
                     });
                     if (notContains) filteredProducts.push(product);
                 })
@@ -167,5 +140,4 @@ export default function FilterIngredients({ navigation }) {
             />
         );
     }
-    
 }

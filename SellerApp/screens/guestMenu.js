@@ -20,7 +20,6 @@ const getFonts = () => {
 }
 
 export default function GuestMenu({ navigation }) {
- // console.log(navigation.state.params.data.filteredProducts);
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const [products, setProducts] = useState([]);
   const [orderProducts, setOrderProducts] = useState([]);
