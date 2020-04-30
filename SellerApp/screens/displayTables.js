@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, Image, ImageBackground,TouchableOpacity, FlatList} from 'react-native';
 import styles from '../styles/tablesStyles';
+import { useTablesContext } from '../contexts/tablesContext';
 
 export default function DisplayTables({ navigation }) {
+    //ovo otkomentarisati kada ruta bude gotova
+    //const { tables, getTables, setTables } = useTablesContext();
     const test= [
         {table: 1},
         {table: 2},
@@ -17,7 +20,10 @@ export default function DisplayTables({ navigation }) {
         {table: 11},
         {table: 12},
         {table: 13},
-        {table: 14}
+        {table: 14},
+        {table: 15},
+        {table: 16},
+        {table: 17}
     ];
     
     const makeTableMap = (tables, columnNumber) => {
@@ -67,12 +73,12 @@ export default function DisplayTables({ navigation }) {
         return tableMap;
     }
     const columnNumber = 3;
-    const tables = makeTableMap(test, columnNumber);
+    const tablesList = makeTableMap(test, columnNumber);
     return (
         <ImageBackground style={styles.imageBackground} source={require('../images/background2.png')}>
             <View style={styles.tablesView}>
             <FlatList 
-                data={tables}
+                data={tablesList}
                 renderItem={({item}) => {
                     if(item.empty === true) {
                         return(
