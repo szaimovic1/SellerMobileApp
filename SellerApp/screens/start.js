@@ -1,16 +1,20 @@
 // ovo je početni ekran čitave aplikacije
 import React, {useEffect, useState} from 'react';
-import { View, Text, ImageBackground, StyleSheet, AsyncStorage, Image } from 'react-native';
+import { View, Text, StyleSheet, } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { getFonts } from '../functions/async';
 import { AppLoading } from 'expo';
 import { guestLogIn } from '../functions/storage';
+import { useProductsContext } from '../contexts/productsContext';
 
 export default function Start ({ navigation }) {
     const [fontsLoaded, setFontsLoaded] = useState(false);
-    //ULOGOVANJE GUESTA     
+    const { getProducts, getMockData } = useProductsContext();
+    //ULOGOVANJE GUESTA I UCITAVANJE PODATAKA   
     useEffect(() => {
         guestLogIn();
+        getProducts();
+        getMockData();
     }, []);
 
     if (fontsLoaded) {

@@ -188,7 +188,7 @@ export default function GuestMenu({ navigation }) {
       return (
         <View style={styles.container}>
           <View style={{ padding: 15,  borderRadius: 10, marginBottom: 15, }}>
-            <Text style={{ color: "grey", fontWeight: 'bold', fontSize: 24, fontFamily: 'IndieFlower-Regular'}}>No products match your needs...</Text>
+            <Text style={{ color: "grey", fontWeight: 'bold', fontSize: 24, fontFamily: 'IndieFlower-Regular'}}>No products match your search</Text>
           </View>
           <TouchableOpacity style={{...styles.finishBtn, shadowOffset: {
             width: 0,

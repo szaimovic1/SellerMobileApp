@@ -11,11 +11,6 @@ export default StyleSheet.create( {
         justifyContent: 'center',
         width: '100%',
     },
-    heading: {
-        marginTop: 30,
-        color: "#404040", 
-        fontSize: 30, 
-    },
     finishBtn: {
         padding: 10,
         backgroundColor: 'grey',
@@ -56,7 +51,7 @@ export default StyleSheet.create( {
         shadowOpacity: 0.25,
     },
     smallerContainer: {
-        flex: 2, 
+        flex: 3, 
         backgroundColor: '#E8E8E8', 
         alignItems: 'center',
         justifyContent: 'center',
