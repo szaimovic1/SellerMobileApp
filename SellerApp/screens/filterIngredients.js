@@ -29,7 +29,15 @@ export default function FilterIngredients({ navigation }) {
     const onSelectItem = (items) => {
         items.map(object => {
             if(object.RNchecked && !ingredients.includes(object.label)) setIngredients(oldIngredients => [...oldIngredients, object.label]);
-        })
+            else if (!object.RNchecked) {// ovo znaci da je objekat odznacen
+                for (var i = 0; i < ingredients.length; i++) {
+                    if (ingredients[i] === object.label) {
+                        ingredients.splice(i, 1);
+                        break;
+                    }
+                }
+            }
+        });
     }
 
     const filterProducts = async () => {
