@@ -53,6 +53,14 @@ export default StyleSheet.create({
     textAlign:'center',
     paddingLeft : 10,
     paddingRight : 10
+  },
+  forgotPasswordText:{
+    color:'#fff',
+    fontWeight:'bold',
+  },
+  forgotPasswordButton:{
+   marginLeft: 250,
+   marginBottom: 15
   }
 })
 

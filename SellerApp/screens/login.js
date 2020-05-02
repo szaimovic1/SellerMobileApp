@@ -8,7 +8,7 @@ import { checkIfAlreadyLoggedIn } from '../functions/storage';
 export default function Login({ navigation }) {
     checkIfAlreadyLoggedIn(navigation); // ako je već ulogovan, nema potrebe za prikazom ovog ekrana
 
-    const { heading, input, parent, employeeImage, userPass, loginScreenButton, loginText } = styles;
+    const { heading, input, parent, employeeImage, userPass, loginScreenButton, loginText, forgotPasswordText, forgotPasswordButton } = styles;
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
@@ -78,7 +78,10 @@ export default function Login({ navigation }) {
         }
 
     }
-
+    const forgotPassScreen = async () => {
+        navigation.navigate('ForgotPassword');
+       // Alert.alert("stisnuto");
+    }
     return (
         <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); }}>
             <ImageBackground source={require('../images/background2.png')} style={parent}>
@@ -92,6 +95,11 @@ export default function Login({ navigation }) {
                     <FontAwesome name='lock' size={30} color='#fff'></FontAwesome>
                     <TextInput style={input} secureTextEntry={true} placeholder="Password" onChangeText={text => setPassword(text)} />
                 </View>
+                <TouchableOpacity
+                style={forgotPasswordButton}
+                onPress={forgotPassScreen}>
+                    <Text style={forgotPasswordText}>Forgot password?</Text>
+                </TouchableOpacity>
                 <TouchableOpacity
                     style={loginScreenButton}
                     onPress={checkLogin}

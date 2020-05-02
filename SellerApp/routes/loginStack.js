@@ -6,7 +6,7 @@ import Start from '../screens/start';
 import Header from '../components/headerLogin';
 import React from 'react';
 import GuestMenu from '../screens/guestMenu';
-
+import ForgotPassword from '../screens/forgotPassword';
 
 const screens = {
     Start: {
@@ -37,6 +37,15 @@ const screens = {
             }
         }
     },
+    ForgotPassword: {
+        screen: ForgotPassword,
+        navigationOptions: ({ navigation }) => {
+            return {
+                title: 'Forgot password',
+                headerTintColor: '#fff',
+            }
+        }
+    }
 };
 
 const LoginStack = createStackNavigator (screens, {
