@@ -14,7 +14,8 @@ import DialogInput from 'react-native-dialog-input';
 import NumericInput from 'react-native-numeric-input';
 const getFonts = () => {
   return Font.loadAsync({
-    'courgette-regular': require('../assets/fonts/Courgette-Regular.ttf')
+    'courgette-regular': require('../assets/fonts/Courgette-Regular.ttf'),
+    'IndieFlower-Regular': require('../assets/fonts/IndieFlower-Regular.ttf')
   });
 }
 
@@ -98,20 +99,10 @@ export default function GuestMenu({ navigation }) {
   var tableNumber = 0;
 
   const getProducts = async () => {
-    var TOKEN = await AsyncStorage.getItem('guestToken');
-    fetch("https://cash-register-server-si.herokuapp.com/api/products", {
-      method: "GET",
-      headers: {
-        'Authorization': 'Bearer ' + TOKEN
-      }
-    })
-      .then((response) => response.json())
-      .then((products) => {
-        setProducts(products);
-        console.log("guestToken", TOKEN);
-        return products;
-      })
-      .done();
+    if (navigation.state.params.data.filteredProducts == undefined) {
+       setProducts(navigation.state.params.data.products);
+    } else setProducts(navigation.state.params.data.filteredProducts);
+    
   }
 
   useEffect(() => {
@@ -193,6 +184,21 @@ export default function GuestMenu({ navigation }) {
   const [tableNr, setTableNr] = useState('');
 
   if (fontsLoaded) {
+    if(products != undefined && products.length === 0) {
+      return (
+        <View style={styles.container}>
+          <View style={{ padding: 15,  borderRadius: 10, marginBottom: 15, }}>
+            <Text style={{ color: "grey", fontWeight: 'bold', fontSize: 24, fontFamily: 'IndieFlower-Regular'}}>No products match your search</Text>
+          </View>
+          <TouchableOpacity style={{...styles.finishBtn, shadowOffset: {
+            width: 0,
+            height: 2,
+        }, shadowOpacity: 0.25, width: 100,}} onPress={() => navigation.navigate('Filter')}>
+            <Text style={{ color: "white", fontWeight: 'bold', fontFamily: 'IndieFlower-Regular', fontSize: 18}}>Try again</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    } else
     return (
       <View style={{flex: 1,  backgroundColor: 'white',}}>
         <View style={styles.btnContainer}>
@@ -221,7 +227,7 @@ export default function GuestMenu({ navigation }) {
           <TouchableOpacity
             onPress={showModal}
             style={styles.finishBtn} >
-            <Text style={{ color: "white", fontWeight: 'bold', }}>Buy</Text>
+            <Text style={{ color: "white", fontWeight: 'bold', }}>BUY</Text>
           </TouchableOpacity>
         </View>      
         <Swiper
