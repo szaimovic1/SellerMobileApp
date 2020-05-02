@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, Image, AsyncStorage, Modal, ImageBackground, Alert, Animated } from 'react-native';
+import { Text, View, Image, AsyncStorage, Modal, ImageBackground, Alert, Animated, TouchableOpacity } from 'react-native';
 import Swiper from 'react-native-swiper';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 import { MaterialIcons } from '@expo/vector-icons';
 import { TextInput, Button } from 'react-native-paper';
-import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler';
 import styles from '../styles/menuStyles';
 import { WingBlank } from '@ant-design/react-native';
 import { Card } from 'react-native-paper';
