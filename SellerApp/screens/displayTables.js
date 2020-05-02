@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
-import { View, Text, Image, ImageBackground,TouchableOpacity, FlatList} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, Image, ImageBackground,TouchableOpacity, FlatList, AsyncStorage} from 'react-native';
 import styles from '../styles/tablesStyles';
 import { useTablesContext } from '../contexts/tablesContext';
 
 export default function DisplayTables({ navigation }) {
-    //ovo otkomentarisati kada ruta bude gotova
-    //const { tables, getTables, setTables } = useTablesContext();
+    const { tables, getTables, setTables } = useTablesContext();
+    useEffect(() => {
+        getTables();
+    }, []);
     const test= [
         {table: 1},
         {table: 2},
@@ -26,12 +28,13 @@ export default function DisplayTables({ navigation }) {
         {table: 17}
     ];
     
+    
     const makeTableMap = (tables, columnNumber) => {
         var tableMap = tables;
         const numberOfFullRows = Math.floor(tables.length / columnNumber);
         let numberOfElementsInLastRow = tables.length - (numberOfFullRows*columnNumber);
-        const empty = {
-            table: 0,
+        const empty = { // ovo je objekat koji sluzi samo da se do kraja popuni zadnji red, ukoliko nije popunjen sa "pravim" stolovima
+            id: 0,
             empty:true
         };
         while(numberOfElementsInLastRow != columnNumber && numberOfElementsInLastRow != 0) {
@@ -73,7 +76,9 @@ export default function DisplayTables({ navigation }) {
         return tableMap;
     }
     const columnNumber = 3;
-    const tablesList = makeTableMap(test, columnNumber);
+    const tablesList = makeTableMap(tables, columnNumber);
+
+   
     return (
         <ImageBackground style={styles.imageBackground} source={require('../images/background2.png')}>
             <View style={styles.tablesView}>
@@ -92,13 +97,12 @@ export default function DisplayTables({ navigation }) {
                         return(  
                             <TouchableOpacity style={styles.tableStyle}>
                                 <Image style={styles.imageTable} source={require("../images/circle.png")}/>
-                                <Text style={styles.text}>Table {item.table}</Text>
+                                <Text style={styles.text}>Table {item.tableNumber}</Text>
                             </TouchableOpacity> 
                         );  
                     }
                 }}
                 numColumns={columnNumber}
-                keyExtractor={(item) => item.table.toString()}
             />
             </View>
         </ImageBackground>

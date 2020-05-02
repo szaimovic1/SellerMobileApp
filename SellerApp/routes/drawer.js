@@ -30,5 +30,4 @@ const RootDrawerNavigator = createDrawerNavigator({
     }
     /* Ovdje ubaciti ostale prozore koji trebaju biti opcija u meniju */ 
 });
-
 export default createAppContainer(RootDrawerNavigator);
