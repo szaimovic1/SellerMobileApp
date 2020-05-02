@@ -3,7 +3,7 @@ import { AsyncStorage, Vibration } from 'react-native';
 import { Notifications } from 'expo';
 
 export default function Notification() {
-    const [notifications, setNotifications] = useState([]);
+    const [localNotifications, setLocalNotifications] = useState([]);
     const [notificationMessage, setNotificationMessage] = useState('');
 
     useEffect(() => {
@@ -12,17 +12,18 @@ export default function Notification() {
 
     useEffect(() => {
         notifyTheWaiter();
-    }, [notifications]);
+    }, [localNotifications]);
 
     useEffect(() => {
         sendPushNotification();
     }, [notificationMessage]);
 
     const handlePushNotification = notification => {
-        Vibration.vibrate();
+        //ovdje se moze raditi bilo sta sa dobijenom push notifikacijom
 
-        //ovdje se moze raditi bilo sta sa vracenom push notifikacijom
-        //console.log(notification.data);
+        //console.log(notification.data); // podaci koji su proslijedjeni uz notifikaciju
+
+        Vibration.vibrate();
     };
 
     const sendPushNotification = async () => {
@@ -35,6 +36,7 @@ export default function Notification() {
             sound: 'default',
             title: 'WARNING!',
             body: notificationMessage,
+            // data: { data: 'nesto' } // slanje podataka uz notifikaciju
             _displayInForeground: true,
         };
 
@@ -52,28 +54,31 @@ export default function Notification() {
     }
 
     const notifyTheWaiter = async () => {
-        if (typeof notifications === 'undefined' || notifications == null || notifications.length === 0) return;
+        if (typeof localNotifications === 'undefined' || localNotifications == null || localNotifications.length === 0) return;
 
-        notifications.map(notification => {
+        localNotifications.map(notification => {
             let message = notification.message;
             setNotificationMessage(message);
         });
 
-        await AsyncStorage.setItem('lastNotificationID', notifications[notifications.length - 1].id.toString());
+        await AsyncStorage.setItem('lastNotificationID', localNotifications[localNotifications.length - 1].id.toString());
     }
 
-    setTimeout(async () => {
-        var TOKEN = await AsyncStorage.getItem('token');
+    let setTimeoutID = setTimeout(async () => {
+        var token = await AsyncStorage.getItem('token');
         var lastNotificationID = await AsyncStorage.getItem('lastNotificationID');
 
-        fetch('https://cash-register-server-si.herokuapp.com/api/notifications/' + lastNotificationID, {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + TOKEN
-            }
-        }).then((res) => res.json()).then(async (res) => {
-            setNotifications(res);
-        }).done();
+        if (token != 'undefined' && token != null && lastNotificationID != 'undefined' && lastNotificationID != null) {
+            fetch('https://cash-register-server-si.herokuapp.com/api/notifications/' + lastNotificationID, {
+                method: "GET",
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            }).then((res) => res.json()).then(res => {
+                if (res != 'undefined' && res != null) setLocalNotifications(res);
+            }).done();
+        }
+        else clearTimeout(setTimeoutID);
     }, 30000);
 
     return (

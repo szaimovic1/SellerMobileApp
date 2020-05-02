@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { View, TextInput, Text, Alert, Image, ImageBackground, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Platform } from 'react-native';
+import { View, TextInput, Text, Button, Alert, Image, ImageBackground, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Platform } from 'react-native';
 import styles from '../styles/loginStyles.js';
 import { AsyncStorage } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { checkIfAlreadyLoggedIn } from '../functions/storage';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Notifications } from 'expo';
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
@@ -21,7 +22,7 @@ export default function Login({ navigation }) {
         try {
             //AsyncStorage.clear();
             await AsyncStorage.setItem(key, value);
-            console.log(value);
+            console.log(key + ": " + value);
         }
         catch (err) {
             console.log("greska u store");
@@ -29,11 +30,11 @@ export default function Login({ navigation }) {
     }
 
     const setLastNotificationID = async () => {
-        var TOKEN = await AsyncStorage.getItem('token');
+        var token = await AsyncStorage.getItem('token');
         fetch('https://cash-register-server-si.herokuapp.com/api/notifications/0', {
             method: "GET",
             headers: {
-                'Authorization': 'Bearer ' + TOKEN
+                'Authorization': 'Bearer ' + token
             }
         }).then((res) => res.json()).then(async (res) => {
             if (res.length === 0) await AsyncStorage.setItem('lastNotificationID', "0");
@@ -41,7 +42,7 @@ export default function Login({ navigation }) {
         }).done();
     }
 
-    const registerForPushNotificationsAsync = async () => {
+    const registerForPushNotifications = async () => {
         if (Constants.isDevice) {
             const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
             let finalStatus = existingStatus;
@@ -56,10 +57,8 @@ export default function Login({ navigation }) {
                 return;
             }
 
-            let token = await Notifications.getExpoPushTokenAsync();
-            setItemStorage('expoPushToken', token);
-            const TOKEN = await AsyncStorage.getItem('expoPushToken');
-            console.log("expo push token: " + TOKEN);
+            let expoPushToken = await Notifications.getExpoPushTokenAsync();
+            setItemStorage('expoPushToken', expoPushToken);
         }
         else {
             console.log('Error: You must use physical device for Push Notifications!');
@@ -98,7 +97,7 @@ export default function Login({ navigation }) {
                 await AsyncStorage.removeItem('guestToken'); // brisemo guest token sada
 
                 setLastNotificationID();
-                registerForPushNotificationsAsync();
+                registerForPushNotifications();
 
                 navigation.navigate('DisplayProducts')
             }
@@ -106,6 +105,8 @@ export default function Login({ navigation }) {
                 Alert.alert('Error', 'Bad credentials!', [{
                     text: 'Okay'
                 }])
+                setUsername('');
+                setPassword('');
             }
             return data;
         } catch (e) {
@@ -120,22 +121,24 @@ export default function Login({ navigation }) {
     return (
         <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); }}>
             <ImageBackground source={require('../images/background2.png')} style={parent}>
-                <Image source={require('../images/employee.png')} style={employeeImage} />
-                <Text style={heading}>Login</Text>
-                <View style={userPass}>
-                    <FontAwesome name='user' size={30} color='#fff'></FontAwesome>
-                    <TextInput style={input} placeholder="Username" onChangeText={text => setUsername(text)} />
-                </View>
-                <View style={userPass}>
-                    <FontAwesome name='lock' size={30} color='#fff'></FontAwesome>
-                    <TextInput style={input} secureTextEntry={true} placeholder="Password" onChangeText={text => setPassword(text)} />
-                </View>
-                <TouchableOpacity
-                    style={loginScreenButton}
-                    onPress={checkLogin}
-                    underlayColor='#fff'>
-                    <Text style={loginText}>Submit</Text>
-                </TouchableOpacity>
+                <KeyboardAwareScrollView>
+                    <Image source={require('../images/employee.png')} style={employeeImage} />
+                    <Text style={heading}>Login</Text>
+                    <View style={userPass}>
+                        <FontAwesome name='user' size={30} color='#fff' style={{ flex: 1, }}></FontAwesome>
+                        <TextInput value={username} style={input} placeholder="Username" onChangeText={text => setUsername(text)} />
+                    </View>
+                    <View style={userPass}>
+                        <FontAwesome name='lock' size={30} color='#fff' style={{ flex: 1, }}></FontAwesome>
+                        <TextInput value={password} style={input} secureTextEntry={true} placeholder="Password" onChangeText={text => setPassword(text)} />
+                    </View>
+                    <TouchableOpacity
+                        style={loginScreenButton}
+                        onPress={checkLogin}
+                        underlayColor='#fff'>
+                        <Text style={loginText}>Submit</Text>
+                    </TouchableOpacity>
+                </KeyboardAwareScrollView>
             </ImageBackground>
         </TouchableWithoutFeedback>
     )

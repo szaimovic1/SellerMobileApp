@@ -31,6 +31,9 @@
       "googleServicesFile": "./google-services.json",
       "package": "com.si.sellerapp",
       "versionCode": 1
+    },
+    "notification": {
+      "iosDisplayInForeground": true
     }
   }
 }
