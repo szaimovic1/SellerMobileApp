@@ -1,19 +1,25 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: 'center',
+    },
     heading: {
         fontSize: 30,
         textAlign: 'center',
         fontWeight: 'bold',
         marginBottom: 50,
-        marginTop: 20
+        marginTop: 20,
+        color: 'white'
     }, 
     textStyle:{
         fontSize: 15,
         textAlign: 'center',
         paddingLeft: 50,
         paddingRight: 50,
-        marginBottom: 30
+        marginBottom: 30,
+        color: 'white'
     },
     userMail: {
         marginLeft:13,
