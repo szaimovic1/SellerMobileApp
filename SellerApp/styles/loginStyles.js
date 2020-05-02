@@ -9,32 +9,32 @@ export default StyleSheet.create({
     color:'#fff'
   },
   input: {
-    marginLeft: 20,
     marginRight: 20,
     backgroundColor:'#fff',
     borderRadius:5,
     marginBottom:30,
     borderBottomWidth:1.5,
     borderBottomColor: 'darkblue',
-    width:300
+    flex: 9,
+    padding: 10,
   },
   parent: {
     flex: 1,
     justifyContent: 'center',
-    paddingBottom:80
   },
   employeeImage: {
     width:100,
-    height:100,
+    height:100, 
     alignSelf:'center',
-    marginBottom:40
+    marginBottom:40,
+    marginTop: 10,
   },
   userPass: {
     marginLeft:13,
     justifyContent:'center',
     flexDirection:'row',
     height: 70,
-  
+    flex: 1,
   }, 
   loginScreenButton: {
     marginRight:20,
