@@ -52,8 +52,8 @@ export default function ChangeTableNr({ navigation }) {
       if (number != null) {
         await AsyncStorage.setItem('tableNumber', number); 
         console.log(await AsyncStorage.getItem('tableNumber'));
-        setText1("A table number for this device was already set! " + "  (" + number + ")");
-        setText2("For a change, insert new value.");
+        setText1("A table number for this device was already set!");
+        setText2("To change, insert new value.");
       }
     }
 
