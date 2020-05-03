@@ -105,9 +105,15 @@ export default function GuestMenu({ navigation }) {
     
   }
 
+  async function tableNrCheck(){
+    var tableNum = await AsyncStorage.getItem('tableNumber');
+    setTableNr(tableNum);   
+  }; 
+
   useEffect(() => {
     guestLogIn();
     getProducts();
+    tableNrCheck();
   }, [])
 
   // neki useEffect za spremanje id-a i kolicine itema
@@ -128,17 +134,32 @@ export default function GuestMenu({ navigation }) {
   //
 
   const addNewItemToOrder = (item, timesPressed) => {
-    // ako je element već u nizu, obriše se
-    orderProducts.map((orderObject) => {
+     var postojao = false;
+     orderProducts.map((orderObject) => {
       if (orderObject.name === item.name) {
-        setPrice(Math.round((price - orderObject.price * orderObject.times) * 100) / 100);
+        var vrijednost = Math.abs(orderObject.times - timesPressed);
+        if(orderObject.times < timesPressed)
+          setPrice(price + orderObject.price * vrijednost);  
+        else 
+          setPrice(price - orderObject.price * vrijednost);
         var index = orderProducts.indexOf(orderObject);
-        orderProducts.splice(index, 1);
-        return;
+        orderProducts[index].times = timesPressed;
+        postojao = true;
+        if(timesPressed === 0)
+          orderProducts.splice(index, 1);
+      }
+      if(!postojao && orderProducts.indexOf(orderObject) === orderProducts.length-1 && timesPressed != 0){
+        setOrderProducts(selectedProducts => [...selectedProducts, {
+          'id': item.id,
+          'name': item.name,
+          'times': timesPressed,
+          'price': item.price,
+          'imageBase64': item.imageBase64,
+        }]);
+        setPrice(price + item.price * timesPressed);
       }
     });
-    // sada se doda novi objekat
-    if (timesPressed != 0) {
+    if(orderProducts.length === 0 && timesPressed != 0){
       setOrderProducts(selectedProducts => [...selectedProducts, {
         'id': item.id,
         'name': item.name,
@@ -146,10 +167,8 @@ export default function GuestMenu({ navigation }) {
         'price': item.price,
         'imageBase64': item.imageBase64,
       }]);
-      setPrice(Math.round((price + item.price * timesPressed) * 100) / 100);
+      setPrice(price + item.price * timesPressed);
     }
-
-    //console.log(timesPressed);
   }
 
   //slanje guest narudzbe na server
@@ -275,18 +294,7 @@ export default function GuestMenu({ navigation }) {
                         <MaterialIcons name='delete' size={40} style={styles.deleteIcon} />
                       </TouchableOpacity>
                     </View>
-                    <View style={styles.viewOfInput}>
-                      <Text style={styles.sumbitText2}>Enter table number &#x261E;</Text>
-                      <TextInput
-                        keyboardType='number-pad'
-                        style={styles.tableNrInput}
-                        placeholder={tableNr}
-                        onChange={(number) => {
-                          newOrder.tableNr = number.nativeEvent.text;
-                          setTableNr(number.nativeEvent.text);
-                        }}>
-                      </TextInput>
-                    </View>
+                    <Text style={styles.sumbitText}>To pay: {price.toFixed(2) + " KM"}</Text>
                     <ScrollView>
                       {orderProducts.map((item) => {
                         return (
@@ -312,7 +320,6 @@ export default function GuestMenu({ navigation }) {
                         )
                       })}
                     </ScrollView>
-                    <Text style={styles.sumbitText}>To pay: {price + " KM"}</Text>
                     <View style={styles.footerForOrder}>
                       <Button
                         onPress={hideModal}
