@@ -9,11 +9,14 @@ import Filter from '../components/filter';
 import styles from '../styles/productStyles';
 import { getStyle, getTitleStyle, getSubtitleStyle, getTextStyle, isProductQuantitySmall } from '../functions/productStyleFunc';
 import { checkIfOrdersEmpty } from '../functions/storage';
-import Notification from '../components/notification';
+//import Notification from '../components/notification';
 import { useProductsContext } from '../contexts/productsContext';
+import { useNotificationsContext } from '../contexts/notificationsContext';
+import { StompEventTypes, withStomp  } from "react-stompjs";
 
-export default function DisplayProducts({ navigation }) {
+const DisplayProducts = ({ navigation, stompContext }) => {
   const { products, getProducts, setProducts, refreshing } = useProductsContext();
+  const { subscribeToServer } = useNotificationsContext();
   const [modalVisible, setModalVisible] = useState(false);
   const [buttonVisible, setButtonVisible] = useState(false);
   const [orderProducts, setOrderProducts] = useState([]);
@@ -60,6 +63,7 @@ export default function DisplayProducts({ navigation }) {
   }
 
   useEffect(() => {
+    subscribeToServer(stompContext, StompEventTypes);
     checkIfOrdersEmpty();
     checkTableNr();
   }, []);
@@ -219,8 +223,10 @@ export default function DisplayProducts({ navigation }) {
           }
           )}
         </ScrollView>
-        <Notification></Notification>
+        
       </ImageBackground>
     </TouchableWithoutFeedback>
   )
 }
+
+export default withStomp(DisplayProducts);
