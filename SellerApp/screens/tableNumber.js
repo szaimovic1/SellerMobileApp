@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, AsyncStorage, Alert } from 'react-native';
+import { View, Text, AsyncStorage, Alert, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import styles from '../styles/productStyles';
 import SearchableDropdown from 'react-native-searchable-dropdown';
 
@@ -29,12 +29,14 @@ export default function ChangeTableNr({ navigation }) {
 
     const  [text1, setText1] = useState("")
     const  [text2, setText2] = useState("")
+    const  [text3, setText3] = useState("Table number")
     
     async function setTextFields(){
       var tableNr = await AsyncStorage.getItem('tableNumber');
       if(tableNr != null){
-          setText1("A table number for this device was already set! " + "   (" + tableNr + ")");
+          setText1("A table number for this device was already set!");
           setText2("For a change, insert new value.");
+          setText3(tableNr.toString());
       }
       else{
           setText1("A table number this device will belong to is not determined yet!");
@@ -56,13 +58,14 @@ export default function ChangeTableNr({ navigation }) {
     }
 
     return(
+      <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); }}>
           <View style={styles.centeredView}>
             <Text style={{...styles.textStyle, color: "#181819"}}>{text1}</Text>
             <Text style = {{marginTop: 20, fontSize: 20}}>{text2}</Text>
             <SearchableDropdown
               keyboardType={'numeric'} 
               placeholderTextColor = {"#181819"}
-              placeholder="Table number" 
+              placeholder={text3} 
               items = {tables}
               containerStyle={{ 
                 marginBottom: 10,
@@ -115,5 +118,6 @@ export default function ChangeTableNr({ navigation }) {
               }}
             />
           </View>
+        </TouchableWithoutFeedback>
     )
 }
