@@ -7,7 +7,6 @@ import { checkIfAlreadyLoggedIn } from '../functions/storage';
 
 export default function Login({ navigation }) {
     checkIfAlreadyLoggedIn(navigation); // ako je već ulogovan, nema potrebe za prikazom ovog ekrana
-
     const { heading, input, parent, employeeImage, userPass, loginScreenButton, loginText } = styles;
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");

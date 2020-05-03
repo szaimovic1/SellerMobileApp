@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   Text, View, TouchableOpacity, ScrollView, Image, ImageBackground, Modal, TouchableHighlight, RefreshControl,
-  TouchableWithoutFeedback, Keyboard
+  TouchableWithoutFeedback, Keyboard, AsyncStorage
 } from 'react-native';
 import { WingBlank, WhiteSpace, Button } from '@ant-design/react-native';
 import { Card } from 'react-native-paper';
@@ -52,9 +52,16 @@ export default function DisplayProducts({ navigation }) {
     )
   }
 
+  async function checkTableNr(){
+      const tableNr = await AsyncStorage.getItem('tableNumber');
+      console.log(tableNr);
+      if (tableNr === null)
+        navigation.navigate('ChangeTableNr')
+  }
+
   useEffect(() => {
     checkIfOrdersEmpty();
-   // clearAsyncStorage();
+    checkTableNr();
   }, []);
 
   useEffect(() => {

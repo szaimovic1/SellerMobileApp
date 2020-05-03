@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, Image, ImageBackground, TouchableOpacity } from 'react-native';
 import { WingBlank, WhiteSpace } from '@ant-design/react-native';
 import styles from '../styles/productStyles';
 import { Card, TextInput } from 'react-native-paper';
 import { saveNewOrder } from '../functions/storage';
+import SearchableDropdown from 'react-native-searchable-dropdown';
+import { useTablesContext } from '../contexts/tablesContext';
+import { TapGestureHandler } from 'react-native-gesture-handler';
+import { AsyncStorage } from 'react-native';
 
 export default function AddNewOrder({ navigation }) {
     const param = navigation.getParam('data');
@@ -25,10 +29,34 @@ export default function AddNewOrder({ navigation }) {
         }
     }
 
+    const [ tables, setTables ] = useState(async () => {
+        var TOKEN = await AsyncStorage.getItem('token');
+        fetch("https://cash-register-server-si.herokuapp.com/api/tables", {
+          method: "GET",
+          headers: {
+            'Authorization': 'Bearer ' + TOKEN
+          }
+        })
+          .then((response) => response.json())
+          .then((serverTables) => {
+            var modifiedTables = [];
+            serverTables.map((table) => {
+              modifiedTables.push({
+                  id: table.id,
+                  name: table.tableNumber.toString()
+                });
+            })
+            //console.log(modifiedTables + "KKKKKKKKK");
+            setTables(modifiedTables);
+            return modifiedTables;
+            })
+          .done();
+    })
+
     return (
         <ImageBackground source={require('../images/background2.png')}
             style={styles.container}>
-            <View style={styles.btnContainer}>
+            <View style={{...styles.btnContainer, marginBottom: 10}}>
                 <View style={{ flex: 1 }}>
                     <TouchableOpacity
                         style={styles.saveBtn}
@@ -49,7 +77,51 @@ export default function AddNewOrder({ navigation }) {
                         <Text style={styles.sumbitText}>Cancel</Text>
                     </TouchableOpacity></View>
             </View>
-            <TextInput keyboardType={'numeric'} placeholder='Table number' style={styles.input} onChangeText={text => checkTableNumber(text)} />
+            <SearchableDropdown
+              keyboardType={'numeric'} 
+              placeholderTextColor = {"white"}
+              placeholder='Table number' 
+              items = {tables}
+              containerStyle={{ 
+                marginBottom: 10,
+                height: 120, 
+                justifyContent: "center",
+                width: 160,
+                alignSelf: "center",
+                borderRadius: 10,
+              }} 
+              textInputProps={
+                {
+                  underlineColorAndroid: "transparent",
+                  style: {
+                      padding: 12,
+                      borderWidth: 1,
+                      borderColor: '#ccc',
+                      borderRadius: 5,
+                      marginBottom: 5,
+                      color: "white",
+                      textAlign: "center",
+                      fontSize: 20,
+                      fontWeight: "bold"
+                  },
+                  onTextChange: text => checkTableNumber(text)
+                }
+              }
+              itemStyle={{
+                backgroundColor: 'white',
+                borderColor: '#bbb',
+                borderWidth: 1,
+                borderRadius: 5,
+                marginBottom: 2,
+                width: 50,
+                paddingLeft: 20,
+                marginTop: 5,
+                alignSelf: "center",
+              }}
+              onItemSelect={(item) => {
+                checkTableNumber(item.name)
+              }}
+            />
             <ScrollView>
                 {navigation.state.params.data.newOrder.products.map((item) => {
                     return (
