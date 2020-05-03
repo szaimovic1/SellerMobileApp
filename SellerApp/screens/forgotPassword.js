@@ -12,37 +12,67 @@ export default function ForgotPassword ({navigation}) {
     const [newPassword, setNewPassword] = useState("");
     const [hidden, setHidden] = useState(true);
     const [hiddenPasswordInput, setHiddenPasswordInput] = useState(true);
-
+    const [pressedSendCodeButton, setPressedSendCodeButton] = useState(false);
+    const [editableTextInput ,setEditableTextInput] = useState(true);
+    const [pressedSendConfirmCodeButton, setPressedSendConfirmCodeButton] = useState(false);
+    const [pressedConfirmNewPasswordButton, setPressedConfirmNewPasswordButton] = useState(false);
     // onPress funkcija na dugme send code
     const sendCode = async () => {
+       if(pressedSendCodeButton == false)
+       {
         const requestBody = { userInfo: email};
         getSecurityCode(requestBody);
-        setHidden(!hidden); 
+        //setHidden(!hidden); 
+       }
+      else{
+        Alert.alert('Oops!', 'Code already sent!', [
+            {
+              text: 'OK'
+            }])
+      }
+     
     }
 
     // onPress funkcija na dugme confirm code
     const confirmCode = async () => {
+        if(pressedSendConfirmCodeButton == false)
+        {
         const codeRequestBody = { userInfo: email,
                                   resetToken: safetyCode                            
         };
         sendSecurityCode(codeRequestBody);
-        setHiddenPasswordInput(!hiddenPasswordInput);
-        //Alert.alert(safetyCode);
+        //setHiddenPasswordInput(!hiddenPasswordInput);
+        }
+        else {
+            Alert.alert('Oops!', 'Code confirmed, please enter your new password below!', [
+                {
+                  text: 'OK'
+                }])
+        }
     }
 
     // onPress funkcija na dugme confirm password
     const confirmPassword = async () => {
-        //Alert.alert(newPassword);
+        if(pressedConfirmNewPasswordButton == false)
+        {
         const passwordRequestbody = { userInfo: email,
                                       newPassword: newPassword                              
         };
         sendNewPassword(passwordRequestbody);
+        }
+        else{
+            Alert.alert('Oops!', 'New password already confirmed!', [
+                {
+                  text: 'OK'
+                }])
+        }
     }
 
     // Funkcija za dobavljanje security code-a za promjenu sifre
     const getSecurityCode = async (requestBody) => {
         var token = await AsyncStorage.getItem('guestToken');
         console.log(requestBody);
+        
         fetch('https://cash-register-server-si.herokuapp.com/api/reset-token',{
             method: "POST",
              headers: {
@@ -64,6 +94,8 @@ export default function ForgotPassword ({navigation}) {
           else if(res.message == "Token is sent!")
           {
               console.log(res.message);
+              setPressedSendCodeButton(true);
+              setEditableTextInput(false);
            setHidden(!hidden); 
           }
           
@@ -96,7 +128,8 @@ export default function ForgotPassword ({navigation}) {
           else if(res.message == "OK")
           {
               console.log(res.message);
-            setHidden(!hidden); 
+            //setHidden(!hidden); 
+            setPressedSendConfirmCodeButton(true);
            setHiddenPasswordInput(!hiddenPasswordInput);
           }
           
@@ -132,6 +165,7 @@ export default function ForgotPassword ({navigation}) {
                 {
                   text: 'OK'
                 }])
+                setPressedConfirmNewPasswordButton(true);
           }
           
         }).catch((error) => console.log(error))
@@ -150,7 +184,7 @@ export default function ForgotPassword ({navigation}) {
             <Text style={textStyle}>Enter your email or password and we'll send you a password reset code to get back into your account.</Text>
         </View>
         <View style={userMail}>
-            <TextInput style={input} placeholder="E-mail or username" onChangeText={text => setEmail(text)}></TextInput>
+            <TextInput style={input} editable={editableTextInput} placeholder="E-mail or username" onChangeText={text => setEmail(text)}></TextInput>
         </View>
         <TouchableOpacity
                     style={loginScreenButton}
