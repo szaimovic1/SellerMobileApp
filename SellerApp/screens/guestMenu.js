@@ -11,7 +11,6 @@ import { WingBlank } from '@ant-design/react-native';
 import { Card } from 'react-native-paper';
 import { postGuestOrder, guestLogIn } from '../functions/storage';
 import NumericInput from 'react-native-numeric-input';
-import { useNotificationsContext } from '../contexts/notificationsContext';
 
 const getFonts = () => {
   return Font.loadAsync({
@@ -21,7 +20,6 @@ const getFonts = () => {
 }
 
 export default function GuestMenu({ navigation }) {
-  const { sendPushNotification } = useNotificationsContext();
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const [products, setProducts] = useState([]);
   const [orderProducts, setOrderProducts] = useState([]);
@@ -98,7 +96,6 @@ export default function GuestMenu({ navigation }) {
               }).done();
 
               ringTheBell();
-              sendPushNotification();
             }
             else {
               console.log("Cannot send notification!");

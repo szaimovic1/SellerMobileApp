@@ -1,16 +1,17 @@
-import React, { useState, createContext, useContext } from 'react';
-import { AsyncStorage } from 'react-native';
+import React, { createContext, useContext } from 'react';
+import { AsyncStorage, Vibration } from 'react-native';
 
 export const NotificationsContext = createContext();
 
 export const NotificationsContextProvider = (props) => {
-    const { children } = props;
+    const { children } = props;    
 
-    const [notificationMessage, setNotificationMessage] = useState('');
-    
-
-    const sendPushNotification = async () => {
-        if (!notificationMessage.includes("Guest is calling you to the table number")) return;
+    const sendPushNotification = async (notificationMsg) => {
+        console.log("PORUKA GLASI ", notificationMsg);
+        if (!notificationMsg.includes("Guest is calling you to the table number")) {
+            console.log("Izlazi iz funkcije");
+            return;
+        }
         
         const expoPushToken = await AsyncStorage.getItem('expoPushToken');
 
@@ -18,7 +19,7 @@ export const NotificationsContextProvider = (props) => {
             to: expoPushToken,
             sound: 'default',
             title: 'WARNING!',
-            body: notificationMessage,
+            body: notificationMsg,
             // data: { data: 'nesto' } // slanje podataka uz notifikaciju
             _displayInForeground: true,
         };
@@ -31,9 +32,7 @@ export const NotificationsContextProvider = (props) => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(message),
-        });
-
-        setNotificationMessage('');
+        }).then((res) => console.log("poslano na expo"));
     }
 
     const subscribeToServer = async (stompContext, StompEventTypes) => {
@@ -42,21 +41,10 @@ export const NotificationsContextProvider = (props) => {
         let TOKEN = await AsyncStorage.getItem('token');
         stompContext.addStompEventListener(StompEventTypes.Connect, async () => {
           console.log("Connected");
-          await fetch("https://cash-register-server-si.herokuapp.com/ws", {
-            method: "GET",
-            headers: {
-              'Authorization': 'Bearer ' + TOKEN
-            }
-          });
-          /*const { data } = await axios.get(`${BASE_URL}api/auth/user/me`, {
-            headers: {
-              authorization: 'Bearer ${TOKEN}',
-            },
-          });*/
           stompContext
             .getStompClient()
             .subscribe('/topic/notifications', (msg) => {
-              console.log("subscribe");
+              console.log("subscribeano");
               // if (lastNotificationId !== JSON.parse(msg.body).notificationId) {
                 handlePushNotification({ data: JSON.parse(msg.body) });
               // }
@@ -77,6 +65,7 @@ export const NotificationsContextProvider = (props) => {
 
         //console.log(notification.data); // podaci koji su proslijedjeni uz notifikaciju
         console.log("DObijena notifikacija ", notification);
+        sendPushNotification(notification.data.message);
         Vibration.vibrate();
     };
 

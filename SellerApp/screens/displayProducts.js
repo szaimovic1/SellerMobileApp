@@ -9,7 +9,6 @@ import Filter from '../components/filter';
 import styles from '../styles/productStyles';
 import { getStyle, getTitleStyle, getSubtitleStyle, getTextStyle, isProductQuantitySmall } from '../functions/productStyleFunc';
 import { checkIfOrdersEmpty } from '../functions/storage';
-//import Notification from '../components/notification';
 import { useProductsContext } from '../contexts/productsContext';
 import { useNotificationsContext } from '../contexts/notificationsContext';
 import { StompEventTypes, withStomp  } from "react-stompjs";

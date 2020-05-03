@@ -29,24 +29,13 @@ export default function Login({ navigation }) {
         }
     }
 
-    const setLastNotificationID = async () => {
-        var TOKEN = await AsyncStorage.getItem('token');
-        fetch('https://cash-register-server-si.herokuapp.com/api/notifications/0', {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + TOKEN
-            }
-        }).then((res) => res.json()).then(async (res) => {
-            if (res.length === 0) await AsyncStorage.setItem('lastNotificationID', "0");
-            else await AsyncStorage.setItem('lastNotificationID', res[res.length - 1].id.toString());
-        }).done();
-    }
-
     const registerForPushNotifications = async () => {
         if (Constants.isDevice) {
+            console.log("is device");
+            
             const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
             let finalStatus = existingStatus;
-
+            console.log("status je", existingStatus);
             if (existingStatus !== 'granted') {
                 const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
                 finalStatus = status;
@@ -96,7 +85,6 @@ export default function Login({ navigation }) {
                 setItemStorage('token', data.token);
                 await AsyncStorage.removeItem('guestToken'); // brisemo guest token sada
 
-                setLastNotificationID();
                 registerForPushNotifications();
 
                 navigation.navigate('DisplayProducts')
@@ -117,7 +105,6 @@ export default function Login({ navigation }) {
     }
     const forgotPassScreen = async () => {
         navigation.navigate('ForgotPassword');
-       // Alert.alert("stisnuto");
     }
     return (
         <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); }}>
