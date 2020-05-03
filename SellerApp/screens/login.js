@@ -22,7 +22,7 @@ export default function Login({ navigation }) {
         try {
             //AsyncStorage.clear();
             await AsyncStorage.setItem(key, value);
-            console.log(key + ": " + value);
+            console.log(value);
         }
         catch (err) {
             console.log("greska u store");
@@ -30,11 +30,11 @@ export default function Login({ navigation }) {
     }
 
     const setLastNotificationID = async () => {
-        var token = await AsyncStorage.getItem('token');
+        var TOKEN = await AsyncStorage.getItem('token');
         fetch('https://cash-register-server-si.herokuapp.com/api/notifications/0', {
             method: "GET",
             headers: {
-                'Authorization': 'Bearer ' + token
+                'Authorization': 'Bearer ' + TOKEN
             }
         }).then((res) => res.json()).then(async (res) => {
             if (res.length === 0) await AsyncStorage.setItem('lastNotificationID', "0");
@@ -105,8 +105,6 @@ export default function Login({ navigation }) {
                 Alert.alert('Error', 'Bad credentials!', [{
                     text: 'Okay'
                 }])
-                setUsername('');
-                setPassword('');
             }
             return data;
         } catch (e) {
@@ -125,12 +123,12 @@ export default function Login({ navigation }) {
                     <Image source={require('../images/employee.png')} style={employeeImage} />
                     <Text style={heading}>Login</Text>
                     <View style={userPass}>
-                        <FontAwesome name='user' size={30} color='#fff' style={{ flex: 1, }}></FontAwesome>
-                        <TextInput value={username} style={input} placeholder="Username" onChangeText={text => setUsername(text)} />
+                        <FontAwesome name='user' size={30} color='#fff' style={{flex: 1,}}></FontAwesome>
+                        <TextInput style={input} placeholder="Username" onChangeText={text => setUsername(text)} />
                     </View>
                     <View style={userPass}>
-                        <FontAwesome name='lock' size={30} color='#fff' style={{ flex: 1, }}></FontAwesome>
-                        <TextInput value={password} style={input} secureTextEntry={true} placeholder="Password" onChangeText={text => setPassword(text)} />
+                        <FontAwesome name='lock' size={30} color='#fff' style={{flex: 1,}}></FontAwesome>
+                        <TextInput style={input} secureTextEntry={true} placeholder="Password" onChangeText={text => setPassword(text)} />
                     </View>
                     <TouchableOpacity
                         style={loginScreenButton}
