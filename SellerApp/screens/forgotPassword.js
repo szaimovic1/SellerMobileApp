@@ -3,6 +3,7 @@ import { View, Text, ImageBackground, Keyboard, TextInput, Alert } from 'react-n
 import { TouchableWithoutFeedback, TouchableOpacity } from 'react-native-gesture-handler';
 import styles from '../styles/forgotPasswordStyles.js';
 import { AsyncStorage } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function ForgotPassword ({navigation}) {
     const { heading, textStyle, userMail, input, loginScreenButton, loginText, container } = styles;
@@ -16,7 +17,7 @@ export default function ForgotPassword ({navigation}) {
     const sendCode = async () => {
         const requestBody = { userInfo: email};
         getSecurityCode(requestBody);
-        //setHidden(!hidden); 
+        setHidden(!hidden); 
     }
 
     // onPress funkcija na dugme confirm code
@@ -25,7 +26,7 @@ export default function ForgotPassword ({navigation}) {
                                   resetToken: safetyCode                            
         };
         sendSecurityCode(codeRequestBody);
-        //setHiddenPasswordInput(!hiddenPasswordInput);
+        setHiddenPasswordInput(!hiddenPasswordInput);
         //Alert.alert(safetyCode);
     }
 
@@ -141,6 +142,7 @@ export default function ForgotPassword ({navigation}) {
         <ImageBackground source={require('../images/background2.png')}
       style={container}>
         <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); }}>
+            <KeyboardAwareScrollView>
         <View>
             <Text style={heading}>Trouble logging in?</Text>
         </View>
@@ -178,6 +180,7 @@ export default function ForgotPassword ({navigation}) {
                     <Text style={loginText} >Confirm new password!</Text>
         </TouchableOpacity>) : null}
         </View>
+        </KeyboardAwareScrollView>
         </TouchableWithoutFeedback>
         </ImageBackground>
     )
