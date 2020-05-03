@@ -26,6 +26,14 @@
     "ios": {
       "supportsTablet": true
     },
-    "description": ""
+    "description": "",
+    "android": {
+      "googleServicesFile": "./google-services.json",
+      "package": "com.si.sellerapp",
+      "versionCode": 1
+    },
+    "notification": {
+      "iosDisplayInForeground": true
+    }
   }
 }
