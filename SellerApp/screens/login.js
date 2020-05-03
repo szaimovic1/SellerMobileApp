@@ -98,7 +98,7 @@ export default function Login({ navigation }) {
 
                 setLastNotificationID();
                 registerForPushNotifications();
-
+                setItemStorage('password', password);
                 navigation.navigate('DisplayProducts')
             }
             else {
