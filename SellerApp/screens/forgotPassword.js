@@ -181,7 +181,7 @@ export default function ForgotPassword ({navigation}) {
             <Text style={heading}>Trouble logging in?</Text>
         </View>
         <View>
-            <Text style={textStyle}>Enter your email or password and we'll send you a password reset code to get back into your account.</Text>
+            <Text style={textStyle}>Enter your email or username and we'll send you a password reset code to get back into your account.</Text>
         </View>
         <View style={userMail}>
             <TextInput style={input} editable={editableTextInput} placeholder="E-mail or username" onChangeText={text => setEmail(text)}></TextInput>
