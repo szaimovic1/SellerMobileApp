@@ -41,7 +41,7 @@ export default function Profile({ navigation }) {
                 {
                   text: 'OK'
                 }])
-                navigation.navigate('DisplayProducts');
+                
           }
           
         }).catch((error) => console.log(error))
