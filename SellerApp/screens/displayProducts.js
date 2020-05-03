@@ -197,13 +197,15 @@ export default function DisplayProducts({ navigation }) {
                         source={{ uri: img }} />
                     }}
                     right={(props) => (
-                      <View {...props} style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                        {buttonVisible &&
-                          <View style={styles.tableNum}>
-                            <Text>{timesPressed}</Text>
-                          </View>}
-                        <Text style={[getTextStyle(item.quantity),
-                        modalVisible ? { color: 'rgba(0,0,0,0.7)' } : '']}>{item.price} KM</Text>
+                      <View {...props} style={{flexDirection: 'row', 
+                          backgroundColor: 'white', 
+                          justifyContent: 'center', 
+                          alignItems: 'center', width: 130}
+                      }>  
+                      {buttonVisible &&
+                        <Text style={styles.tableNum1}>{timesPressed}</Text>
+                      }
+                        <Text style = {[{flex: 5, textAlign: "center", marginBottom: 3},  !buttonVisible ? { marginLeft: 50 } : 0,]}>{item.price} KM</Text>
                       </View>
                     )}
                     style={[styles.card,

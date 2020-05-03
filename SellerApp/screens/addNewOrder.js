@@ -136,19 +136,13 @@ export default function AddNewOrder({ navigation }) {
                                         source={{ uri: img }} />
                                 }}
                                 right={(props) => (
-                                    <View {...props} style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                                        <View style={{
-                                            marginRight: 30,
-                                            paddingHorizontal: 10,
-                                            paddingVertical: 10,
-                                            backgroundColor: '#bae7ff',
-                                            borderRadius: 10,
-                                            borderWidth: 0.2,
-                                            borderColor: '#bae7ff'
-                                        }}>
-                                            <Text>{item.times}</Text>
-                                        </View>
-                                        <Text style={{ color: '#000000' }}>{item.price} KM</Text>
+                                    <View {...props} style={{flexDirection: 'row', 
+                                      backgroundColor: 'white', 
+                                      justifyContent: 'center', 
+                                      alignItems: 'center', width: 130}
+                                    }>  
+                                      <Text style={styles.tableNum1}>{item.times}</Text>
+                                      <Text style = {{flex: 5, textAlign: "center", marginBottom: 3}}>{item.price} KM</Text>
                                     </View>
                                 )}
                                 style={styles.card}

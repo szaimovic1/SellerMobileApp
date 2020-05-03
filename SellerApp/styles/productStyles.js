@@ -254,5 +254,19 @@ export default StyleSheet.create({
   swipeDeleteButton: {
     height: 60, 
     marginBottom: 15,
-  }
+  },
+  tableNum1: {
+    marginRight: 0,
+    paddingHorizontal: 5, 
+    paddingVertical: 10,
+    backgroundColor: '#bae7ff',
+    borderRadius: 10,
+    borderWidth: 0.2,
+    borderColor: '#fb5b5a',
+    opacity: 0.7, 
+    marginBottom: 3,
+    flex: 2.5, 
+    textAlign: "center", 
+    marginLeft: 5,
+  },
 });
