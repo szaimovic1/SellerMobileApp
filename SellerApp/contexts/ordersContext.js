@@ -100,6 +100,13 @@ export const OrdersContextProvider = (props) => {
         }        
     }
 
+    const updateGuestOrderSeen = (order) => {
+        var index = guestOrders.indexOf(order);
+        if(index !== -1) {
+            guestOrders[index].seen = true;
+        }   
+    }
+
     /* POST zahtjev serveru za slanje GUEST narudzbe*/
     const postOrderGuest = async (navigation, narudzba, backupObject) => {
         var data = backupObject;
@@ -202,6 +209,7 @@ export const OrdersContextProvider = (props) => {
         deleteGuestOrder,
         updateGuestOrderState,
         postOrderGuest,
+        updateGuestOrderSeen
     }
 
     return <OrdersContext.Provider value={ordersData}>{ children }</OrdersContext.Provider>
