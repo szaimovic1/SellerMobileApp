@@ -91,7 +91,7 @@ export default function Login({ navigation }) {
                         }).then((response) => response.json()).then((response) => { 
                             registerForPushNotifications();
                             setItemStorage('password', password);
-                        
+                       
                             let profileData = response;
                             if(profileData.otp === true){
                                 Alert.alert('One time password', 'You just logged in with one time password, please change it!', [
@@ -101,6 +101,7 @@ export default function Login({ navigation }) {
                             }
                         });
                 
+
                 navigation.navigate('DisplayProducts')
             }
             else {
