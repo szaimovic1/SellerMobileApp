@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
-import { View, TextInput, Text, Button, Alert, Image, ImageBackground, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { View, TextInput, Text, Button, Alert, Image, ImageBackground, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Platform } from 'react-native';
 import styles from '../styles/loginStyles.js';
 import { AsyncStorage } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { checkIfAlreadyLoggedIn } from '../functions/storage';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Notifications } from 'expo';
+import * as Permissions from 'expo-permissions';
+import Constants from 'expo-constants';
 
 export default function Login({ navigation }) {
     checkIfAlreadyLoggedIn(navigation); // ako je već ulogovan, nema potrebe za prikazom ovog ekrana
 
-    const { heading, input, parent, employeeImage, userPass, loginScreenButton, loginText } = styles;
+    const { heading, input, parent, employeeImage, userPass, loginScreenButton, loginText, forgotPasswordText, forgotPasswordButton } = styles;
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
@@ -39,6 +42,38 @@ export default function Login({ navigation }) {
         }).done();
     }
 
+    const registerForPushNotifications = async () => {
+        if (Constants.isDevice) {
+            const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+            let finalStatus = existingStatus;
+
+            if (existingStatus !== 'granted') {
+                const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+                finalStatus = status;
+            }
+
+            if (finalStatus !== 'granted') {
+                console.log('Error: cannot get push token for Push Notification!');
+                return;
+            }
+
+            let expoPushToken = await Notifications.getExpoPushTokenAsync();
+            setItemStorage('expoPushToken', expoPushToken);
+        }
+        else {
+            console.log('Error: You must use physical device for Push Notifications!');
+        }
+
+        if (Platform.OS === 'android') {
+            Notifications.createChannelAndroidAsync('default', {
+                name: 'default',
+                sound: true,
+                priority: 'max',
+                vibrate: [0, 250, 250, 250],
+            });
+        }
+    };
+
     const checkLogin = async () => {
         // const location = window.location.hostname;
         const settings = {
@@ -60,9 +95,25 @@ export default function Login({ navigation }) {
             if (fetchResponse.ok) {
                 setItemStorage('token', data.token);
                 await AsyncStorage.removeItem('guestToken'); // brisemo guest token sada
-
+                var TOKEN = await AsyncStorage.getItem('token');
+                    fetch("https://cash-register-server-si.herokuapp.com/api/profile", {
+                        method: "GET",
+                        headers: {
+                            'Authorization': 'Bearer ' + TOKEN
+                        }
+                        }).then((response) => response.json()).then((response) => { 
+                            let profileData = response;
+                            if(profileData.otp === true){
+                                Alert.alert('One time password', 'You just logged in with one time password, please change it!', [
+                                    {text: 'Okay'},
+                                    {text: 'Go to profile', onPress: () => navigation.navigate('Profile')  }
+                                ])
+                            }
+                        });
+                
                 setLastNotificationID();
-
+                registerForPushNotifications();
+                setItemStorage('password', password);
                 navigation.navigate('DisplayProducts')
             }
             else {
@@ -79,7 +130,10 @@ export default function Login({ navigation }) {
         }
 
     }
-
+    const forgotPassScreen = async () => {
+        navigation.navigate('ForgotPassword');
+       // Alert.alert("stisnuto");
+    }
     return (
         <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); }}>
             <ImageBackground source={require('../images/background2.png')} style={parent}>
@@ -94,6 +148,11 @@ export default function Login({ navigation }) {
                         <FontAwesome name='lock' size={30} color='#fff' style={{flex: 1,}}></FontAwesome>
                         <TextInput style={input} secureTextEntry={true} placeholder="Password" onChangeText={text => setPassword(text)} />
                     </View>
+                    <TouchableOpacity
+                style={forgotPasswordButton}
+                onPress={forgotPassScreen}>
+                    <Text style={forgotPasswordText}>Forgot password?</Text>
+                </TouchableOpacity>
                     <TouchableOpacity
                         style={loginScreenButton}
                         onPress={checkLogin}

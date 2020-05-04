@@ -30,7 +30,7 @@ export default function DisplayOrders({ navigation }) {
         ammount += singleProduct.times * singleProduct.price
       });
     }
-    return Math.round(ammount * 100) / 100;
+    return ammount.toFixed(2);
   }
 
   useEffect(() => {

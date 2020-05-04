@@ -9,6 +9,7 @@ import CheckBox from 'react-native-check-box';
 import ModalProductPicker from '../components/modalProductPicker';
 import Swipeout from 'react-native-swipeout';
 import { useOrdersContext } from '../contexts/ordersContext';
+import NumericInput from 'react-native-numeric-input';
 
 export default function GuestOrderContent({ navigation }) {
   const [products, setProducts] = useState(navigation.state.params.data.item.products); // ovo su proizvodi koji pripadaju odabranoj narudzbi
@@ -41,7 +42,7 @@ export default function GuestOrderContent({ navigation }) {
     id = clickedOrder.id;
     backupObject = {id, receiptItems};
     console.log('backupObject klijenta: ', backupObject);
-    await setPrice(Math.round(toPay * 100) / 100);
+    await setPrice(toPay.toFixed(2));
   }
 
   useEffect(() => {
@@ -90,12 +91,7 @@ export default function GuestOrderContent({ navigation }) {
   }
 
   const onChangeQuantity = (value, item) => {
-    if (value === "" || allCharactersSame(value, "0")) {
-      prevProductsQuantity.map(product => {
-        if (product.id === item.id) item.times = product.quantity;
-      });
-    }
-    else item.times = value.replace(/^0+/, '');
+    item.times = value;
     calculateTotalPrice();
   }
 
@@ -189,17 +185,28 @@ export default function GuestOrderContent({ navigation }) {
                       source={{ uri: img }} />
                   }}
                   right={(props) => (
-                    <View {...props} style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                    <View {...props} style={styles.productQuantity}>
                       {!editInputVisible &&
-                        <View style={styles.tableNum}>
+                        <View style={{...styles.tableNum, flex: 2.5, textAlign: "center", marginBottom: 5, marginLeft: 15, paddingLeft: 20}}>
                           <Text>{item.times}</Text>
                         </View>}
                       {editInputVisible &&
-                        <View style={styles.productQuantity} >
-                          <TextInput style={styles.inputQuantity} onChangeText={(value) => onChangeQuantity(value, item)} placeholder={setPlaceholder(item)}
-                            keyboardType={'numeric'} underlineColor="transparent"></TextInput>
-                        </View>}
-                      <Text>{item.price} KM</Text>
+                        <NumericInput
+                         minValue={0}
+                         value = {item.times}
+                         onChange={(value) => onChangeQuantity(value, item)}
+                         rounded={true}
+                         rightButtonBackgroundColor='#85C1E9'
+                         leftButtonBackgroundColor='#85C1E9'
+                         totalWidth={100} 
+                         totalHeight={40}
+                         iconStyle={{ color: 'white' }}
+                         containerStyle={{marginBottom:5}}
+                         underlineColor="transparent"
+                         style={{...styles.tableNum, flex: 2.5, textAlign: "center", marginLeft: 50, paddingHorizontal: 15, paddingRight: 0}}
+                        />
+                        }
+                      <Text style = {{flex: 5, textAlign: "center", marginBottom: 3}}>{item.price} KM</Text>
                     </View>
                   )}
                   style={styles.card}

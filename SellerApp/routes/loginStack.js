@@ -6,7 +6,11 @@ import Start from '../screens/start';
 import Header from '../components/headerLogin';
 import React from 'react';
 import GuestMenu from '../screens/guestMenu';
+
+import ForgotPassword from '../screens/forgotPassword';
+
 import FilterIngredients from '../screens/filterIngredients';
+
 
 const screens = {
     Start: {
@@ -37,6 +41,17 @@ const screens = {
             }
         }
     },
+
+    ForgotPassword: {
+        screen: ForgotPassword,
+        navigationOptions: ({ navigation }) => {
+            return {
+                title: 'Forgot password',
+                headerTintColor: '#fff',
+            }
+        }
+    },
+
     Filter: {
         screen: FilterIngredients,
         navigationOptions: ({ navigation }) => {
@@ -44,6 +59,7 @@ const screens = {
                 headerTitle: () => <Text style={{fontFamily: 'IndieFlower-Regular', fontSize: 26,}}>Filter products</Text>,
                 headerStyle: {backgroundColor: '#F5F5F5', height: 80,},
                 headerBackTitle: () => <Text style={{fontFamily: 'IndieFlower-Regular', fontSize: 22,}}>Back</Text>,
+
             }
         }
     }

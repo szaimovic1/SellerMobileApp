@@ -205,22 +205,20 @@ export default StyleSheet.create({
     backgroundColor: "white",
   },
   productQuantity: {
-    backgroundColor: '#237804',
-    borderRadius: 20,
-    borderWidth: 0.1,
-    marginRight: 30,
-    paddingHorizontal: 10,
-    paddingVertical: 10,
-    borderColor: 'white',
-    height: 50,
-    width: 60
+    flexDirection: 'row', 
+    backgroundColor: 'white', 
+    justifyContent: 'center', 
+    alignItems: 'center',
+    width: 180,
+    backgroundColor: "white",
   },
   inputQuantity: {
     height: 30,
     backgroundColor: 'white',
     borderRadius: 5,
     textAlign: 'center',
-    width: 'auto'
+    width: 'auto',
+    marginRight: 20
   },
   modalProducts: {
     backgroundColor: "#237804",
@@ -267,5 +265,19 @@ export default StyleSheet.create({
   swipeDeleteButton: {
     height: 60, 
     marginBottom: 15,
-  }
+  },
+  tableNum1: {
+    marginRight: 0,
+    paddingHorizontal: 5, 
+    paddingVertical: 10,
+    backgroundColor: '#bae7ff',
+    borderRadius: 10,
+    borderWidth: 0.2,
+    borderColor: '#fb5b5a',
+    opacity: 0.7, 
+    marginBottom: 3,
+    flex: 2.5, 
+    textAlign: "center", 
+    marginLeft: 5,
+  },
 });
