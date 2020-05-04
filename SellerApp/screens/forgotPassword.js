@@ -55,10 +55,20 @@ export default function ForgotPassword ({navigation}) {
     const confirmPassword = async () => {
         if(pressedConfirmNewPasswordButton == false)
         {
-        const passwordRequestbody = { userInfo: email,
-                                      newPassword: newPassword                              
-        };
-        sendNewPassword(passwordRequestbody);
+          if(newPassword.length < 4)
+          {
+            Alert.alert('Oops!', 'Password must be at least 4 characters long!', [
+              {
+                text: 'OK'
+              }])
+          }
+          else
+          {
+            const passwordRequestbody = { userInfo: email,
+              newPassword: newPassword                              
+              };
+            sendNewPassword(passwordRequestbody);
+          }
         }
         else{
             Alert.alert('Oops!', 'New password already confirmed!', [
@@ -190,7 +200,7 @@ export default function ForgotPassword ({navigation}) {
                     style={loginScreenButton}
                     underlayColor='#fff'
                     onPress={sendCode}>
-                    <Text style={loginText} >Send code</Text>
+                    <Text style={loginText} >Send code!</Text>
         </TouchableOpacity>
         <View style={userMail}>
             { !hidden ? (<TextInput style={input} placeholder="Enter code" onChangeText={text => setSafetyCode(text)}></TextInput>) : null}
