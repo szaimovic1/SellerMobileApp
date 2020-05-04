@@ -17,7 +17,7 @@ export default function GuestOrderContent({ navigation }) {
   const [served, setServed] = useState(navigation.state.params.data.item.served);
   const [editInputVisible, setEditInputVisible] = useState(false);
   const [editButtonVisible, setEditButtonVisible] = useState(true);
-  const { guestOrders, updateGuestOrder, deleteGuestOrder, updateGuestOrderState, postOrderGuest } = useOrdersContext();
+  const { guestOrders, updateGuestOrder, deleteGuestOrder, updateGuestOrderState, postOrderGuest, updateGuestOrderSeen } = useOrdersContext();
   const [prevProductsQuantity, setPrevProductsQuantity] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [clickedOrder, setClickedOrder] = useState(navigation.state.params.data.item);
@@ -46,6 +46,7 @@ export default function GuestOrderContent({ navigation }) {
 
   useEffect(() => {
     calculateTotalPrice(null);
+    updateGuestOrderSeen(clickedOrder);
   }, []);
 
   useEffect(() => {
@@ -131,6 +132,7 @@ export default function GuestOrderContent({ navigation }) {
     setServed(!served);
     updateGuestOrderState(navigation.state.params.data.item);
   }
+
 
   return (
     <ImageBackground source={require('../images/background2.png')}
