@@ -95,10 +95,25 @@ export default function Login({ navigation }) {
             if (fetchResponse.ok) {
                 setItemStorage('token', data.token);
                 await AsyncStorage.removeItem('guestToken'); // brisemo guest token sada
-
+                var TOKEN = await AsyncStorage.getItem('token');
+                    fetch("https://cash-register-server-si.herokuapp.com/api/profile", {
+                        method: "GET",
+                        headers: {
+                            'Authorization': 'Bearer ' + TOKEN
+                        }
+                        }).then((response) => response.json()).then((response) => { 
+                            let profileData = response;
+                            if(profileData.otp === true){
+                                Alert.alert('One time password', 'You just logged in with one time password, please change it!', [
+                                    {text: 'Okay'},
+                                    {text: 'Go to profile', onPress: () => navigation.navigate('Profile')  }
+                                ])
+                            }
+                        });
+                
                 setLastNotificationID();
                 registerForPushNotifications();
-
+                setItemStorage('password', password);
                 navigation.navigate('DisplayProducts')
             }
             else {
