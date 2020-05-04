@@ -28,20 +28,7 @@ export default function Login({ navigation }) {
             console.log("greska u store");
         }
     }
-
-    const setLastNotificationID = async () => {
-        var TOKEN = await AsyncStorage.getItem('token');
-        fetch('https://cash-register-server-si.herokuapp.com/api/notifications/0', {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + TOKEN
-            }
-        }).then((res) => res.json()).then(async (res) => {
-            if (res.length === 0) await AsyncStorage.setItem('lastNotificationID', "0");
-            else await AsyncStorage.setItem('lastNotificationID', res[res.length - 1].id.toString());
-        }).done();
-    }
-
+    
     const registerForPushNotifications = async () => {
         if (Constants.isDevice) {
             const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
@@ -95,10 +82,25 @@ export default function Login({ navigation }) {
             if (fetchResponse.ok) {
                 setItemStorage('token', data.token);
                 await AsyncStorage.removeItem('guestToken'); // brisemo guest token sada
-
+                var TOKEN = await AsyncStorage.getItem('token');
+                    fetch("https://cash-register-server-si.herokuapp.com/api/profile", {
+                        method: "GET",
+                        headers: {
+                            'Authorization': 'Bearer ' + TOKEN
+                        }
+                        }).then((response) => response.json()).then((response) => { 
+                            let profileData = response;
+                            if(profileData.otp === true){
+                                Alert.alert('One time password', 'You just logged in with one time password, please change it!', [
+                                    {text: 'Okay'},
+                                    {text: 'Go to profile', onPress: () => navigation.navigate('Profile')  }
+                                ])
+                            }
+                        });
+                
                 setLastNotificationID();
                 registerForPushNotifications();
-
+                setItemStorage('password', password);
                 navigation.navigate('DisplayProducts')
             }
             else {

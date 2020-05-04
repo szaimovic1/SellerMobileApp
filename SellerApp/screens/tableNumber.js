@@ -52,71 +52,76 @@ export default function ChangeTableNr({ navigation }) {
       if (number != null) {
         await AsyncStorage.setItem('tableNumber', number); 
         console.log(await AsyncStorage.getItem('tableNumber'));
-        setText1("A table number for this device was already set! " + "  (" + number + ")");
-        setText2("For a change, insert new value.");
+        setText1("A table number for this device was already set!");
+        setText2("To change, insert new value.");
       }
     }
 
     return(
       <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); }}>
           <View style={styles.centeredView}>
-            <Text style={{...styles.textStyle, color: "#181819"}}>{text1}</Text>
-            <Text style = {{marginTop: 20, fontSize: 20}}>{text2}</Text>
-            <SearchableDropdown
-              keyboardType={'numeric'} 
-              placeholderTextColor = {"#181819"}
-              placeholder={text3} 
-              items = {tables}
-              containerStyle={{ 
-                marginBottom: 10,
-                height: 200, 
-                justifyContent: "center",
-                width: 160,
-                alignSelf: "center",
-                borderRadius: 10,
-                marginTop: 30,
-              }} 
-              textInputProps={
-                {
-                  underlineColorAndroid: "transparent",
-                  style: {
-                      padding: 12,
-                      borderWidth: 1,
-                      borderColor: '#ccc',
-                      borderRadius: 5,
-                      marginBottom: 5,
-                      color: "#181819",
-                      textAlign: "center",
-                      fontSize: 20,
-                      fontWeight: "bold"
-                  },
-                  onTextChange: text => checkTableNumber(text)
+            <View style={{flex: 1, alignContent: 'center', alignItems: 'center'}}>
+              <Text style={{...styles.textStyle, color: "#181819"}}>{text1}</Text>
+              <Text style = {{marginTop: 20, fontSize: 20, }}>{text2}</Text>
+            </View>
+            <View style={{flex: 5, marginVertical: 10,}}>
+              <SearchableDropdown
+                keyboardType={'numeric'} 
+                placeholderTextColor = {"#181819"}
+                placeholder={text3} 
+                style={{marginTop: 0,}}
+                items = {tables}
+                containerStyle={{ 
+                  marginBottom: 10,
+                  //height: '100%', 
+                  justifyContent: "center",
+                  width: 160,
+                  alignSelf: "center",
+                  borderRadius: 10,
+                  marginTop: 30,
+                }} 
+                textInputProps={
+                  {
+                    underlineColorAndroid: "transparent",
+                    style: {
+                        padding: 12,
+                        borderWidth: 1,
+                        borderColor: '#ccc',
+                        borderRadius: 5,
+                        marginBottom: 5,
+                        color: "#181819",
+                        textAlign: "center",
+                        fontSize: 20,
+                        fontWeight: "bold"
+                    },
+                    onTextChange: text => checkTableNumber(text)
+                  }
                 }
-              }
-              itemStyle={{
-                backgroundColor: 'white',
-                borderColor: '#bbb',
-                borderWidth: 1,
-                borderRadius: 5,
-                marginBottom: 2,
-                width: 50,
-                paddingLeft: 20,
-                marginTop: 5,
-                alignSelf: "center",
-              }}
-              onItemSelect={(item) => {
-                checkTableNumber(item.name)
-                navigation.navigate('DisplayProducts')
-                Alert.alert(
-                  "Success!",
-                  "A table number is set correctly.",
-                  [
-                    { text: "OK", onPress: () => console.log("OK Pressed") }
-                  ],
-                  { cancelable: false }
-                );
-              }}
-            />
+                itemStyle={{
+                  backgroundColor: 'white',
+                  borderColor: '#bbb',
+                  borderWidth: 1,
+                  borderRadius: 5,
+                  marginBottom: 2,
+                  width: 50,
+                  paddingLeft: 20,
+                  marginTop: 5,
+                  alignSelf: "center",
+                }}
+                onItemSelect={(item) => {
+                  checkTableNumber(item.name)
+                  navigation.navigate('DisplayProducts')
+                  Alert.alert(
+                    "Success!",
+                    "A table number is set correctly.",
+                    [
+                      { text: "OK", onPress: () => console.log("OK Pressed") }
+                    ],
+                    { cancelable: false }
+                  );
+                }}
+              />
+            </View>
           </View>
         </TouchableWithoutFeedback>
     )
