@@ -104,9 +104,10 @@ export default function Login({ navigation }) {
                         }).then((response) => response.json()).then((response) => { 
                             let profileData = response;
                             if(profileData.otp === true){
-                                Alert.alert('One time password', 'You just logged in with one time password, please change it!', [{
-                                    text: 'Okay'
-                                }])
+                                Alert.alert('One time password', 'You just logged in with one time password, please change it!', [
+                                    {text: 'Okay'},
+                                    {text: 'Go to profile', onPress: () => navigation.navigate('Profile')  }
+                                ])
                             }
                         });
                 
