@@ -22,31 +22,29 @@ export default StyleSheet.create({
         color: 'white'
     },
     userMail: {
-        marginLeft:13,
         justifyContent:'center',
         flexDirection:'row',
         height: 40,
       }, 
       input: {
-        marginLeft: 20,
-        marginRight: 20,
         backgroundColor:'#fff',
         borderRadius:5,
         //marginBottom:30,
         borderWidth:1.5,
         borderColor: 'darkblue',
-        width:300,
+        width: '90%',
       },
       loginScreenButton: {
-        marginLeft:63,
+        justifyContent: 'center',
+        flexDirection:'row',
         marginTop:10,
         paddingTop:10,
         paddingBottom:10,
         backgroundColor:'#05132e',
         borderRadius:10,
         borderWidth: 1,
-        width:300,
-        marginBottom: 30
+        marginBottom: 30,
+        marginHorizontal: 20,
       },
       loginText:{
         color:'#fff',

@@ -25,7 +25,7 @@ export default function Header ({ navigation, title }) {
                                                                 [
                                                                 {text: 'Cancel', onPress: () => {return null}},
                                                                 {text: 'Confirm', onPress: () => {  logOut();
-                                                                                                    navigation.navigate('Start') } }
+                                                                                                    navigation.navigate('Start', {fos: "ok"}) } }
                                                                 ],
                                                                 { cancelable: false })
                                                     }

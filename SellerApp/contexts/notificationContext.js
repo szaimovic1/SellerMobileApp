@@ -1,17 +1,20 @@
-import { useState, useEffect } from 'react';
+import React, { useState, createContext, useContext, useEffect } from 'react';
 import { AsyncStorage, Vibration } from 'react-native';
 import { Notifications } from 'expo';
 import SockJS from 'sockjs-client';
 import * as Stomp from 'stompjs';
 
-let stompClient;
+let stompClient = null;
 
-export default function Notification() {
+export const NotificationContext = createContext();
+
+export const NotificationContextProvider = (props) => {
+    const { children } = props;
+
     const [notificationMessage, setNotificationMessage] = useState('');
 
     useEffect(() => {
         Notifications.addListener(handlePushNotification);
-        openSocketConnection();
     }, []);
 
     useEffect(() => {
@@ -29,6 +32,13 @@ export default function Notification() {
         }, err => console.log("ERROR!"));
 
         return () => stompClient.disconnect();
+    }
+
+    const closeSocketConnection = () => {
+        if(stompClient != null) { console.log("OK1!");
+            stompClient.disconnect();
+        }
+        else console.log("OK2!");
     }
 
     const handlePushNotification = notification => {
@@ -66,15 +76,14 @@ export default function Notification() {
         setNotificationMessage('');
     }
 
-    let setTimeoutID = setTimeout(async () => {
-        var token = await AsyncStorage.getItem('token');
-        if (token == 'undefined' || token == null) {
-            stompClient.disconnect();
-            clearTimeout(setTimeoutID);
-        }
-    }, 10000);
+    const notificationData = {
+        openSocketConnection,
+        closeSocketConnection
+    }
 
-    return (
-        null
-    );
+    return <NotificationContext.Provider value={notificationData}>{ children }</NotificationContext.Provider>;
 }
+
+export const { Consumer } = NotificationContext;
+
+export const useNotificationContext = () => useContext(NotificationContext);

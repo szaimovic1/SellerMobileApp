@@ -16,6 +16,8 @@ export default function Login({ navigation }) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
+    const openSocketConnection = navigation.getParam('data');
+
     const ACCESS_TOKEN = 'access_token';
 
     const setItemStorage = async (key, value) => {
@@ -90,6 +92,7 @@ export default function Login({ navigation }) {
                         }
                         }).then((response) => response.json()).then((response) => { 
                             registerForPushNotifications();
+                            openSocketConnection();
                             setItemStorage('password', password);
                        
                             let profileData = response;
@@ -101,7 +104,6 @@ export default function Login({ navigation }) {
                             }
                         });
                 
-
                 navigation.navigate('DisplayProducts')
             }
             else {

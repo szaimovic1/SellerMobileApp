@@ -6,10 +6,13 @@ import { getFonts } from '../functions/async';
 import { AppLoading } from 'expo';
 import { guestLogIn } from '../functions/storage';
 import { useProductsContext } from '../contexts/productsContext';
+import { useNotificationContext } from '../contexts/notificationContext';
 
 export default function Start ({ navigation }) {
     const [fontsLoaded, setFontsLoaded] = useState(false);
     const { getProducts, getMockData } = useProductsContext();
+    const { openSocketConnection, closeSocketConnection } = useNotificationContext();
+
     //ULOGOVANJE GUESTA I UCITAVANJE PODATAKA   
     useEffect(() => {
         guestLogIn();
@@ -17,19 +20,24 @@ export default function Start ({ navigation }) {
         getMockData();
     }, []);
 
+    if(navigation.getParam('fos') != undefined) {
+        closeSocketConnection();
+    }
+
     if (fontsLoaded) {
     return (        
             <View style={styles.container}>
                 <View style={styles.logInBtn}>
                     <TouchableOpacity
                         onPress={() => {
-                            navigation.navigate('LogIn');
+                            //openSocketConnection();
+                            navigation.navigate('LogIn', { data: openSocketConnection });
                         }}>
                         <Text style={{color: 'black', fontWeight: 'bold', fontSize: 20}}>Log in</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={{flex: 1, width: '100%', justifyContent: 'center', alignItems: 'center'}}>
-                    <Text style={{color: 'black', fontFamily: 'courgette-regular', fontSize: 60}}>The shopping that will make you happy!</Text>
+                    <Text style={{color: 'black', fontFamily: 'courgette-regular', fontSize: 50}}>The shopping that will make you happy!</Text>
                 </View>
                 
                 <View style={{flex: 1, width: '80%'}}>

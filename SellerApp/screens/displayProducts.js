@@ -9,7 +9,6 @@ import Filter from '../components/filter';
 import styles from '../styles/productStyles';
 import { getStyle, getTitleStyle, getSubtitleStyle, getTextStyle, isProductQuantitySmall } from '../functions/productStyleFunc';
 import { checkIfOrdersEmpty } from '../functions/storage';
-import Notification from '../components/notification';
 import { useProductsContext } from '../contexts/productsContext';
 
 export default function DisplayProducts({ navigation }) {
@@ -219,7 +218,6 @@ export default function DisplayProducts({ navigation }) {
           }
           )}
         </ScrollView>
-        <Notification></Notification>
       </ImageBackground>
     </TouchableWithoutFeedback>
   )
