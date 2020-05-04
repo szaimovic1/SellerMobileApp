@@ -137,10 +137,10 @@ const Login = ({ navigation, stompContext }) => {
                         <TextInput style={input} secureTextEntry={true} placeholder="Password" onChangeText={text => setPassword(text)} />
                     </View>
                     <TouchableOpacity
-                style={forgotPasswordButton}
-                onPress={forgotPassScreen}>
-                    <Text style={forgotPasswordText}>Forgot password?</Text>
-                </TouchableOpacity>
+                            style={forgotPasswordButton}
+                            onPress={forgotPassScreen}>
+                            <Text style={forgotPasswordText}>Forgot password?</Text>
+                    </TouchableOpacity>
                     <TouchableOpacity
                         style={loginScreenButton}
                         onPress={checkLogin}

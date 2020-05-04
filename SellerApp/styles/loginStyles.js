@@ -45,6 +45,7 @@ export default StyleSheet.create({
     backgroundColor:'#05132e',
     borderRadius:10,
     borderWidth: 1,
+    marginBottom: 10,
   },
   loginText:{
     color:'#fff',
@@ -59,7 +60,12 @@ export default StyleSheet.create({
     fontWeight:'bold',
   },
   forgotPasswordButton:{
-   marginLeft: 250,
+   //marginLeft: 250,
+   marginRight: 20,
+   //alignContent: 'flex-end',
+   //alignItems: 'flex-end',
+   justifyContent: 'flex-end',
+   flexDirection:'row',
    marginBottom: 15
   }
 })
