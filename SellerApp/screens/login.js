@@ -97,7 +97,7 @@ const Login = ({ navigation, stompContext }) => {
                             let profileData = response;
                             if(profileData.otp === true){
                                 Alert.alert('One time password', 'You just logged in with one time password, please change it!', [
-                                    {text: 'Okay'},
+                                    {text: 'Later'},
                                     {text: 'Go to profile', onPress: () => navigation.navigate('Profile')  }
                                 ])
                             }
