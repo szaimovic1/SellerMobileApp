@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { AsyncStorage, Vibration } from 'react-native';
 
 export const NotificationsContext = createContext();
@@ -6,12 +6,10 @@ export const NotificationsContext = createContext();
 export const NotificationsContextProvider = (props) => {
     const { children } = props;    
 
+    const [topicId, setTopicId] = useState(0);
+
     const sendPushNotification = async (notificationMsg) => {
-        console.log("PORUKA GLASI ", notificationMsg);
-        if (!notificationMsg.includes("Guest is calling you to the table number")) {
-            console.log("Izlazi iz funkcije");
-            return;
-        }
+        if (!notificationMsg.includes("Guest is calling you to the table number")) return;
         
         const expoPushToken = await AsyncStorage.getItem('expoPushToken');
 
@@ -41,15 +39,13 @@ export const NotificationsContextProvider = (props) => {
         let TOKEN = await AsyncStorage.getItem('token');
         stompContext.addStompEventListener(StompEventTypes.Connect, async () => {
           console.log("Connected");
-          stompContext
+          setTopicId(stompContext
             .getStompClient()
             .subscribe('/topic/notifications', (msg) => {
-              console.log("subscribeano");
-              // if (lastNotificationId !== JSON.parse(msg.body).notificationId) {
+                console.log("subscribeano");
                 handlePushNotification({ data: JSON.parse(msg.body) });
-              // }
-            });
-        });
+            })
+        )});
     
         stompContext.addStompEventListener(StompEventTypes.Disconnect, () => {
           console.log("Disconnected");
@@ -62,8 +58,6 @@ export const NotificationsContextProvider = (props) => {
 
     const handlePushNotification = notification => {
         //ovdje se moze raditi bilo sta sa dobijenom push notifikacijom
-
-        //console.log(notification.data); // podaci koji su proslijedjeni uz notifikaciju
         console.log("DObijena notifikacija ", notification);
         sendPushNotification(notification.data.message);
         Vibration.vibrate();
@@ -72,7 +66,7 @@ export const NotificationsContextProvider = (props) => {
     const notificationsData = {
         sendPushNotification,
         subscribeToServer,
-
+        topicId,
     }
 
     return <NotificationsContext.Provider value={notificationsData}>{ children }</NotificationsContext.Provider>;

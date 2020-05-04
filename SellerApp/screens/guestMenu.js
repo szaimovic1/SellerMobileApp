@@ -150,7 +150,7 @@ export default function GuestMenu({ navigation }) {
   };
 
   useEffect(() => {
-    guestLogIn();
+   // guestLogIn();
     getProducts();
     tableNrCheck();
   }, [])

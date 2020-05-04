@@ -8,11 +8,14 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { Notifications } from 'expo';
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
+import { useNotificationsContext } from '../contexts/notificationsContext';
+import { StompEventTypes, withStomp  } from "react-stompjs";
 
-export default function Login({ navigation }) {
+const Login = ({ navigation, stompContext }) => {
     checkIfAlreadyLoggedIn(navigation); // ako je već ulogovan, nema potrebe za prikazom ovog ekrana
 
     const { heading, input, parent, employeeImage, userPass, loginScreenButton, loginText, forgotPasswordText, forgotPasswordButton } = styles;
+    const { subscribeToServer } = useNotificationsContext();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
@@ -30,12 +33,9 @@ export default function Login({ navigation }) {
     }
 
     const registerForPushNotifications = async () => {
-        if (Constants.isDevice) {
-            console.log("is device");
-            
+        if (Constants.isDevice) {            
             const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
             let finalStatus = existingStatus;
-            console.log("status je", existingStatus);
             if (existingStatus !== 'granted') {
                 const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
                 finalStatus = status;
@@ -86,7 +86,7 @@ export default function Login({ navigation }) {
                 await AsyncStorage.removeItem('guestToken'); // brisemo guest token sada
 
                 registerForPushNotifications();
-
+                subscribeToServer(stompContext, StompEventTypes);
                 navigation.navigate('DisplayProducts')
             }
             else {
@@ -136,3 +136,5 @@ export default function Login({ navigation }) {
         </TouchableWithoutFeedback>
     )
 }
+
+export default withStomp(Login);

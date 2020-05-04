@@ -10,12 +10,9 @@ import styles from '../styles/productStyles';
 import { getStyle, getTitleStyle, getSubtitleStyle, getTextStyle, isProductQuantitySmall } from '../functions/productStyleFunc';
 import { checkIfOrdersEmpty } from '../functions/storage';
 import { useProductsContext } from '../contexts/productsContext';
-import { useNotificationsContext } from '../contexts/notificationsContext';
-import { StompEventTypes, withStomp  } from "react-stompjs";
 
-const DisplayProducts = ({ navigation, stompContext }) => {
+export default function DisplayProducts ({ navigation }) {
   const { products, getProducts, setProducts, refreshing } = useProductsContext();
-  const { subscribeToServer } = useNotificationsContext();
   const [modalVisible, setModalVisible] = useState(false);
   const [buttonVisible, setButtonVisible] = useState(false);
   const [orderProducts, setOrderProducts] = useState([]);
@@ -62,7 +59,6 @@ const DisplayProducts = ({ navigation, stompContext }) => {
   }
 
   useEffect(() => {
-    subscribeToServer(stompContext, StompEventTypes);
     checkIfOrdersEmpty();
     checkTableNr();
   }, []);
@@ -227,5 +223,3 @@ const DisplayProducts = ({ navigation, stompContext }) => {
     </TouchableWithoutFeedback>
   )
 }
-
-export default withStomp(DisplayProducts);

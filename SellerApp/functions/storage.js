@@ -1,4 +1,6 @@
 import { AsyncStorage, Alert } from 'react-native';
+import { useNotificationsContext } from '../contexts/notificationsContext';
+
 
 export const checkIfAlreadyLoggedIn = async (navigation) => {
   
@@ -297,13 +299,18 @@ export const guestLogIn = async () => {
   }
 }
 //logout
-export const logOut = async () => {
+export const logOut = async (stompContext, topicId) => {
   try{
+    //stompContext.getStompClient().unsubscribe(topicId);
+   /* stompContext.getStompClient().disconnect(function() {
+      console.log("DIskonektovanoo");
+    });*/
+    stompContext.removeStompClient();
     await AsyncStorage.removeItem('token');
     guestLogIn();    
   }
   catch(error){
-      console.log('Greska prilikom logouta!');
+      console.log('Greska prilikom logouta!', error);
   }
 };
 
