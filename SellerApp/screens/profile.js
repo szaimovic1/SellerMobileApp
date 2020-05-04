@@ -37,10 +37,16 @@ export default function Profile({ navigation }) {
           }
           else if(res.message == "Password successfully changed!")
           {
+              setNewPassword("");
+              setOldPassword("");
+              setRepeatPassword("");
             Alert.alert('Success!', 'Password successfully changed!', [
                 {
                   text: 'OK'
                 }])
+                if(profileData.otp === true){
+                    profileData.otp = false;
+                }
                 
           }
           
@@ -52,32 +58,40 @@ export default function Profile({ navigation }) {
     
     const changePassword = async () =>{
         var correctPassword = await AsyncStorage.getItem('password');
-        if(oldPassword === correctPassword){
-            if(newPassword === repeatPassword){
-                //uraditi poziv serveru
-                var TOKEN = await AsyncStorage.getItem('token');
-                fetch("https://cash-register-server-si.herokuapp.com/api/profile", {
-                     method: "GET",
-                     headers: {
-                        'Authorization': 'Bearer ' + TOKEN
-                     }
-                    }).then((response) => response.json()).then((response) => { 
-                        let profileData = response;
-                        updateNewPassword(profileData);
-                    });
-            }
-            else{
-                Alert.alert('Error', 'Incorrect password!', [{
-                    text: 'Okay'
-                }])
-            }
-        }
-        else{
-            Alert.alert('Error', 'Incorrect password!', [{
+        if(newPassword.length < 4){
+            Alert.alert('Password too short', 'Password must contain at least 4 chars!', [{
                 text: 'Okay'
             }])
         }
-        
+        else{
+            if(oldPassword === correctPassword){
+                if(newPassword === repeatPassword){
+                    //uraditi poziv serveru
+                    var TOKEN = await AsyncStorage.getItem('token');
+                    fetch("https://cash-register-server-si.herokuapp.com/api/profile", {
+                        method: "GET",
+                        headers: {
+                            'Authorization': 'Bearer ' + TOKEN
+                        }
+                        }).then((response) => response.json()).then((response) => { 
+                            let profileData = response;
+                            console.log(profileData);
+                            updateNewPassword(profileData);
+                    
+                        });
+                }
+                else{
+                    Alert.alert('Error', 'Incorrect password!', [{
+                        text: 'Okay'
+                    }])
+                }
+            }
+            else{
+                Alert.alert('Error', 'Incorrect old password!', [{
+                    text: 'Okay'
+                }])
+            }
+        }     
     }
 
 
