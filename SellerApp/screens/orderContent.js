@@ -195,13 +195,8 @@ export default function OrderContent({ navigation }) {
                   right={(props) => (
                     <View {...props} style={styles.productQuantity}>
                       {!editInputVisible &&
-<<<<<<< HEAD
-                        <View style={styles.tableNum}>
-                          <Text >{item.times}</Text>
-=======
                         <View style={{...styles.tableNum, flex: 2.5, textAlign: "center", marginBottom: 5, marginLeft: 15, paddingLeft: 20}}>
                           <Text>{item.times}</Text>
->>>>>>> 95f52ffe83c0fb13e47f37fddfba4651f74c8d51
                         </View>}
                       {editInputVisible &&
                         <NumericInput

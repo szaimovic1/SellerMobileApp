@@ -37,10 +37,10 @@ export default function DisplayOrders({ navigation }) {
     getOrdersServer(); // odmah ucita narudzbe
   }, []);
 
-  useEffect(() => { // ucitava narudzbe svakih 30 sekundi
+  useEffect(() => { // ucitava narudzbe svakih 20 sekundi
     const timer = setInterval(() => {
       getOrdersServer();
-    }, 30000);
+    }, 20000);
     return () => clearTimeout(timer);
   }, [guestOrders]);   
 
@@ -60,6 +60,7 @@ export default function DisplayOrders({ navigation }) {
               <WingBlank size="lg">
                 <Card.Title
                   title={setText(item.tableNr)}
+                  titleStyle={{fontWeight: 'normal'}}
                   left={(props) => {
                     return <Image {...props}
                       style={[{ width: 35, height: 35 }, !item.served ? { opacity: 0.2 } : '1']}
