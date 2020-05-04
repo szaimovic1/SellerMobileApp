@@ -35,10 +35,9 @@ export const NotificationContextProvider = (props) => {
     }
 
     const closeSocketConnection = () => {
-        if(stompClient != null) { console.log("OK1!");
+        if(stompClient != null) {
             stompClient.disconnect();
         }
-        else console.log("OK2!");
     }
 
     const handlePushNotification = notification => {
