@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { AsyncStorage, Vibration } from 'react-native';
 
 export const NotificationsContext = createContext();
@@ -7,8 +7,13 @@ export const NotificationsContextProvider = (props) => {
     const { children } = props;    
 
     const [topicId, setTopicId] = useState(0);
+    const [notificationMsg, setNotificationMsg] = useState('');
 
-    const sendPushNotification = async (notificationMsg) => {
+    useEffect(() => {
+        handlePushNotification();
+    }, [notificationMsg])
+
+    const sendPushNotification = async () => {
         if (!notificationMsg.includes("Guest is calling you to the table number")) return;
         
         const expoPushToken = await AsyncStorage.getItem('expoPushToken');
@@ -18,7 +23,6 @@ export const NotificationsContextProvider = (props) => {
             sound: 'default',
             title: 'WARNING!',
             body: notificationMsg,
-            // data: { data: 'nesto' } // slanje podataka uz notifikaciju
             _displayInForeground: true,
         };
 
@@ -31,19 +35,19 @@ export const NotificationsContextProvider = (props) => {
             },
             body: JSON.stringify(message),
         }).then((res) => console.log("poslano na expo"));
+        setNotificationMsg('');
     }
 
     const subscribeToServer = async (stompContext, StompEventTypes) => {
         const client = await stompContext.newStompClient('https://cash-register-server-si.herokuapp.com/ws');
-        console.log("Klijent ", client);
-        let TOKEN = await AsyncStorage.getItem('token');
         stompContext.addStompEventListener(StompEventTypes.Connect, async () => {
           console.log("Connected");
           setTopicId(stompContext
             .getStompClient()
             .subscribe('/topic/notifications', (msg) => {
-                console.log("subscribeano");
-                handlePushNotification({ data: JSON.parse(msg.body) });
+                //handlePushNotification({ data: JSON.parse(msg.body) });
+                const data = JSON.parse(msg.body);
+                setNotificationMsg(data.message);
             })
         )});
     
@@ -56,10 +60,8 @@ export const NotificationsContextProvider = (props) => {
         });
     };
 
-    const handlePushNotification = notification => {
-        //ovdje se moze raditi bilo sta sa dobijenom push notifikacijom
-        console.log("DObijena notifikacija ", notification);
-        sendPushNotification(notification.data.message);
+    const handlePushNotification = () => {
+        sendPushNotification();
         Vibration.vibrate();
     };
 
