@@ -12,6 +12,7 @@ export const checkIfAlreadyLoggedIn = async (navigation) => {
     if (TOKEN != undefined) navigation.navigate('DisplayProducts');
   }
 }
+
 export const createOrders = async () => {
   try {
     const orders = [];
