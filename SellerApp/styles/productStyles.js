@@ -149,17 +149,6 @@ export default StyleSheet.create({
     marginBottom: 12,
     color: '#237804',
   },
-  shoppingGuest: {
-    borderColor: "white",
-    marginRight: 10,
-    paddingVertical: 8,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    borderWidth: 0.2,
-    width: "12%",
-    marginBottom: 12,
-    color: '#00008b',
-  },
   editIcon: {
     borderColor: "white",
     color: '#237804',

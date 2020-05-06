@@ -11,11 +11,6 @@ import { WingBlank } from '@ant-design/react-native';
 import { Card } from 'react-native-paper';
 import { postGuestOrder, guestLogIn } from '../functions/storage';
 import NumericInput from 'react-native-numeric-input';
-import SockJS from 'sockjs-client';
-import * as Stomp from 'stompjs';
-
-let stompClient;
-
 const getFonts = () => {
   return Font.loadAsync({
     'courgette-regular': require('../assets/fonts/Courgette-Regular.ttf'),
@@ -31,23 +26,12 @@ export default function GuestMenu({ navigation }) {
     'products': orderProducts,
     'tableNr': 0,
     'served': false,
-    'seen' : false,
   }); // lokalna narudžba
   const [animation, setAnimation] = useState(new Animated.Value(0));
   const [rotation, setRotation] = useState(animation.interpolate({
     inputRange: [-1, 1],
     outputRange: ['-20deg', '20deg']
   }));
-
-  const initializeSocketAndClient = () => {
-    const socket = new SockJS('http://stomp-test.herokuapp.com/ws');
-    stompClient = Stomp.over(socket);
-    stompClient.connect({}, () => { // prvi argument predstavlja headere, drugi argument je onConnected callback funkcija, treci argument je onError callback funkcija
-      stompClient.subscribe(`/topic/news`, () => { });
-    }, err => console.log("ERROR!"));
-
-    return () => stompClient.disconnect();
-  }
 
   const ringTheBell = () => {
     Animated.loop(
@@ -97,7 +81,19 @@ export default function GuestMenu({ navigation }) {
 
             if (token != 'undefined' && token != null && tblNr != 'undefined' && tblNr != null) {
               const notificationMessage = "Guest is calling you to the table number " + tblNr + "!";
-              stompClient.send('/app/news', {}, notificationMessage); // prvi argument je endpoint (url), drugi argument predstavlja headere, treci argument su podaci koji se salju
+
+              fetch("https://cash-register-server-si.herokuapp.com/api/notifications", {
+                method: "POST",
+                headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json',
+                  'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify({ message: notificationMessage })
+              }).then((res) => res.json()).then((res) => {
+                console.log(res);
+              }).done();
+
               ringTheBell();
             }
             else {
@@ -107,6 +103,32 @@ export default function GuestMenu({ navigation }) {
         },
       ]
     );
+
+    /* if (window.confirm("You are about to call the waiter! Are you sure?") == true) {
+      var tblNr = await AsyncStorage.getItem('tableNumber');
+      var token = await AsyncStorage.getItem('guestToken');
+
+      if (token != 'undefined' && token != null && tblNr != 'undefined' && tblNr != null) {
+        const notificationMessage = "Guest is calling you to the table number " + tblNr + "!";
+
+        fetch("https://cash-register-server-si.herokuapp.com/api/notifications", {
+          method: "POST",
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({ message: notificationMessage })
+        }).then((res) => res.json()).then((res) => {
+          console.log(res);
+        }).done();
+
+        ringTheBell();
+      }
+      else {
+        console.log("Error: token or tableNumber undefined");
+      }
+    } */
   }
 
   var receiptItems = []
@@ -130,7 +152,6 @@ export default function GuestMenu({ navigation }) {
     guestLogIn();
     getProducts();
     tableNrCheck();
-    initializeSocketAndClient();
   }, [])
 
   // neki useEffect za spremanje id-a i kolicine itema

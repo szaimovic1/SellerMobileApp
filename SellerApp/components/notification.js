@@ -1,35 +1,22 @@
 import { useState, useEffect } from 'react';
 import { AsyncStorage, Vibration } from 'react-native';
 import { Notifications } from 'expo';
-import SockJS from 'sockjs-client';
-import * as Stomp from 'stompjs';
-
-let stompClient;
 
 export default function Notification() {
+    const [localNotifications, setLocalNotifications] = useState([]);
     const [notificationMessage, setNotificationMessage] = useState('');
 
     useEffect(() => {
         Notifications.addListener(handlePushNotification);
-        openSocketConnection();
     }, []);
+
+    useEffect(() => {
+        notifyTheWaiter();
+    }, [localNotifications]);
 
     useEffect(() => {
         sendPushNotification();
     }, [notificationMessage]);
-
-    const openSocketConnection = () => {
-        const socket = new SockJS('http://stomp-test.herokuapp.com/ws');
-        stompClient = Stomp.over(socket);
-        stompClient.connect({}, () => { // prvi argument predstavlja headere, drugi argument je onConnected callback funkcija, treci argument je onError callback funkcija
-            stompClient.subscribe(`/topic/news`, msg => {
-                const data = JSON.parse(msg.body);
-                setNotificationMessage(data.message);
-            });
-        }, err => console.log("ERROR!"));
-
-        return () => stompClient.disconnect();
-    }
 
     const handlePushNotification = notification => {
         //ovdje se moze raditi bilo sta sa dobijenom push notifikacijom
@@ -66,13 +53,33 @@ export default function Notification() {
         setNotificationMessage('');
     }
 
+    const notifyTheWaiter = async () => {
+        if (typeof localNotifications === 'undefined' || localNotifications == null || localNotifications.length === 0) return;
+
+        localNotifications.map(notification => {
+            let message = notification.message;
+            setNotificationMessage(message);
+        });
+
+        await AsyncStorage.setItem('lastNotificationID', localNotifications[localNotifications.length - 1].id.toString());
+    }
+
     let setTimeoutID = setTimeout(async () => {
         var token = await AsyncStorage.getItem('token');
-        if (token == 'undefined' || token == null) {
-            stompClient.disconnect();
-            clearTimeout(setTimeoutID);
+        var lastNotificationID = await AsyncStorage.getItem('lastNotificationID');
+
+        if (token != 'undefined' && token != null && lastNotificationID != 'undefined' && lastNotificationID != null) {
+            fetch('https://cash-register-server-si.herokuapp.com/api/notifications/' + lastNotificationID, {
+                method: "GET",
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            }).then((res) => res.json()).then(res => {
+                if (res != 'undefined' && res != null) setLocalNotifications(res);
+            }).done();
         }
-    }, 10000);
+        else clearTimeout(setTimeoutID);
+    }, 30000);
 
     return (
         null
