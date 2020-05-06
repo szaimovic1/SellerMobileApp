@@ -34,7 +34,10 @@ export const NotificationsContextProvider = (props) => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(message),
-        }).then((res) => console.log("poslano na expo"));
+        }).then((res) => {
+            console.log("poslano na expo")
+            Vibration.vibrate();
+        });
         setNotificationMsg('');
     }
 
@@ -62,7 +65,6 @@ export const NotificationsContextProvider = (props) => {
 
     const handlePushNotification = () => {
         sendPushNotification();
-        Vibration.vibrate();
     };
 
     const notificationsData = {
