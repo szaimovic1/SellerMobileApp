@@ -14,12 +14,22 @@ const screens = {
             }
         }
     },
+    AddNewOrder : {
+        screen: AddNewOrder,
+        navigationOptions: ({ navigation }) => {
+            return {
+                title: 'New order',
+                headerBackTitle: 'Back',
+            }
+        }
+    },
     /* Ovdje dodati screen za dodatne informacije o proizvodima, ali umjesto headerTitle treba imati prop title koji prima obicni string */
 };
 
 const HomeStack = createStackNavigator (screens, {
     defaultNavigationOptions: {
         headerStyle: { backgroundColor: '#05132e',height: 80},
+        headerTintColor: '#fff'
    }
 });
 
