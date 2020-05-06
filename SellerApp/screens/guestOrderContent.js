@@ -129,7 +129,6 @@ export default function GuestOrderContent({ navigation }) {
     updateGuestOrderState(navigation.state.params.data.item);
   }
 
-
   return (
     <ImageBackground source={require('../images/background2.png')}
       style={styles.container}>

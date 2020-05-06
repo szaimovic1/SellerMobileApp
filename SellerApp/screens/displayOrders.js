@@ -106,7 +106,7 @@ export default function DisplayOrders({ navigation }) {
                   right={(props) => (
                     <View {...props} style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
                       <Button style={{ borderColor: "white", right: 80 }}>
-                        <MaterialIcons name='shopping-cart' size={30} style={styles.shoppingGuest} />
+                        <MaterialIcons name='shopping-cart' size={30} style={styles.shopping} />
                       </Button>
                       <Text style={{ position: 'absolute', right: 0, fontWeight: !item.seen ? "bold" : "normal", }}>{setPrice(item) + " KM"}</Text>
                     </View>

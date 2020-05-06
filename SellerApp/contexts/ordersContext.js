@@ -209,7 +209,7 @@ export const OrdersContextProvider = (props) => {
         deleteGuestOrder,
         updateGuestOrderState,
         postOrderGuest,
-        updateGuestOrderSeen
+        updateGuestOrderSeen,
     }
 
     return <OrdersContext.Provider value={ordersData}>{ children }</OrdersContext.Provider>

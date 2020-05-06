@@ -60,13 +60,10 @@ export default StyleSheet.create({
     fontWeight:'bold',
   },
   forgotPasswordButton:{
-   //marginLeft: 250,
-   marginRight: 20,
-   //alignContent: 'flex-end',
-   //alignItems: 'flex-end',
-   justifyContent: 'flex-end',
-   flexDirection:'row',
-   marginBottom: 15
+    marginRight: 20,
+    marginBottom: 15,
+    justifyContent: 'flex-end',
+    flexDirection:'row',
   }
 })
 

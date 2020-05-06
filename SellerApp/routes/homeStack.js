@@ -1,6 +1,7 @@
 import { createStackNavigator } from 'react-navigation-stack';
 import { createAppContainer } from 'react-navigation';
 import DisplayProducts from '../screens/displayProducts';
+import AddNewOrder from '../screens/addNewOrder';
 import Header from '../components/header';
 import React from 'react';
 
