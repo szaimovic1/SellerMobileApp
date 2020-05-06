@@ -60,6 +60,7 @@ export default function DisplayOrders({ navigation }) {
               <WingBlank size="lg">
                 <Card.Title
                   title={setText(item.tableNr)}
+                  titleStyle={{fontWeight: 'normal'}}
                   left={(props) => {
                     return <Image {...props}
                       style={[{ width: 35, height: 35 }, !item.served ? { opacity: 0.2 } : '1']}
@@ -97,6 +98,7 @@ export default function DisplayOrders({ navigation }) {
               <WingBlank size="lg">
                 <Card.Title
                   title={setText(item.tableNr)}
+                  titleStyle={{fontWeight: !item.seen ? "bold" : "normal",}}
                   left={(props) => {
                     return <Image {...props}
                       style={[{ width: 35, height: 35 }, !item.served ? { opacity: 0.2 } : '1']}
@@ -107,7 +109,7 @@ export default function DisplayOrders({ navigation }) {
                       <Button style={{ borderColor: "white", right: 80 }}>
                         <MaterialIcons name='shopping-cart' size={30} style={styles.shopping} />
                       </Button>
-                      <Text style={{ position: 'absolute', right: 0 }}>{setPrice(item) + " KM"}</Text>
+                      <Text style={{ position: 'absolute', right: 0, fontWeight: !item.seen ? "bold" : "normal", }}>{setPrice(item) + " KM"}</Text>
                     </View>
                   )}
                   style={styles.card}
