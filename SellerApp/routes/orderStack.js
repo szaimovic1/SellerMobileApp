@@ -27,7 +27,6 @@ const screens = {
     GuestOrderContent: {
         screen: GuestOrderContent,
         navigationOptions: ({ navigation }) => {
-        navigationOptions: () => {
             return {
                 title: 'Order',
                 headerBackTitle: 'Back',
