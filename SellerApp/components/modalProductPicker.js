@@ -69,7 +69,7 @@ export default function ModalProductPicker({ modalVisible, setModalVisible, setP
                         <MaterialIcons size={40} name="done" style={styles.confirmIcon}></MaterialIcons>
                     </Button>
                 </View>
-                <ScrollView style={styles.modalProducts} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getProducts} />}>
+                <ScrollView style={styles.modalProducts} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getAllProducts} />}>
                     {staticProducts.map((item) => {
                         if (!isForbidden(item.id)) {
                             return (
