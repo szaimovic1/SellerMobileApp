@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "484744809683",
+    "firebase_url": "https://sellerapp-45039.firebaseio.com",
+    "project_id": "sellerapp-45039",
+    "storage_bucket": "sellerapp-45039.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:484744809683:android:1d08fd9b8fe1ae68389826",
+        "android_client_info": {
+          "package_name": "com.si.sellerapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "484744809683-ep45dvlckk8085imqi9m7gie2qhthihf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC74F3ys4GlkgRZnrbDr5tP33HqrV-NFKI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "484744809683-ep45dvlckk8085imqi9m7gie2qhthihf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

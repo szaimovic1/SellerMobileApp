@@ -9,32 +9,32 @@ export default StyleSheet.create({
     color:'#fff'
   },
   input: {
-    marginLeft: 20,
     marginRight: 20,
     backgroundColor:'#fff',
     borderRadius:5,
     marginBottom:30,
     borderBottomWidth:1.5,
     borderBottomColor: 'darkblue',
-    width:300
+    flex: 9,
+    padding: 10,
   },
   parent: {
     flex: 1,
     justifyContent: 'center',
-    paddingBottom:80
   },
   employeeImage: {
     width:100,
-    height:100,
+    height:100, 
     alignSelf:'center',
-    marginBottom:40
+    marginBottom:40,
+    marginTop: 10,
   },
   userPass: {
     marginLeft:13,
     justifyContent:'center',
     flexDirection:'row',
     height: 70,
-  
+    flex: 1,
   }, 
   loginScreenButton: {
     marginRight:20,
@@ -45,6 +45,7 @@ export default StyleSheet.create({
     backgroundColor:'#05132e',
     borderRadius:10,
     borderWidth: 1,
+    marginBottom: 10,
   },
   loginText:{
     color:'#fff',
@@ -53,6 +54,16 @@ export default StyleSheet.create({
     textAlign:'center',
     paddingLeft : 10,
     paddingRight : 10
+  },
+  forgotPasswordText:{
+    color:'#fff',
+    fontWeight:'bold',
+  },
+  forgotPasswordButton:{
+    marginRight: 20,
+    marginBottom: 15,
+    justifyContent: 'flex-end',
+    flexDirection:'row',
   }
 })
 
