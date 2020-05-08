@@ -7,7 +7,6 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { NavigationEvents } from 'react-navigation';
 import { useProductsContext } from '../contexts/productsContext';
 import { useOrdersContext } from '../contexts/ordersContext';
-
 export default function DisplayOrders({ navigation }) {
   const { orders, guestOrders, getOrders, getOrdersServer } = useOrdersContext();
   const { products, getProducts } = useProductsContext();

@@ -166,7 +166,7 @@ export default function GuestMenu({ navigation }) {
     // backupObject se koristi za krajnje slanje na server
     tableNumber = tableNr;
     message = tableNumber;
-    backupObject = { message, receiptItems };
+    backupObject = { message, receiptItems, 'served': false, 'seen': false };
     console.log('broj stola je: ', tableNumber);
     console.log('backupObject je: ', backupObject);
 

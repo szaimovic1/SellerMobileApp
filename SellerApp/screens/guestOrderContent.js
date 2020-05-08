@@ -47,10 +47,14 @@ export default function GuestOrderContent({ navigation }) {
 
   useEffect(() => {
     calculateTotalPrice(null);
-    updateGuestOrderSeen(clickedOrder);
+    //updateGuestOrderSeen(clickedOrder);
+    var newOrder = clickedOrder;
+    newOrder.seen = !clickedOrder.seen;
+    updateGuestOrder(clickedOrder, newOrder);
   }, []);
 
   useEffect(() => {
+    console.log("Uslo u effect")
     if(products.length === 0 && !navigation.state.params.data.item.served) {
       console.log("NEma proizvdoa");
       deleteGuestOrder(navigation.state.params.data.item.id);
@@ -143,7 +147,10 @@ export default function GuestOrderContent({ navigation }) {
 
   const changeOrderServeState = () => {
     setServed(!served);
-    updateGuestOrderState(navigation.state.params.data.item);
+    //updateGuestOrderState(navigation.state.params.data.item);
+    var newOrder = clickedOrder;
+    newOrder.served = !clickedOrder.served;
+    updateGuestOrder(clickedOrder, newOrder); 
   }
 
   return (
