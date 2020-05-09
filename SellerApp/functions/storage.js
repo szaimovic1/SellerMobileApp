@@ -303,7 +303,7 @@ export const guestLogIn = async () => {
 export const logOut = async (stompContext, topicId) => {
   try{
     //stompContext.getStompClient().unsubscribe(topicId);
-   /* stompContext.getStompClient().disconnect(function() {
+    /*stompContext.getStompClient().disconnect(function() {
       console.log("DIskonektovanoo");
     });*/
     stompContext.removeStompClient();

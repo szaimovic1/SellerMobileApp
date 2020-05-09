@@ -8,18 +8,17 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { Notifications } from 'expo';
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
-import { useNotificationsContext } from '../contexts/notificationsContext';
-import { StompEventTypes, withStomp  } from "react-stompjs";
+import { StompEventTypes } from "react-stompjs";
 
-const Login = ({ navigation, stompContext }) => {
+export default function Login ({ navigation }) {
     checkIfAlreadyLoggedIn(navigation); // ako je već ulogovan, nema potrebe za prikazom ovog ekrana
 
     const { heading, input, parent, employeeImage, userPass, loginScreenButton, loginText, forgotPasswordText, forgotPasswordButton } = styles;
-    const { subscribeToServer } = useNotificationsContext();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const ACCESS_TOKEN = 'access_token';
+    const subscribeToServer = navigation.getParam('subscribeToServer');
+    const stompContext = navigation.getParam('stompContext');
 
     const setItemStorage = async (key, value) => {
         try {
@@ -152,5 +151,3 @@ const Login = ({ navigation, stompContext }) => {
         </TouchableWithoutFeedback>
     )
 }
-
-export default withStomp(Login);

@@ -45,6 +45,8 @@ export const NotificationsContextProvider = (props) => {
         const client = await stompContext.newStompClient('https://cash-register-server-si.herokuapp.com/ws');
         stompContext.addStompEventListener(StompEventTypes.Connect, async () => {
           console.log("Connected");
+          if(stompContext.getStompClient() === undefined)
+            await stompContext.newStompClient('https://cash-register-server-si.herokuapp.com/ws');
           setTopicId(stompContext
             .getStompClient()
             .subscribe('/topic/notifications', (msg) => {
