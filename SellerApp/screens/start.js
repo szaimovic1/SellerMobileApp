@@ -6,12 +6,14 @@ import { getFonts } from '../functions/async';
 import { AppLoading } from 'expo';
 import { guestLogIn } from '../functions/storage';
 import { useProductsContext } from '../contexts/productsContext';
-import { useNotificationContext } from '../contexts/notificationContext';
+import { useNotificationsContext } from '../contexts/notificationsContext';
+import {  withStomp } from "react-stompjs";
+import { logOut } from '../functions/storage';
 
-export default function Start ({ navigation }) {
+function Start ({ navigation, stompContext }) {
     const [fontsLoaded, setFontsLoaded] = useState(false);
     const { getProducts, getMockData } = useProductsContext();
-    const { openSocketConnection, closeSocketConnection } = useNotificationContext();
+    const { subscribeToServer, topicId } = useNotificationsContext();
 
     //ULOGOVANJE GUESTA I UCITAVANJE PODATAKA   
     useEffect(() => {
@@ -20,8 +22,9 @@ export default function Start ({ navigation }) {
         getMockData();
     }, []);
 
-    if(navigation.getParam('fos') != undefined) {
-        closeSocketConnection();
+    const fos = navigation.getParam('fos'); // from other screen
+    if(fos != undefined) { 
+        logOut(stompContext, topicId);
     }
 
     if (fontsLoaded) {
@@ -30,14 +33,13 @@ export default function Start ({ navigation }) {
                 <View style={styles.logInBtn}>
                     <TouchableOpacity
                         onPress={() => {
-                            //openSocketConnection();
-                            navigation.navigate('LogIn', { data: openSocketConnection });
+                            navigation.navigate('LogIn', {subscribeToServer: subscribeToServer, stompContext: stompContext });
                         }}>
                         <Text style={{color: 'black', fontWeight: 'bold', fontSize: 20}}>Log in</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={{flex: 1, width: '100%', justifyContent: 'center', alignItems: 'center'}}>
-                    <Text style={{color: 'black', fontFamily: 'courgette-regular', fontSize: 50}}>The shopping that will make you happy!</Text>
+                    <Text style={{color: 'black', fontFamily: 'courgette-regular', fontSize: 50,}}>The shopping that will make you happy!</Text>
                 </View>
                 
                 <View style={{flex: 1, width: '80%'}}>
@@ -94,3 +96,5 @@ const styles = StyleSheet.create( {
         
     }
 );
+
+export default withStomp(Start);

@@ -7,7 +7,6 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { NavigationEvents } from 'react-navigation';
 import { useProductsContext } from '../contexts/productsContext';
 import { useOrdersContext } from '../contexts/ordersContext';
-
 export default function DisplayOrders({ navigation }) {
   const { orders, guestOrders, getOrders, getOrdersServer } = useOrdersContext();
   const { products, getProducts } = useProductsContext();
@@ -22,7 +21,6 @@ export default function DisplayOrders({ navigation }) {
       return ("Table: " + num);
     else return "Shopping"
   }
-
   const setPrice = (singleOrder) => {
     var ammount = 0;
     {
@@ -107,7 +105,7 @@ export default function DisplayOrders({ navigation }) {
                   right={(props) => (
                     <View {...props} style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
                       <Button style={{ borderColor: "white", right: 80 }}>
-                        <MaterialIcons name='shopping-cart' size={30} style={styles.shoppingGuest} />
+                        <MaterialIcons name='shopping-cart' size={30} style={styles.shopping} />
                       </Button>
                       <Text style={{ position: 'absolute', right: 0, fontWeight: !item.seen ? "bold" : "normal", }}>{setPrice(item) + " KM"}</Text>
                     </View>

@@ -11,7 +11,7 @@ import { getStyle, getTitleStyle, getSubtitleStyle, getTextStyle, isProductQuant
 import { checkIfOrdersEmpty } from '../functions/storage';
 import { useProductsContext } from '../contexts/productsContext';
 
-export default function DisplayProducts({ navigation }) {
+export default function DisplayProducts ({ navigation }) {
   const { products, getProducts, setProducts, refreshing } = useProductsContext();
   const [modalVisible, setModalVisible] = useState(false);
   const [buttonVisible, setButtonVisible] = useState(false);
@@ -218,6 +218,7 @@ export default function DisplayProducts({ navigation }) {
           }
           )}
         </ScrollView>
+        
       </ImageBackground>
     </TouchableWithoutFeedback>
   )

@@ -3,19 +3,19 @@ import Navigator from './routes/drawer';
 import { ProductsContextProvider } from './contexts/productsContext';
 import { OrdersContextProvider } from './contexts/ordersContext';
 import { TablesContextProvider } from './contexts/tablesContext';
-import { NotificationContextProvider } from './contexts/notificationContext';
+import { NotificationsContextProvider } from './contexts/notificationsContext';
 
 export default function App() {
-  return (
+  return (    
     <ProductsContextProvider>
       <OrdersContextProvider>
         <TablesContextProvider>
-          <NotificationContextProvider>
+          <NotificationsContextProvider>
             <Navigator />
-          </NotificationContextProvider>
+          </NotificationsContextProvider>
         </TablesContextProvider>
       </OrdersContextProvider>
     </ProductsContextProvider>
-
+    
   );
 }

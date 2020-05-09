@@ -36,7 +36,9 @@ export const OrdersContextProvider = (props) => {
         }
         const serverOrder = {
             'id': newOrder.id,
-            'receiptItems': receiptItems
+            'receiptItems': receiptItems,
+            'served' : newOrder.served,
+            'seen' : newOrder.seen
         }
         var TOKEN = await AsyncStorage.getItem('token');
         fetch("https://cash-register-server-si.herokuapp.com/api/orders", {
@@ -91,13 +93,15 @@ export const OrdersContextProvider = (props) => {
 
     const updateGuestOrderState = async (order) => {
         console.log(order.served);
-        //samo lokalno treba, server ne zna ništa oko usluženosti narudžbe (a trebao bi, ovo se treba ispraviti sa serverom)
+        //lokalno
         var index = guestOrders.indexOf(order);
         if(index !== -1) {
             guestOrders[index].served = !order.served;
             console.log("EDITOVANO NA ", guestOrders[index]);
             console.log("EDITOVANO NA ", order.served);
         }        
+        //na serveru
+
     }
 
     const updateGuestOrderSeen = (order) => {
@@ -187,9 +191,11 @@ export const OrdersContextProvider = (props) => {
                     'id' : orde[i].id,
                     'products': orderProducts,
                     'tableNr': tableNumber,
-                    'served': false,
+                    'served': orde[i].served,
+                    'seen' : orde[i].seen
                 };
                 guestOrdersArray.push(newGuestOrder);
+                console.log(newGuestOrder.seen);
             }
           
             setGuestOrders(guestOrdersArray);
@@ -209,7 +215,7 @@ export const OrdersContextProvider = (props) => {
         deleteGuestOrder,
         updateGuestOrderState,
         postOrderGuest,
-        updateGuestOrderSeen
+        updateGuestOrderSeen,
     }
 
     return <OrdersContext.Provider value={ordersData}>{ children }</OrdersContext.Provider>

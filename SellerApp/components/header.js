@@ -5,7 +5,10 @@ import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { logOut } from '../functions/storage';
 import styles from '../styles/global.js';
 
-export default function Header ({ navigation, title }) {
+
+export default function Header({ navigation, title, stompContext }) {
+
+
 
     const openMenu = () => {
         navigation.openDrawer();
@@ -24,7 +27,7 @@ export default function Header ({ navigation, title }) {
                                                                 'Do you want to logout?',
                                                                 [
                                                                 {text: 'Cancel', onPress: () => {return null}},
-                                                                {text: 'Confirm', onPress: () => {  logOut();
+                                                                {text: 'Confirm', onPress: () => {  
                                                                                                     navigation.navigate('Start', {fos: "ok"}) } }
                                                                 ],
                                                                 { cancelable: false })
@@ -36,4 +39,6 @@ export default function Header ({ navigation, title }) {
     )
 
 }
+
+
 

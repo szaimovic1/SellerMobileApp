@@ -47,8 +47,23 @@ export default function GuestOrderContent({ navigation }) {
 
   useEffect(() => {
     calculateTotalPrice(null);
-    updateGuestOrderSeen(clickedOrder);
+    //updateGuestOrderSeen(clickedOrder);
+    var newOrder = clickedOrder;
+    newOrder.seen = !clickedOrder.seen;
+    updateGuestOrder(clickedOrder, newOrder);
   }, []);
+
+  useEffect(() => {
+    console.log("Uslo u effect")
+    if(products.length === 0 && !navigation.state.params.data.item.served) {
+      console.log("NEma proizvdoa");
+      deleteGuestOrder(navigation.state.params.data.item.id);
+      Alert.alert('Success', 'Order deleted successfully!', [{
+        text: 'Okay'
+      }])
+      navigation.navigate('DisplayOrders');
+    }
+  }, [products])
 
   useEffect(() => {
     calculateTotalPrice(receiptItems);
@@ -59,16 +74,22 @@ export default function GuestOrderContent({ navigation }) {
   }
 
   const editButton = () => {
-    setEditButtonVisible(!editButtonVisible);
-    setEditInputVisible(!editInputVisible);
-    setAddButtonDisabled(!addButtonDisabled);
+    if(!navigation.state.params.data.item.served) {
+      setEditButtonVisible(!editButtonVisible);
+      setEditInputVisible(!editInputVisible);
+      setAddButtonDisabled(!addButtonDisabled);
 
-    let newProductsQuantity = [];
-    products.map(product => {
-      newProductsQuantity.push({ id: product.id, quantity: product.times });
-    });
+      let newProductsQuantity = [];
+      products.map(product => {
+        newProductsQuantity.push({ id: product.id, quantity: product.times });
+      });
 
-    setPrevProductsQuantity(newProductsQuantity);
+      setPrevProductsQuantity(newProductsQuantity);
+    } else {
+      Alert.alert('Error', 'You cannot edit a served order!', [{
+        text: 'Okay'
+      }])
+    }
   }
 
   const checkButton = () => {
@@ -126,9 +147,11 @@ export default function GuestOrderContent({ navigation }) {
 
   const changeOrderServeState = () => {
     setServed(!served);
-    updateGuestOrderState(navigation.state.params.data.item);
+    //updateGuestOrderState(navigation.state.params.data.item);
+    var newOrder = clickedOrder;
+    newOrder.served = !clickedOrder.served;
+    updateGuestOrder(clickedOrder, newOrder); 
   }
-
 
   return (
     <ImageBackground source={require('../images/background2.png')}

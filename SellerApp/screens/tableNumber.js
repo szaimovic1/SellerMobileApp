@@ -6,25 +6,31 @@ import SearchableDropdown from 'react-native-searchable-dropdown';
 export default function ChangeTableNr({ navigation }) {
     const [ tables, setTables ] = useState(async () => {
         var TOKEN = await AsyncStorage.getItem('token');
-        fetch("https://cash-register-server-si.herokuapp.com/api/tables", {
-          method: "GET",
-          headers: {
-            'Authorization': 'Bearer ' + TOKEN
-          }
-        })
-          .then((response) => response.json())
-          .then((serverTables) => {
-            var modifiedTables = [];
-            serverTables.map((table) => {
-              modifiedTables.push({
-                  id: table.id,
-                  name: table.tableNumber.toString()
-                });
-            })
-            setTables(modifiedTables);
-            return modifiedTables;
-            })
-          .done();
+        if(TOKEN != undefined) {
+          fetch("https://cash-register-server-si.herokuapp.com/api/tables", {
+            method: "GET",
+            headers: {
+              'Authorization': 'Bearer ' + TOKEN
+            }
+          })
+            .then((response) => response.json())
+            .then((serverTables) => {
+              var modifiedTables = [];
+              console.log("Stolovi ", serverTables);
+              if (serverTables != undefined) {
+                serverTables.map((table) => {
+                  modifiedTables.push({
+                      id: table.id,
+                      name: table.tableNumber.toString()
+                    });
+                })
+              }             
+              setTables(modifiedTables);
+              return modifiedTables;
+              })
+            .done();
+        }
+        
     })
 
     const  [text1, setText1] = useState("")
