@@ -324,3 +324,20 @@ export const guestLogOut = async () => {
       console.log('Greska prilikom logouta!');
   }
 }
+
+export const getGuestToken = async() => {
+  try {
+    var TOKEN = await AsyncStorage.getItem('guestToken');
+    if(TOKEN != null) {
+      return TOKEN;
+    }
+    else { // ako je token null prijavljujemo guesta
+      await guestLogIn();
+      TOKEN = await AsyncStorage.getItem('guestToken');
+      return TOKEN;
+    }
+  }
+  catch {
+    console.log("Error!!!");
+  }
+}
