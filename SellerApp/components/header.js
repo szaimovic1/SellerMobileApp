@@ -4,11 +4,12 @@ import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { logOut } from '../functions/storage';
 import styles from '../styles/global.js';
+import { StompEventTypes, withStomp  } from "react-stompjs";
+import { useNotificationsContext } from '../contexts/notificationsContext';
 
+const Header = ({ navigation, title, stompContext }) => {
 
-export default function Header({ navigation, title, stompContext }) {
-
-
+    const { topicId } = useNotificationsContext();
 
     const openMenu = () => {
         navigation.openDrawer();
@@ -27,8 +28,8 @@ export default function Header({ navigation, title, stompContext }) {
                                                                 'Do you want to logout?',
                                                                 [
                                                                 {text: 'Cancel', onPress: () => {return null}},
-                                                                {text: 'Confirm', onPress: () => {  
-                                                                                                    navigation.navigate('Start', {fos: "ok"}) } }
+                                                                {text: 'Confirm', onPress: () => {  logOut(stompContext, topicId);
+                                                                                                    navigation.navigate('Start') } }
                                                                 ],
                                                                 { cancelable: false })
                                                     }
@@ -40,5 +41,4 @@ export default function Header({ navigation, title, stompContext }) {
 
 }
 
-
-
+export default withStomp(Header);

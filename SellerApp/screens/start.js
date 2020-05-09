@@ -13,7 +13,7 @@ import { logOut } from '../functions/storage';
 function Start ({ navigation, stompContext }) {
     const [fontsLoaded, setFontsLoaded] = useState(false);
     const { getProducts, getMockData } = useProductsContext();
-    const { subscribeToServer, topicId } = useNotificationsContext();
+    const { subscribeToServer } = useNotificationsContext();
 
     //ULOGOVANJE GUESTA I UCITAVANJE PODATAKA   
     useEffect(() => {
@@ -21,11 +21,6 @@ function Start ({ navigation, stompContext }) {
         getProducts();
         getMockData();
     }, []);
-
-    const fos = navigation.getParam('fos'); // from other screen
-    if(fos != undefined) { 
-        logOut(stompContext, topicId);
-    }
 
     if (fontsLoaded) {
     return (        
