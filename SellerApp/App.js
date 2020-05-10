@@ -4,7 +4,8 @@ import { ProductsContextProvider } from './contexts/productsContext';
 import { OrdersContextProvider } from './contexts/ordersContext';
 import { TablesContextProvider } from './contexts/tablesContext';
 import { NotificationsContextProvider } from './contexts/notificationsContext';
-import { guestLogIn, getGuestToken } from './functions/storage';
+import { guestLogIn, getGuestToken, clearAsyncStorage } from './functions/storage';
+//clearAsyncStorage();
 export default function App() {
   const [data, setData] = useState({}); //podaci o poslovnici
   const getInfo = async(TOKEN) => { //dobavljanje podataka sa servera

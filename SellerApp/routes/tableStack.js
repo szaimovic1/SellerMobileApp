@@ -5,7 +5,6 @@ import DisplayTables from '../screens/displayTables';
 import Header from '../components/header';
 
 export const tableStack = (data) =>  {
-    console.log(data);
     var screenTitle = data.placeName;
     const screens = {
         DisplayTables: {
