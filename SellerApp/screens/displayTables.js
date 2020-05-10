@@ -8,27 +8,6 @@ export default function DisplayTables({ navigation }) {
     useEffect(() => {
         getTables();
     }, []);
-    const test= [
-        {table: 1},
-        {table: 2},
-        {table: 3},
-        {table: 4},
-        {table: 5},
-        {table: 6},
-        {table: 7},
-        {table: 8},
-        {table: 9},
-        {table: 10},
-        {table: 11},
-        {table: 12},
-        {table: 13},
-        {table: 14},
-        {table: 15},
-        {table: 16},
-        {table: 17}
-    ];
-    
-    
     const makeTableMap = (tables, columnNumber) => {
         var tableMap = tables;
         const numberOfFullRows = Math.floor(tables.length / columnNumber);
@@ -99,7 +78,7 @@ export default function DisplayTables({ navigation }) {
                         return(  
                             <TouchableOpacity style={styles.tableStyle}>
                                 <Image style={styles.imageTable} source={require("../images/circle.png")}/>
-                                <Text style={styles.text}>Table {item.tableNumber}</Text>
+                                <Text style={styles.text}>{item.tableName}</Text>
                             </TouchableOpacity> 
                         );  
                     }
