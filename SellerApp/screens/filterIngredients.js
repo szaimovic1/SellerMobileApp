@@ -18,14 +18,14 @@ export default function FilterIngredients({ navigation }) {
     const [checked, setChecked] = useState(false);
     const [fontsLoaded, setFontsLoaded] = useState(false);
     const [ingredients, setIngredients] = useState([]);    
-
+    
     useEffect(() => {
         getProducts();
         getMockData();
     }, []);
 
     const onSelect = () => setChecked(!checked);
-
+    var productsWithoutFilter = products.filter(pro => pro.quantity!=0);
     const onSelectItem = (items) => {
         items.map(object => {
             if(object.RNchecked && !ingredients.includes(object.label)) setIngredients(oldIngredients => [...oldIngredients, object.label]);
@@ -64,8 +64,11 @@ export default function FilterIngredients({ navigation }) {
                     if (notContains) filteredProducts.push(product);
                 })
             }
+            filteredProducts = filteredProducts.filter(pro => pro.quantity!=0);
             navigation.navigate('Offer',  { data: { filteredProducts }});
-        } else  navigation.navigate('Offer', { data: { products } });
+        } else  {
+            navigation.navigate('Offer', { data: { productsWithoutFilter } });
+        }
        
     }
 
@@ -97,7 +100,7 @@ export default function FilterIngredients({ navigation }) {
                         <TouchableOpacity onPress={filterProducts} style={styles.finishBtn}>
                             <Text style={styles.finishText}>FILTER</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => navigation.navigate('Offer', { data: { products } })} style={styles.finishBtn}>
+                        <TouchableOpacity onPress={() => navigation.navigate('Offer', { data: { productsWithoutFilter } })} style={styles.finishBtn}>
                             <Text style={styles.finishText}>SHOW ALL PRODUCTS</Text>
                         </TouchableOpacity>
                     </View>

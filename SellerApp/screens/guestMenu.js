@@ -82,7 +82,7 @@ export default function GuestMenu({ navigation }) {
             var token = await AsyncStorage.getItem('guestToken');
 
             if (token != 'undefined' && token != null && tblNr != 'undefined' && tblNr != null) {
-              const notificationMessage = "Guest is calling you to the table number " + tblNr + "!";
+              const notificationMessage = "Guest is calling you to the " + tblNr + "!";
 
               fetch("https://cash-register-server-si.herokuapp.com/api/notifications", {
                 method: "POST",
@@ -140,9 +140,8 @@ export default function GuestMenu({ navigation }) {
 
   const getProducts = async () => {
     if (navigation.state.params.data.filteredProducts == undefined) {
-      setProducts(navigation.state.params.data.products);
+      setProducts(navigation.state.params.data.productsWithoutFilter);
     } else setProducts(navigation.state.params.data.filteredProducts);
-
   }
 
   async function tableNrCheck() {
@@ -407,4 +406,3 @@ export default function GuestMenu({ navigation }) {
     );
   }
 }
-
