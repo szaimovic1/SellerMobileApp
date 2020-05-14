@@ -35,7 +35,7 @@ export default function AddNewOrder({ navigation }) {
             serverTables.map((table) => {
               modifiedTables.push({
                   id: table.id,
-                  name: table.tableNumber.toString()
+                  name: table.tableName.toString()
                 });
             })
             //console.log(modifiedTables + "KKKKKKKKK");
@@ -105,8 +105,8 @@ export default function AddNewOrder({ navigation }) {
                 borderWidth: 1,
                 borderRadius: 5,
                 marginBottom: 2,
-                width: 50,
-                paddingLeft: 20,
+                width: 100,
+                alignItems:'center',
                 marginTop: 5,
                 alignSelf: "center",
               }}

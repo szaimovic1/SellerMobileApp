@@ -7,6 +7,7 @@ import { NotificationsContextProvider } from './contexts/notificationsContext';
 import { guestLogIn, getGuestToken, clearAsyncStorage } from './functions/storage';
 //clearAsyncStorage();
 export default function App() {
+  
   const [data, setData] = useState({}); //podaci o poslovnici
   const getInfo = async(TOKEN) => { //dobavljanje podataka sa servera
     fetch("https://cash-register-server-si.herokuapp.com/api/seller-app/data", { 
@@ -31,7 +32,6 @@ export default function App() {
     }
     getInfo(TOKEN); //pozivamo funkciju koja ce dobaviti potrebne podatke
   }
-  
   getTokenAndInfo(); // na ovaj nacin poziva se async funkcija unutar useEffect
   }, []);
   const Navigator = createNav(data);
