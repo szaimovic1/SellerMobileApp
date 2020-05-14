@@ -15,10 +15,10 @@ export default function DisplayOrders({ navigation }) {
     getOrders();
     getProducts();
   }, []);
-
+  
   const setText = (num) => {
     if (num != 0)
-      return ("Table: " + num);
+      return (num);
     else return "Shopping"
   }
   const setPrice = (singleOrder) => {

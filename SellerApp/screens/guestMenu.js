@@ -82,7 +82,7 @@ export default function GuestMenu({ navigation }) {
             var token = await AsyncStorage.getItem('guestToken');
 
             if (token != 'undefined' && token != null && tblNr != 'undefined' && tblNr != null) {
-              const notificationMessage = "Guest is calling you to the table number " + tblNr + "!";
+              const notificationMessage = "Guest is calling you to the " + tblNr + "!";
 
               fetch("https://cash-register-server-si.herokuapp.com/api/notifications", {
                 method: "POST",
