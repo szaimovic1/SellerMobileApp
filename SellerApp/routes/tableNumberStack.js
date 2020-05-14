@@ -9,7 +9,7 @@ const screens = {
         screen: ChangeTableNr,
         navigationOptions: ({ navigation }) => {
             return {
-                headerTitle: () => <Header navigation={navigation} title='Table number' />
+                headerTitle: () => <Header navigation={navigation} title='Device name' />
             }
         }
     },

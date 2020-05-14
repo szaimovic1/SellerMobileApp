@@ -32,7 +32,7 @@ export const checkIfOrdersEmpty = async () => {
 
 export const saveNewOrder = async (newOrder) => {
   // spašavaju se podaci iz newOrder u AsyncStorage
-  if (Number(newOrder.tableNr) === parseInt(Number(newOrder.tableNr))) {
+  if (newOrder.tableNr === newOrder.tableNr) {
     try {
       // uzmemo postojeće orders iz AsyncStorage
       const existingOrders = await AsyncStorage.getItem('orders');
@@ -332,5 +332,22 @@ export const guestLogOut = async () => {
   }
   catch(error){
       console.log('Greska prilikom logouta!');
+  }
+}
+
+export const getGuestToken = async() => {
+  try {
+    var TOKEN = await AsyncStorage.getItem('guestToken');
+    if(TOKEN != null) {
+      return TOKEN;
+    }
+    else { // ako je token null prijavljujemo guesta
+      await guestLogIn();
+      TOKEN = await AsyncStorage.getItem('guestToken');
+      return TOKEN;
+    }
+  }
+  catch {
+    console.log("Error!!!");
   }
 }

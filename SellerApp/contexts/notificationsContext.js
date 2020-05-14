@@ -14,7 +14,7 @@ export const NotificationsContextProvider = (props) => {
     }, [notificationMsg])
 
     const sendPushNotification = async () => {
-        if (!notificationMsg.includes("Guest is calling you to the table number")) return;
+        if (!notificationMsg.includes("Guest is calling you to the ")) return;
         
         const expoPushToken = await AsyncStorage.getItem('expoPushToken');
 

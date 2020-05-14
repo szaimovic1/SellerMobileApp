@@ -96,7 +96,7 @@ export default function DisplayProducts ({ navigation }) {
   useEffect(() => {
     setNewOrder({
       'products': orderProducts,
-      'tableNr': 0,
+      'tableNr': '',
       'served': null,
     })
   }, [orderProducts]);
