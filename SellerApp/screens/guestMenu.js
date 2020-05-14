@@ -366,6 +366,7 @@ export default function GuestMenu({ navigation }) {
                   </Modal>
                   <NumericInput
                     minValue={0}
+                    maxValue={item.quantity}
                     onChange={value => addNewItemToOrder(item, value)}
                     rounded={true}
                     rightButtonBackgroundColor='#FA8072'
