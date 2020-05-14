@@ -47,10 +47,12 @@ export default function GuestOrderContent({ navigation }) {
 
   useEffect(() => {
     calculateTotalPrice(null);
-    //updateGuestOrderSeen(clickedOrder);
-    var newOrder = clickedOrder;
-    newOrder.seen = !clickedOrder.seen;
-    updateGuestOrder(clickedOrder, newOrder);
+    if (!clickedOrder.seen) {
+      var newOrder = clickedOrder;
+      newOrder.seen = true;
+      updateGuestOrder(clickedOrder, newOrder);
+      clickedOrder.seen = true;
+    }    
   }, []);
 
   useEffect(() => {
