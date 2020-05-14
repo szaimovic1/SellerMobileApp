@@ -72,7 +72,7 @@ export default function AddNewOrder({ navigation }) {
             <SearchableDropdown
               keyboardType={'numeric'} 
               placeholderTextColor = {"white"}
-              placeholder='Table number' 
+              placeholder='Choose' 
               items = {tables}
               containerStyle={{ 
                 marginBottom: 10,
