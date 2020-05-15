@@ -82,7 +82,7 @@ export default function GuestMenu({ navigation }) {
             var token = await AsyncStorage.getItem('guestToken');
 
             if (token != 'undefined' && token != null && tblNr != 'undefined' && tblNr != null) {
-              const notificationMessage = "Guest is calling you to the table number " + tblNr + "!";
+              const notificationMessage = "Guest is calling you to the " + tblNr + "!";
 
               fetch("https://cash-register-server-si.herokuapp.com/api/notifications", {
                 method: "POST",
@@ -166,7 +166,7 @@ export default function GuestMenu({ navigation }) {
     // backupObject se koristi za krajnje slanje na server
     tableNumber = tableNr;
     message = tableNumber;
-    backupObject = { message, receiptItems };
+    backupObject = { message, receiptItems, 'served': false, 'seen': false };
     console.log('broj stola je: ', tableNumber);
     console.log('backupObject je: ', backupObject);
 

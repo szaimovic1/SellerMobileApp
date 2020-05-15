@@ -32,7 +32,7 @@ export const checkIfOrdersEmpty = async () => {
 
 export const saveNewOrder = async (newOrder) => {
   // spašavaju se podaci iz newOrder u AsyncStorage
-  if (Number(newOrder.tableNr) === parseInt(Number(newOrder.tableNr))) {
+  if (newOrder.tableNr === newOrder.tableNr) {
     try {
       // uzmemo postojeće orders iz AsyncStorage
       const existingOrders = await AsyncStorage.getItem('orders');
@@ -185,15 +185,25 @@ export const postOrder = async (navigation, narudzba, backupObject) => {
   })
     .then((response) => response.text())
     .then((res) => {
-      //removeCurrentOrder(brojStola);
-      deleteOrder(narudzba);
-      console.log(res);
-      Alert.alert('Submited!', 'Order was successfully submitted.', [
-        {
-          text: 'OK'
-        }])
-      navigation.navigate('DisplayOrders');
-      //console.log('table broj: ', brojStola);
+      const odgovorSaServera = JSON.parse(res);
+      console.log(odgovorSaServera.message);
+      if(odgovorSaServera.message == "Order is successfully saved!")
+      {
+        deleteOrder(narudzba);
+        console.log(res);
+        Alert.alert('Submited!', 'Order was successfully submitted.', [
+          {
+            text: 'OK'
+          }])
+        navigation.navigate('DisplayOrders');
+      }
+      else
+      {
+        Alert.alert('Error', 'Error submitting the order, please try again!', [
+          {
+            text: 'OK'
+          }])
+      }
     }).catch((error) => console.error(error))
     .done();
 }
@@ -303,7 +313,7 @@ export const guestLogIn = async () => {
 export const logOut = async (stompContext, topicId) => {
   try{
     //stompContext.getStompClient().unsubscribe(topicId);
-   /* stompContext.getStompClient().disconnect(function() {
+    /*stompContext.getStompClient().disconnect(function() {
       console.log("DIskonektovanoo");
     });*/
     stompContext.removeStompClient();
@@ -322,5 +332,22 @@ export const guestLogOut = async () => {
   }
   catch(error){
       console.log('Greska prilikom logouta!');
+  }
+}
+
+export const getGuestToken = async() => {
+  try {
+    var TOKEN = await AsyncStorage.getItem('guestToken');
+    if(TOKEN != null) {
+      return TOKEN;
+    }
+    else { // ako je token null prijavljujemo guesta
+      await guestLogIn();
+      TOKEN = await AsyncStorage.getItem('guestToken');
+      return TOKEN;
+    }
+  }
+  catch {
+    console.log("Error!!!");
   }
 }

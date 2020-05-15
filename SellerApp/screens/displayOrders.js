@@ -7,7 +7,6 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { NavigationEvents } from 'react-navigation';
 import { useProductsContext } from '../contexts/productsContext';
 import { useOrdersContext } from '../contexts/ordersContext';
-
 export default function DisplayOrders({ navigation }) {
   const { orders, guestOrders, getOrders, getOrdersServer } = useOrdersContext();
   const { products, getProducts } = useProductsContext();
@@ -16,10 +15,10 @@ export default function DisplayOrders({ navigation }) {
     getOrders();
     getProducts();
   }, []);
-
+  
   const setText = (num) => {
     if (num != 0)
-      return ("Table: " + num);
+      return (num);
     else return "Shopping"
   }
   const setPrice = (singleOrder) => {

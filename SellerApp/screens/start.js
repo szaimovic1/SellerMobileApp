@@ -6,10 +6,14 @@ import { getFonts } from '../functions/async';
 import { AppLoading } from 'expo';
 import { guestLogIn } from '../functions/storage';
 import { useProductsContext } from '../contexts/productsContext';
+import { useNotificationsContext } from '../contexts/notificationsContext';
+import {  withStomp  } from "react-stompjs";
 
-export default function Start ({ navigation }) {
+function Start ({ navigation, stompContext }) {
     const [fontsLoaded, setFontsLoaded] = useState(false);
     const { getProducts, getMockData } = useProductsContext();
+    const { subscribeToServer, topicId } = useNotificationsContext();
+
     //ULOGOVANJE GUESTA I UCITAVANJE PODATAKA   
     useEffect(() => {
         guestLogIn();
@@ -23,7 +27,7 @@ export default function Start ({ navigation }) {
                 <View style={styles.logInBtn}>
                     <TouchableOpacity
                         onPress={() => {
-                            navigation.navigate('LogIn');
+                            navigation.navigate('LogIn', {subscribeToServer: subscribeToServer, stompContext: stompContext });
                         }}>
                         <Text style={{color: 'black', fontWeight: 'bold', fontSize: 20}}>Log in</Text>
                     </TouchableOpacity>
@@ -86,3 +90,5 @@ const styles = StyleSheet.create( {
         
     }
 );
+
+export default withStomp(Start);

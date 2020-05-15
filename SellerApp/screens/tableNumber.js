@@ -21,7 +21,7 @@ export default function ChangeTableNr({ navigation }) {
                 serverTables.map((table) => {
                   modifiedTables.push({
                       id: table.id,
-                      name: table.tableNumber.toString()
+                      name: table.tableName.toString()
                     });
                 })
               }             
@@ -35,17 +35,17 @@ export default function ChangeTableNr({ navigation }) {
 
     const  [text1, setText1] = useState("")
     const  [text2, setText2] = useState("")
-    const  [text3, setText3] = useState("Table number")
+    const  [text3, setText3] = useState("Device name")
     
     async function setTextFields(){
       var tableNr = await AsyncStorage.getItem('tableNumber');
       if(tableNr != null){
-          setText1("A table number for this device was already set!");
+          setText1("A name for this device is already set!");
           setText2("To change, insert new value.");
           setText3(tableNr.toString());
       }
       else{
-          setText1("A table number for this device is not set yet!");
+          setText1("A name for this device is not set yet!");
           setText2("Please, insert its value to continue.");
       }
     };
@@ -58,7 +58,7 @@ export default function ChangeTableNr({ navigation }) {
       if (number != null) {
         await AsyncStorage.setItem('tableNumber', number); 
         console.log(await AsyncStorage.getItem('tableNumber'));
-        setText1("A table number for this device was already set!");
+        setText1("A name for this device is already set!");
         setText2("To change, insert new value.");
       }
     }
@@ -109,17 +109,18 @@ export default function ChangeTableNr({ navigation }) {
                   borderWidth: 1,
                   borderRadius: 5,
                   marginBottom: 2,
-                  width: 50,
-                  paddingLeft: 20,
+                  width: 100,
+                  alignItems:'center',
                   marginTop: 5,
                   alignSelf: "center",
+                
                 }}
                 onItemSelect={(item) => {
                   checkTableNumber(item.name)
                   navigation.navigate('DisplayProducts')
                   Alert.alert(
                     "Success!",
-                    "A table number is set correctly.",
+                    "A name for this device is set correctly.",
                     [
                       { text: "OK", onPress: () => console.log("OK Pressed") }
                     ],
