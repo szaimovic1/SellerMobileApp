@@ -241,6 +241,18 @@ export default function GuestMenu({ navigation }) {
   const [price, setPrice] = useState(0);
   const [tableNr, setTableNr] = useState('');
 
+  const getIngerdients = (product) => {
+    var ingredients = "";
+    if(product.itemType != undefined && product.itemType != null && product.productItems != null && product.productItems != undefined && product.productItems.length != 0) {
+      ingredients +=product.itemType.name + ": ";
+      for(var i = 0; i < product.productItems.length; i++) {
+        console.log(product.productItems[i]);
+        if(i == product.productItems.length - 1) ingredients += product.productItems[i].item.name;
+        else ingredients += product.productItems[i].item.name + ", ";
+      }
+    }
+    return ingredients; 
+  }
   if (fontsLoaded) {
     if (products != undefined && products.length === 0) {
       return (
@@ -388,6 +400,7 @@ export default function GuestMenu({ navigation }) {
                     </View>
                     <ScrollView>
                       <Text style={styles.smallerText}>{item.description}</Text>
+                      <Text style={styles.smallerText}>{getIngerdients(item)}</Text>
                     </ScrollView>
                   </View>
 

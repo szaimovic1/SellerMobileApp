@@ -14,7 +14,7 @@ const getFonts = () => {
 }
 
 export default function FilterIngredients({ navigation }) {
-    const { products, getProducts, mockData, getMockData } = useProductsContext();
+    const { products, getProducts, mockData, getMockData, getItems } = useProductsContext();
     const [checked, setChecked] = useState(false);
     const [fontsLoaded, setFontsLoaded] = useState(false);
     const [ingredients, setIngredients] = useState([]);    
@@ -22,12 +22,16 @@ export default function FilterIngredients({ navigation }) {
     useEffect(() => {
         getProducts();
         getMockData();
+        getItems();
     }, []);
 
     const onSelect = () => setChecked(!checked);
     var productsWithoutFilter = products.filter(pro => pro.quantity!=0);
+    //console.log('velicina mock ' + mockData.length);
     const onSelectItem = (items) => {
         items.map(object => {
+            //sada ingredients moze biti niz objekata koji su sastojci i  umjesto provjere labele mozemo citav objekaz
+            //provjeravati da li je sadrzan?
             if(object.RNchecked && !ingredients.includes(object.label)) setIngredients(oldIngredients => [...oldIngredients, object.label]);
             else if (!object.RNchecked) {// ovo znaci da je objekat odznacen
                 for (var i = 0; i < ingredients.length; i++) {
@@ -37,16 +41,35 @@ export default function FilterIngredients({ navigation }) {
                     }
                 }
             }
+           /* if(object.RNchecked && !ingredients.includes(object)) setIngredients(oldIngredients => [...oldIngredients, object]);
+            else if (!object.RNchecked) {// ovo znaci da je objekat odznacen
+                for (var i = 0; i < ingredients.length; i++) {
+                    if (ingredients[i] === object) {
+                        ingredients.splice(i, 1);
+                        break;
+                    }
+                }
+            }*/
         });
     }
 
     const filterProducts = async () => {
         var filteredProducts = [];
         if (ingredients != undefined && ingredients.length > 0) {  // odabrali smo neke sastojke
-            if (checked) {
+            if (checked) { //ukoliko je oznaceno contains
                 products.map(product => {
+                /*    console.log('product ' + product.name);
+                    if(product.itemType != null) {
+                        console.log(product.itemType);
+                        console.log(product.productItems);
+                    }*/
+                    //ovdje cemo provjeravati da li ovaj product u nizu productItems sadrzi
+                    //sve oznacene sastojke
                     var containsIngr = true;
                     ingredients.map(ingredient => {
+                        
+                       // if(!product.productItems.includes(ingredient)) containsIngr = false;
+                        
                         var index = product.description.indexOf('Ingredients');
                         var descIngredients = product.description.substring(index+12, product.description.length-1);
                         if (!descIngredients.toLowerCase().includes(ingredient.toLowerCase())) containsIngr = false;
@@ -55,8 +78,13 @@ export default function FilterIngredients({ navigation }) {
                 })
             } else {
                 products.map(product => {
+                    //ovdje cemo provjeravati da li ovaj product u nizu productItems ne sadrzi
+                    //sve oznacene sastojke
                     var notContains = true;
                     ingredients.map(ingredient => {
+                        
+                       // if(product.productItems.includes(ingredient)) notContains = false;
+                        
                         var index = product.description.indexOf('Ingredients');
                         var descIngredients = product.description.substring(index+12, product.description.length-1);
                         if (descIngredients.toLowerCase().includes(ingredient.toLowerCase())) notContains = false;

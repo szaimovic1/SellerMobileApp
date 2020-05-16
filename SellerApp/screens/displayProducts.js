@@ -104,7 +104,8 @@ export default function DisplayProducts ({ navigation }) {
   const updateList = (specificProducts) => {
     setProducts(specificProducts);
   }
-
+  
+  //console.log(products[0].productItems);
   return (
     <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); }}>
       <ImageBackground source={require('../images/background2.png')}

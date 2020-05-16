@@ -9,7 +9,7 @@ export const ProductsContextProvider = (props) => {
     const [products, setProducts] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
     const [mockData, setMockData] = useState([]);
-
+    const [items, setItems] = useState([]);
     const getProducts = async () => {
         setRefreshing(true);
         var TOKEN = await AsyncStorage.getItem('token');
@@ -28,10 +28,49 @@ export const ProductsContextProvider = (props) => {
           })
           .done();
     }
-
-    const getMockData = () => {
-      //
+    const getItems = async () => {
+        var TOKEN = await AsyncStorage.getItem('token');
+        if (TOKEN == null) TOKEN = await AsyncStorage.getItem('guestToken');
+        fetch("https://cash-register-server-si.herokuapp.com/api/items", {
+          method: "GET",
+          headers: {
+            'Authorization': 'Bearer ' + TOKEN
+          }
+        })
+          .then((response) => response.json())
+          .then((itemsServer) => {
+              console.log(itemsServer);
+            setItems(itemsServer);
+            return itemsServer ;
+          })
+          .done();
+    }
+    const getMockData = async() => {
+        /*var TOKEN = await AsyncStorage.getItem('token');
+        if (TOKEN == null) TOKEN = await AsyncStorage.getItem('guestToken');
+        fetch("https://cash-register-server-si.herokuapp.com/api/items", {
+          method: "GET",
+          headers: {
+            'Authorization': 'Bearer ' + TOKEN
+          }
+        })
+          .then((response) => response.json())
+          .then((items) => {
+            console.log(items);
+            setMockData(items);
+            return items;
+          })
+          .done();*/
+        /*getItems();
+        items.forEach(function(item) {
+            item.label = item.name.toLowerCase();
+        })*/
+      //ovdje ce ici ruta koja ce fetch sve items i spasiti u mockData tako da se u svaki objekat doda
+      //atribut label: naziv.toLowerCase() 
+      //to de moze sa lista.forEach(function(item) {item.label=item.name.toLowerCase()}) ili
+      //probati da u CheckboxFormX prop itemShowKey="name" ili kako se vec bude zvao naziv
       var localData = [];
+
       if (products != undefined && products.length > 0) {
           var counter = 0;
           for (var i = 0; i < products.length; i++) {
@@ -73,6 +112,7 @@ export const ProductsContextProvider = (props) => {
         refreshing,
         mockData,
         getMockData,
+        getItems
     }
 
     return <ProductsContext.Provider value={productsData}>{ children }</ProductsContext.Provider>;
