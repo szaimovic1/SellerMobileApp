@@ -105,32 +105,6 @@ export default function GuestMenu({ navigation }) {
         },
       ]
     );
-
-    /* if (window.confirm("You are about to call the waiter! Are you sure?") == true) {
-      var tblNr = await AsyncStorage.getItem('tableNumber');
-      var token = await AsyncStorage.getItem('guestToken');
-
-      if (token != 'undefined' && token != null && tblNr != 'undefined' && tblNr != null) {
-        const notificationMessage = "Guest is calling you to the table number " + tblNr + "!";
-
-        fetch("https://cash-register-server-si.herokuapp.com/api/notifications", {
-          method: "POST",
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
-          },
-          body: JSON.stringify({ message: notificationMessage })
-        }).then((res) => res.json()).then((res) => {
-          console.log(res);
-        }).done();
-
-        ringTheBell();
-      }
-      else {
-        console.log("Error: token or tableNumber undefined");
-      }
-    } */
   }
 
   var receiptItems = []
@@ -264,7 +238,7 @@ export default function GuestMenu({ navigation }) {
               width: 0,
               height: 2,
             }, shadowOpacity: 0.25, width: 100,
-          }} onPress={() => navigation.navigate('Filter')}>
+          }} onPress={() => navigation.navigate('Filter',{noResults: true, checkContains: false, checkedIngr: navigation.state.params.ingr })}>
             <Text style={{ color: "white", fontWeight: 'bold', fontFamily: 'IndieFlower-Regular', fontSize: 18 }}>Try again</Text>
           </TouchableOpacity>
         </View>

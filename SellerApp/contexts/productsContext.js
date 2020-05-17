@@ -38,7 +38,6 @@ export const ProductsContextProvider = (props) => {
         })
           .then((response) => response.json())
           .then((items) => {
-            console.log(items);
             setMockData(items);
             return items;
           })
@@ -53,6 +52,7 @@ export const ProductsContextProvider = (props) => {
         refreshing,
         mockData,
         getMockData,
+        setMockData
     }
 
     return <ProductsContext.Provider value={productsData}>{ children }</ProductsContext.Provider>;

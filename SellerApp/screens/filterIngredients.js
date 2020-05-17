@@ -14,7 +14,7 @@ const getFonts = () => {
 }
 
 export default function FilterIngredients({ navigation }) {
-    const { products, getProducts, mockData, getMockData } = useProductsContext();
+    const { products, getProducts, mockData, getMockData, setMockData } = useProductsContext();
     const [checked, setChecked] = useState(false);
     const [fontsLoaded, setFontsLoaded] = useState(false);    
    var ingredients = [];
@@ -22,12 +22,24 @@ export default function FilterIngredients({ navigation }) {
         getProducts();
         getMockData();
     }, []);
-
     const onSelect = () => { 
         setChecked(!checked);
     }
     var productsWithoutFilter = products.filter(pro => pro.quantity!=0);
-    
+    const checkAfterNoResults = () => {
+        if(navigation.state.params.noResults) {
+            ingredients = navigation.state.params.checkedIngr;
+            var temp = mockData;
+            temp.forEach(item => {
+                ingredients.forEach(ingr => {
+                   if(ingr.name == item.name) {
+                       item.RNchecked = true;
+                   }
+                })
+            })
+        }
+    }
+    checkAfterNoResults();
     const addItem = (item) => {
         ingredients.push(item);
     }
@@ -55,7 +67,6 @@ export default function FilterIngredients({ navigation }) {
             }
         });
     }
-
     const filterProducts = async () => {
         ingredients = getItems();
         var filteredProducts = [];
@@ -65,36 +76,34 @@ export default function FilterIngredients({ navigation }) {
                     var containsIngr = false;
                     var numIngr = 0;
                     ingredients.forEach(ingredient => {
-                        containsIngr = false;
                         product.productItems.forEach(item => {
                             if(item.item.name == ingredient.name) numIngr++;
                         });
                         
                     });
                     if(numIngr == ingredients.length) containsIngr = true;
-                        if (containsIngr && !filteredProducts.includes(product)) filteredProducts.push(product);
+                    if(containsIngr && !filteredProducts.includes(product)) filteredProducts.push(product);
                 });
             } else {
                 products.forEach(product => {   
                     var containsIngr = false; 
+                    var numIngr = 0;
                     ingredients.forEach(ingredient => {
                         containsIngr = false;
                         product.productItems.forEach(item => {
                             if(item.item.name == ingredient.name) containsIngr = true;
                         });
+                        if(!containsIngr) numIngr++;
                         
                     });
-                    if (!containsIngr && !filteredProducts.includes(product)) filteredProducts.push(product);
-                });
-
-                
+                    if(numIngr==ingredients.length && !filteredProducts.includes(product)) filteredProducts.push(product);
+                });   
             }
             filteredProducts = filteredProducts.filter(pro => pro.quantity!=0);
-            navigation.navigate('Offer',  { data: { filteredProducts }});
+            navigation.navigate('Offer',  { data: { filteredProducts }, ingr: ingredients});
         } else  {
-            navigation.navigate('Offer', { data: { productsWithoutFilter } });
+            navigation.navigate('Offer', { data: { productsWithoutFilter }, ingr: ingredients });
         }
-       
     }
 
     if (fontsLoaded) {
@@ -125,7 +134,7 @@ export default function FilterIngredients({ navigation }) {
                         <TouchableOpacity onPress={filterProducts} style={styles.finishBtn}>
                             <Text style={styles.finishText}>FILTER</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => navigation.navigate('Offer', { data: { productsWithoutFilter } })} style={styles.finishBtn}>
+                        <TouchableOpacity onPress={() => navigation.navigate('Offer', { data: { productsWithoutFilter }, ingr: null })} style={styles.finishBtn}>
                             <Text style={styles.finishText}>SHOW ALL PRODUCTS</Text>
                         </TouchableOpacity>
                     </View>
