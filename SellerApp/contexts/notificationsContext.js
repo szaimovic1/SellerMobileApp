@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { AsyncStorage, Vibration } from 'react-native';
+import { useOrdersContext } from './ordersContext';
 
 export const NotificationsContext = createContext();
 
@@ -8,6 +9,7 @@ export const NotificationsContextProvider = (props) => {
 
     const [topicId, setTopicId] = useState(0);
     const [notificationMsg, setNotificationMsg] = useState('');
+    const { getOrdersServer } = useOrdersContext();
 
     useEffect(() => {
         handlePushNotification();
@@ -15,7 +17,7 @@ export const NotificationsContextProvider = (props) => {
 
     const sendPushNotification = async () => {
         if (!(notificationMsg.includes("Guest is calling you to the ") || notificationMsg.includes("A guest has placed an order"))) return;
-        
+        getOrdersServer();
         const expoPushToken = await AsyncStorage.getItem('expoPushToken');
 
         const message = {
