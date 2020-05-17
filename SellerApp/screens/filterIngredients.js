@@ -96,7 +96,7 @@ export default function FilterIngredients({ navigation }) {
                         if(!containsIngr) numIngr++;
                         
                     });
-                    if(numIngr==ingredients.length && !filteredProducts.includes(product)) filteredProducts.push(product);
+                    if(product.productItems.length != 0 && numIngr==ingredients.length && !filteredProducts.includes(product)) filteredProducts.push(product);
                 });   
             }
             filteredProducts = filteredProducts.filter(pro => pro.quantity!=0);
