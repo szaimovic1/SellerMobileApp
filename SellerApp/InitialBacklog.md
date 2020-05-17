@@ -106,17 +106,6 @@ Korisnik Seller mobilne aplikacije mora imati mogućnost da edituje stavke narud
 * Napraviti pull request
 
 # Feature
-Uređivanje stavki narudžbe
-## Item
-Korisnik Seller mobilne aplikacije mora imati mogućnost da edituje stavke narudžbe prije zaključivanja narudžbe.
-### Task
-* Implementirati screen za editovanje stavke gdje je omogućeno promijeniti količinu odabranog proizvoda)
-* Implementirati opciju koja će voditi ka prethodno spomenutom screenu (dvoklik, dugme sa strane i slično)
-* Uraditi push koda
-* Napraviti pull request
-
-
-# Feature
 Uklanjanje stavki narudžbe
 ## Item
 Korisnik Seller mobilne aplikacije mora imati mogućnost da ukloni određene stavke narudžbe prije zaključivanja narudžbe.
@@ -167,3 +156,194 @@ Korisnik Seller mobilne aplikacije mora imati mogućnost da se odjavi sa svog ra
 * Uraditi push koda
 * Napraviti pull request
 
+# Feature
+Pregled jelovnika od strane guest korisnika
+## Item
+Guest korisnik Seller mobilne aplikacije mora imati mogućnost pregleda jelovnika, sa detaljnim informacijama o svakom proizvodu (i sastav).
+### Task
+* Dodati početni ekran aplikacije na kojem će biti opcija za login uposlenika i za pregled jelovnika
+* Ulogovati guest korisnika automatski prilikom pokretanja aplikacije
+* Implementirati jelovnik kao swipe listu proizvoda, a kod svakog proizvoda prikazati sliku i informacije o njemu
+* Dodati opcije za izlaz i kraj kreiranja narudžbe 
+* Uraditi push koda
+* Napraviti pull request
+
+# Feature
+Odabir željenih proizvoda sa jelovnika
+## Item
+Guest korisnik Seller mobilne aplikacije mora imati mogućnost da odabere proizvode koje želi naručiti.
+### Task
+* Dodati opciju za odabir određene količine prilikom prikaza svakog proizvoda posebno
+* Implementirati kreiranje nove guest narudžbe koja sadrži odabrane proizvode
+* Uraditi push koda
+* Napraviti pull request
+
+# Feature
+Pregled odabranih proizvoda
+## Item
+Guest korisnik Seller mobilne aplikacije mora imati mogućnost da pregleda svoju narudžbu.
+### Task
+* Dodati ekran koji se prikaže nakon završetka odabira proizvoda koji sadrži odabrane proizvode, zajedno sa količinom i ukupnom cijenom narudžbe
+* Ubaciti opciju za unos broja stola za kojim guest sjedi
+* Uraditi push koda
+* Napraviti pull request
+
+# Feature
+Uređivanje guest narudžbe
+## Item
+Guest korisnik Seller mobilne aplikacije mora imati mogućnost da se vrati i uredi narudžbu. 
+### Task
+* Kod pregleda guest narudžbe dodati opciju za povratak i uređivanje narudžbe
+* Implementirati ispravno uređivanje narudžbe
+* Uraditi push koda
+* Napraviti pull request
+
+# Feature
+Spašavanje guest narudžbe
+## Item
+Guest korisnik Seller mobilne aplikacije mora imati mogućnost da spasi svoju narudžbu, čime se ona šalje na server.
+### Task
+* Kod pregleda guest narudžbe dodati opciju za spašavanje narudžbe
+* Implementirati slanje guest narudžbe na server
+* Nakon spašavanja, korisnik se treba automatski vratiti na početni ekran aplikacije
+* Uraditi push koda
+* Napraviti pull request
+
+# Feature
+Odustajanje od guest narudžbe
+## Item
+Guest korisnik Seller mobilne aplikacije mora imati mogućnost da odustane od narudžbe.
+### Task
+* Dodati opciju za izlaz prilikom pregleda narudžbe
+* Uraditi push koda
+* Napraviti pull request
+
+# Feature
+Pozivanje konobara
+## Item
+Guest korisnik Seller mobilne aplikacije mora imati mogućnost da pozove konobara putem aplikacije, pri čemu šalje svoj broj stola.
+### Task
+* Dodati opciju za slanje obavijesti konobaru
+* Dodati opciju da se unese broj stola za kojim guest sjedi
+* Implementirati slanje notifikacije konobaru
+* Uraditi push koda
+* Napraviti pull request
+
+# Feature
+Dobivanje obavijesti da guest poziva konobara
+## Item
+Korisnik Seller mobilne aplikacije mora dobiti obavijest da ga je neki gost zvao. 
+### Task
+* Implementirati primanje notifikacije da guest zove konobara
+* Uraditi push koda
+* Napraviti pull request
+
+# Feature
+Ažuriranje spiska narudžbi
+## Item
+Korisnik Seller mobilne aplikacije mora svakih 20 sekundi dobiti spisak svih narudžbi. 
+### Task
+* Implementirati slanje zahtjeva za guest narudžbe svakih 20 sekundi
+* Uraditi push koda
+* Napraviti pull request
+
+# Feature
+Razlikovanje nepročitanih i pročitanih guest narudžbi
+## Item
+Korisnik Seller mobilne aplikacije bi trebao da razlikuje nove narudžbe gostiju koje nije pregledao od onih koje jeste pregledao.
+### Task
+* Dodati novi atribut ‘seen’ u guest narudžbu
+* Implementirati različit izgled nepročitane narudžbe
+* Implementirati editovanje narudžbe (na serveru) nakon što se pročita
+* Uraditi push koda
+* Napraviti pull request
+
+# Feature
+Mijenjanje šifre računa
+## Item
+Korisnik Seller mobilne aplikacije mora moći promijeniti šifru svog korisničkog računa.
+### Task
+* Kreirati novi prozor u kojem se može promijeniti šifra
+* Implementirati postavljanje nove šifre ukoliko se ukuca ispravna trenutna šifra
+* Uraditi push koda
+* Napraviti pull request
+
+# Feature
+Mijenjanje zaboravljene šifre računa
+## Item
+Korisnik Seller mobilne aplikacije mora moći promijeniti šifru svog korisničkog računa u slučaju da je zaboravi.
+### Task
+* Dodati opciju ‘Forgot password’ na login ekran
+* Kreirati novi prozor sa opcijama za unos e-maila ili korisničkog imena, unos koda dobijenog na mail i unos nove šifre
+* Implementirati slanje koda na e-mail 
+* Osigurati da korisnik ne može promijeniti šifru ukoliko ne unese ispravan kod
+* Uraditi push koda
+* Napraviti pull request
+
+# Feature
+Grafički pregled stolova
+## Item
+Kao korisnik želim imati grafički prikaz stolova/ordinacija i sl.
+### Task
+* Kreirati novi prozor koji grafički prikazuje stolove/ordinacije 
+* Implementirati dohvatanje stolova/ordinacija sa servera
+* Uraditi push koda
+* Napraviti pull request
+
+# Feature
+Filtriranje proizvoda sa jelovnika po sastojcima
+## Item
+Guest korisnik Seller mobilne aplikacije mora imati mogućnost pretrage proizvoda po sastojcima, npr. Sve bez glutena ili sve sa lososom. 
+### Task
+* Kreirati novi prozor koji sadrži sastojke proizvoda i opciju Contains
+* Implementirati filtriranje tako da se prikažu samo proizvodi koji sadrže/ne sadrže odabrane sastojke
+* Uraditi push koda
+* Napraviti pull request
+
+# Feature
+Dobijanje push notifikacija ukoliko guest zove konobara
+## Item
+Korisnik Seller mobilne aplikacije mora imati mogućnost primanja push notifikacija ukoliko ga guest pozove.
+### Task
+* Implementirati slanje i primanje push notifikacija
+* Uraditi push koda
+* Napraviti pull request
+
+# Feature
+Uklanjanje unosa broja stola svakom uređaju
+## Item
+Guest korisnik aplikacije ne treba unositi ni u jednom dijelu procesa narudžbe broj stola za kojim sjedi.
+### Task
+* Ukloniti unos broja stola prilikom kreiranja guest narudžbe
+* Ukloniti unos broja stola prilikom slanja obavijesti konobaru
+* Uraditi push koda
+* Napraviti pull request
+
+# Feature
+Dodavanje broja stola svakom uređaju
+## Item
+Korisnik aplikacije treba prvi put kada se pokreće aplikacija na uređaju odrediti broj stola koji će se odnositi na taj uređaj, a treba postojati i opcija za promjenom ovog broja, ali samo uz konobarove pristupne podatke.
+### Task
+* Implementirati novi ekran u kojem se bira koji je broj stola vezan za uređaj, koji je vidljiv samo ulogovanom konobaru
+* Uraditi push koda
+* Napraviti pull request
+
+# Feature
+Mijenjanje količine proizvoda prilikom naručivanja
+## Item
+Guest korisnik aplikacije ne treba unositi ručno količinu proizvoda koju želi prilikom naručivanja, već mu mijenjanje količine treba biti omogućeno pomoću ikonica + i -. 
+### Task
+* Zamijeniti ručne unose količine sa unosom pomoću + i - ikonica kod kreiranja guest narudžbe
+* Zamijeniti ručne unose količine sa unosom pomoću + i - ikonica kod editovanja narudžbi
+* Uraditi push koda
+* Napraviti pull request
+
+# Feature
+Dobijanje push notifikacija kada se kreira guest narudžba
+## Item
+Korisnik aplikacije treba dobiti obavijest kada guest korisnik kreira narudžbu.
+### Task
+* Ukloniti periodično dohvatanje guest naružbi sa servera
+* Implementirati dobivanje push notifikacija kada se kreira nova guest naružba
+* Uraditi push koda
+* Napraviti pull request
