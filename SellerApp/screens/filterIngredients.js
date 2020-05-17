@@ -14,34 +14,37 @@ const getFonts = () => {
 }
 
 export default function FilterIngredients({ navigation }) {
-    const { products, getProducts, mockData, getMockData, getItems } = useProductsContext();
+    const { products, getProducts, mockData, getMockData } = useProductsContext();
     const [checked, setChecked] = useState(false);
-    const [fontsLoaded, setFontsLoaded] = useState(false);
-    const [ingredients, setIngredients] = useState([]);    
-    
+    const [fontsLoaded, setFontsLoaded] = useState(false);    
+   var ingredients = [];
     useEffect(() => {
         getProducts();
         getMockData();
-        getItems();
     }, []);
 
-    const onSelect = () => setChecked(!checked);
+    const onSelect = () => { 
+        setChecked(!checked);
+    }
     var productsWithoutFilter = products.filter(pro => pro.quantity!=0);
-    //console.log('velicina mock ' + mockData.length);
-    const onSelectItem = (items) => {
-        items.map(object => {
-            //sada ingredients moze biti niz objekata koji su sastojci i  umjesto provjere labele mozemo citav objekaz
-            //provjeravati da li je sadrzan?
-            if(object.RNchecked && !ingredients.includes(object.label)) setIngredients(oldIngredients => [...oldIngredients, object.label]);
-            else if (!object.RNchecked) {// ovo znaci da je objekat odznacen
-                for (var i = 0; i < ingredients.length; i++) {
-                    if (ingredients[i] === object.label) {
-                        ingredients.splice(i, 1);
-                        break;
-                    }
-                }
+    
+    const addItem = (item) => {
+        ingredients.push(item);
+    }
+    const getItems = () => {
+        onSelectItem(mockData);
+        
+        var ingr = ingredients;
+        ingr.forEach(object => {
+            delete object.RNchecked;
+        });
+        return ingr;
+    }
+    const onSelectItem =  (items) => {
+        items.forEach(async (object) => {
+            if(object.RNchecked && !ingredients.includes(object)) {
+                await addItem(object);
             }
-           /* if(object.RNchecked && !ingredients.includes(object)) setIngredients(oldIngredients => [...oldIngredients, object]);
             else if (!object.RNchecked) {// ovo znaci da je objekat odznacen
                 for (var i = 0; i < ingredients.length; i++) {
                     if (ingredients[i] === object) {
@@ -49,48 +52,42 @@ export default function FilterIngredients({ navigation }) {
                         break;
                     }
                 }
-            }*/
+            }
         });
     }
 
     const filterProducts = async () => {
+        ingredients = getItems();
         var filteredProducts = [];
         if (ingredients != undefined && ingredients.length > 0) {  // odabrali smo neke sastojke
-            if (checked) { //ukoliko je oznaceno contains
-                products.map(product => {
-                /*    console.log('product ' + product.name);
-                    if(product.itemType != null) {
-                        console.log(product.itemType);
-                        console.log(product.productItems);
-                    }*/
-                    //ovdje cemo provjeravati da li ovaj product u nizu productItems sadrzi
-                    //sve oznacene sastojke
-                    var containsIngr = true;
-                    ingredients.map(ingredient => {
+            if (checked) { //ukoliko je oznaceno contains 
+                products.forEach(product => {    
+                    var containsIngr = false;
+                    var numIngr = 0;
+                    ingredients.forEach(ingredient => {
+                        containsIngr = false;
+                        product.productItems.forEach(item => {
+                            if(item.item.name == ingredient.name) numIngr++;
+                        });
                         
-                       // if(!product.productItems.includes(ingredient)) containsIngr = false;
-                        
-                        var index = product.description.indexOf('Ingredients');
-                        var descIngredients = product.description.substring(index+12, product.description.length-1);
-                        if (!descIngredients.toLowerCase().includes(ingredient.toLowerCase())) containsIngr = false;
                     });
-                    if (containsIngr) filteredProducts.push(product);
-                })
+                    if(numIngr == ingredients.length) containsIngr = true;
+                        if (containsIngr && !filteredProducts.includes(product)) filteredProducts.push(product);
+                });
             } else {
-                products.map(product => {
-                    //ovdje cemo provjeravati da li ovaj product u nizu productItems ne sadrzi
-                    //sve oznacene sastojke
-                    var notContains = true;
-                    ingredients.map(ingredient => {
+                products.forEach(product => {   
+                    var containsIngr = false; 
+                    ingredients.forEach(ingredient => {
+                        containsIngr = false;
+                        product.productItems.forEach(item => {
+                            if(item.item.name == ingredient.name) containsIngr = true;
+                        });
                         
-                       // if(product.productItems.includes(ingredient)) notContains = false;
-                        
-                        var index = product.description.indexOf('Ingredients');
-                        var descIngredients = product.description.substring(index+12, product.description.length-1);
-                        if (descIngredients.toLowerCase().includes(ingredient.toLowerCase())) notContains = false;
                     });
-                    if (notContains) filteredProducts.push(product);
-                })
+                    if (!containsIngr && !filteredProducts.includes(product)) filteredProducts.push(product);
+                });
+
+                
             }
             filteredProducts = filteredProducts.filter(pro => pro.quantity!=0);
             navigation.navigate('Offer',  { data: { filteredProducts }});
@@ -113,7 +110,7 @@ export default function FilterIngredients({ navigation }) {
                             <CheckboxFormX
                                 style={{ width: 350 - 30 }}
                                 dataSource={mockData}
-                                itemShowKey="label"
+                                itemShowKey="name"
                                 itemCheckedKey="RNchecked"
                                 iconSize={36}
                                 iconColor='grey'
