@@ -33,14 +33,14 @@ export default function DisplayOrders({ navigation }) {
 
   useEffect(() => {
     getOrdersServer(); // odmah ucita narudzbe
-  }, []);
+  }, []); 
 
-  useEffect(() => { // ucitava narudzbe svakih 20 sekundi
+ /* useEffect(() => { // ucitava narudzbe svakih 20 sekundi
     const timer = setInterval(() => {
       getOrdersServer();
     }, 20000);
     return () => clearTimeout(timer);
-  }, [guestOrders]);   
+  }, [guestOrders]);   */
 
   return (
     <ImageBackground source={require('../images/background2.png')}

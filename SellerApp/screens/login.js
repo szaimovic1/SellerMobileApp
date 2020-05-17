@@ -19,6 +19,7 @@ export default function Login ({ navigation }) {
 
     const subscribeToServer = navigation.getParam('subscribeToServer');
     const stompContext = navigation.getParam('stompContext');
+    //const subscribeToServerOrders = navigation.getParam('subscribeToServerOrders');
 
     const setItemStorage = async (key, value) => {
         try {
@@ -86,6 +87,7 @@ export default function Login ({ navigation }) {
 
                 registerForPushNotifications();
                 subscribeToServer(stompContext, StompEventTypes);
+               // subscribeToServerOrders(stompContext, StompEventTypes);
                 var TOKEN = await AsyncStorage.getItem('token');
                     fetch("https://cash-register-server-si.herokuapp.com/api/profile", {
                         method: "GET",
