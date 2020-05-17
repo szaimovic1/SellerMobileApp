@@ -14,7 +14,7 @@ export const NotificationsContextProvider = (props) => {
     }, [notificationMsg])
 
     const sendPushNotification = async () => {
-        if (!notificationMsg.includes("Guest is calling you to the ")) return;
+        if (!(notificationMsg.includes("Guest is calling you to the ") || notificationMsg.includes("A guest has placed an order"))) return;
         
         const expoPushToken = await AsyncStorage.getItem('expoPushToken');
 
@@ -50,11 +50,18 @@ export const NotificationsContextProvider = (props) => {
           setTopicId(stompContext
             .getStompClient()
             .subscribe('/topic/notifications', (msg) => {
-                //handlePushNotification({ data: JSON.parse(msg.body) });
                 const data = JSON.parse(msg.body);
                 setNotificationMsg(data.message);
             })
-        )});
+          );
+          setTopicId(stompContext
+            .getStompClient()
+            .subscribe('/topic/guest_order', (msg) => {
+              setNotificationMsg(msg.body);
+            })
+          );
+
+        });
     
         stompContext.addStompEventListener(StompEventTypes.Disconnect, () => {
           console.log("Disconnected");
