@@ -3,14 +3,13 @@ import { StyleSheet, Dimensions } from 'react-native';
 export default StyleSheet.create({
     orderServedView: {
         flexDirection:'row', 
-        width:200, 
-        marginHorizontal:28,
-        paddingHorizontal:60, 
+        width:"50%", 
+        marginHorizontal: 15,
         backgroundColor:'white', 
-        height:47, 
-        padding:10, 
+        height:47,  
         alignItems:'center', 
-        borderRadius:10
+        borderRadius:10,
+        justifyContent: "center",
     },
     textServed: {
         color:'#237804', 
