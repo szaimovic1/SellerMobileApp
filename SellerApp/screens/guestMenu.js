@@ -105,32 +105,6 @@ export default function GuestMenu({ navigation }) {
         },
       ]
     );
-
-    /* if (window.confirm("You are about to call the waiter! Are you sure?") == true) {
-      var tblNr = await AsyncStorage.getItem('tableNumber');
-      var token = await AsyncStorage.getItem('guestToken');
-
-      if (token != 'undefined' && token != null && tblNr != 'undefined' && tblNr != null) {
-        const notificationMessage = "Guest is calling you to the table number " + tblNr + "!";
-
-        fetch("https://cash-register-server-si.herokuapp.com/api/notifications", {
-          method: "POST",
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
-          },
-          body: JSON.stringify({ message: notificationMessage })
-        }).then((res) => res.json()).then((res) => {
-          console.log(res);
-        }).done();
-
-        ringTheBell();
-      }
-      else {
-        console.log("Error: token or tableNumber undefined");
-      }
-    } */
   }
 
   var receiptItems = []
@@ -140,9 +114,8 @@ export default function GuestMenu({ navigation }) {
 
   const getProducts = async () => {
     if (navigation.state.params.data.filteredProducts == undefined) {
-      setProducts(navigation.state.params.data.products);
+      setProducts(navigation.state.params.data.productsWithoutFilter);
     } else setProducts(navigation.state.params.data.filteredProducts);
-
   }
 
   async function tableNrCheck() {
@@ -162,16 +135,15 @@ export default function GuestMenu({ navigation }) {
       orderProducts.map((item) => {
         receiptItems.push({ id: item.id, quantity: item.times });
       });
-    console.log('receipt je: ', receiptItems);
+    //console.log('receipt je: ', receiptItems);
     // backupObject se koristi za krajnje slanje na server
     tableNumber = tableNr;
     message = tableNumber;
     backupObject = { message, receiptItems, 'served': false, 'seen': false };
-    console.log('broj stola je: ', tableNumber);
-    console.log('backupObject je: ', backupObject);
+    //console.log('broj stola je: ', tableNumber);
+    //console.log('backupObject je: ', backupObject);
 
   }, [receiptItems]);
-  //
 
   const addNewItemToOrder = (item, timesPressed) => {
     var postojao = false;
@@ -242,6 +214,17 @@ export default function GuestMenu({ navigation }) {
   const [price, setPrice] = useState(0);
   const [tableNr, setTableNr] = useState('');
 
+  const getIngerdients = (product) => {
+    var ingredients = "";
+    if(product.itemType != undefined && product.itemType != null && product.productItems != null && product.productItems != undefined && product.productItems.length != 0) {
+      ingredients +=product.itemType.name + ": ";
+      for(var i = 0; i < product.productItems.length; i++) {
+        if(i == product.productItems.length - 1) ingredients += product.productItems[i].item.name;
+        else ingredients += product.productItems[i].item.name + ", ";
+      }
+    }
+    return ingredients; 
+  }
   if (fontsLoaded) {
     if (products != undefined && products.length === 0) {
       return (
@@ -254,7 +237,7 @@ export default function GuestMenu({ navigation }) {
               width: 0,
               height: 2,
             }, shadowOpacity: 0.25, width: 100,
-          }} onPress={() => navigation.navigate('Filter')}>
+          }} onPress={() => navigation.navigate('Filter',{noResults: true, checkContains: false, checkedIngr: navigation.state.params.ingr })}>
             <Text style={{ color: "white", fontWeight: 'bold', fontFamily: 'IndieFlower-Regular', fontSize: 18 }}>Try again</Text>
           </TouchableOpacity>
         </View>
@@ -367,6 +350,7 @@ export default function GuestMenu({ navigation }) {
                   </Modal>
                   <NumericInput
                     minValue={0}
+                    maxValue={item.quantity}
                     onChange={value => addNewItemToOrder(item, value)}
                     rounded={true}
                     rightButtonBackgroundColor='#FA8072'
@@ -388,6 +372,7 @@ export default function GuestMenu({ navigation }) {
                     </View>
                     <ScrollView>
                       <Text style={styles.smallerText}>{item.description}</Text>
+                      <Text style={styles.smallerText}>{getIngerdients(item)}</Text>
                     </ScrollView>
                   </View>
 
@@ -407,4 +392,3 @@ export default function GuestMenu({ navigation }) {
     );
   }
 }
-

@@ -43,7 +43,7 @@ function Start ({ navigation, stompContext }) {
                 <View style={styles.offerBtn}>
                     <TouchableOpacity
                         onPress={() => {
-                            navigation.navigate('Filter');
+                            navigation.navigate('Filter', {noResults: false, checkContains: false, checkedIngr: null});
                         }}>
                         <Text style={{color: 'black', fontWeight: 'bold',}}>CHECK OUT THE OFFER ---></Text>
                     </TouchableOpacity>

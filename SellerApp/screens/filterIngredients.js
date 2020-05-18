@@ -14,24 +14,52 @@ const getFonts = () => {
 }
 
 export default function FilterIngredients({ navigation }) {
-    const { products, getProducts, mockData, getMockData } = useProductsContext();
+    const { products, getProducts, mockData, getMockData, setMockData } = useProductsContext();
     const [checked, setChecked] = useState(false);
-    const [fontsLoaded, setFontsLoaded] = useState(false);
-    const [ingredients, setIngredients] = useState([]);    
-
+    const [fontsLoaded, setFontsLoaded] = useState(false);    
+   var ingredients = [];
     useEffect(() => {
         getProducts();
         getMockData();
     }, []);
-
-    const onSelect = () => setChecked(!checked);
-
-    const onSelectItem = (items) => {
-        items.map(object => {
-            if(object.RNchecked && !ingredients.includes(object.label)) setIngredients(oldIngredients => [...oldIngredients, object.label]);
+    const onSelect = () => { 
+        setChecked(!checked);
+    }
+    var productsWithoutFilter = products.filter(pro => pro.quantity!=0);
+    const checkAfterNoResults = () => {
+        if(navigation.state.params.noResults) {
+            ingredients = navigation.state.params.checkedIngr;
+            var temp = mockData;
+            temp.forEach(item => {
+                ingredients.forEach(ingr => {
+                   if(ingr.name == item.name) {
+                       item.RNchecked = true;
+                   }
+                })
+            })
+        }
+    }
+    checkAfterNoResults();
+    const addItem = (item) => {
+        ingredients.push(item);
+    }
+    const getItems = () => {
+        onSelectItem(mockData);
+        
+        var ingr = ingredients;
+        ingr.forEach(object => {
+            delete object.RNchecked;
+        });
+        return ingr;
+    }
+    const onSelectItem =  (items) => {
+        items.forEach(async (object) => {
+            if(object.RNchecked && !ingredients.includes(object)) {
+                await addItem(object);
+            }
             else if (!object.RNchecked) {// ovo znaci da je objekat odznacen
                 for (var i = 0; i < ingredients.length; i++) {
-                    if (ingredients[i] === object.label) {
+                    if (ingredients[i] === object) {
                         ingredients.splice(i, 1);
                         break;
                     }
@@ -39,34 +67,43 @@ export default function FilterIngredients({ navigation }) {
             }
         });
     }
-
     const filterProducts = async () => {
+        ingredients = getItems();
         var filteredProducts = [];
         if (ingredients != undefined && ingredients.length > 0) {  // odabrali smo neke sastojke
-            if (checked) {
-                products.map(product => {
-                    var containsIngr = true;
-                    ingredients.map(ingredient => {
-                        var index = product.description.indexOf('Ingredients');
-                        var descIngredients = product.description.substring(index+12, product.description.length-1);
-                        if (!descIngredients.toLowerCase().includes(ingredient.toLowerCase())) containsIngr = false;
+            if (checked) { //ukoliko je oznaceno contains 
+                products.forEach(product => {    
+                    var containsIngr = false;
+                    var numIngr = 0;
+                    ingredients.forEach(ingredient => {
+                        product.productItems.forEach(item => {
+                            if(item.item.name == ingredient.name) numIngr++;
+                        });
+                        
                     });
-                    if (containsIngr) filteredProducts.push(product);
-                })
+                    if(numIngr == ingredients.length) containsIngr = true;
+                    if(containsIngr && !filteredProducts.includes(product)) filteredProducts.push(product);
+                });
             } else {
-                products.map(product => {
-                    var notContains = true;
-                    ingredients.map(ingredient => {
-                        var index = product.description.indexOf('Ingredients');
-                        var descIngredients = product.description.substring(index+12, product.description.length-1);
-                        if (descIngredients.toLowerCase().includes(ingredient.toLowerCase())) notContains = false;
+                products.forEach(product => {   
+                    var containsIngr = false; 
+                    var numIngr = 0;
+                    ingredients.forEach(ingredient => {
+                        containsIngr = false;
+                        product.productItems.forEach(item => {
+                            if(item.item.name == ingredient.name) containsIngr = true;
+                        });
+                        if(!containsIngr) numIngr++;
+                        
                     });
-                    if (notContains) filteredProducts.push(product);
-                })
+                    if(product.productItems.length != 0 && numIngr==ingredients.length && !filteredProducts.includes(product)) filteredProducts.push(product);
+                });   
             }
-            navigation.navigate('Offer',  { data: { filteredProducts }});
-        } else  navigation.navigate('Offer', { data: { products } });
-       
+            filteredProducts = filteredProducts.filter(pro => pro.quantity != 0);
+            navigation.navigate('Offer',  { data: { filteredProducts }, ingr: ingredients});
+        } else  {
+            navigation.navigate('Offer', { data: { productsWithoutFilter }, ingr: ingredients });
+        }
     }
 
     if (fontsLoaded) {
@@ -82,7 +119,7 @@ export default function FilterIngredients({ navigation }) {
                             <CheckboxFormX
                                 style={{ width: 350 - 30 }}
                                 dataSource={mockData}
-                                itemShowKey="label"
+                                itemShowKey="name"
                                 itemCheckedKey="RNchecked"
                                 iconSize={36}
                                 iconColor='grey'
@@ -97,7 +134,7 @@ export default function FilterIngredients({ navigation }) {
                         <TouchableOpacity onPress={filterProducts} style={styles.finishBtn}>
                             <Text style={styles.finishText}>FILTER</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => navigation.navigate('Offer', { data: { products } })} style={styles.finishBtn}>
+                        <TouchableOpacity onPress={() => navigation.navigate('Offer', { data: { productsWithoutFilter }, ingr: null })} style={styles.finishBtn}>
                             <Text style={styles.finishText}>SHOW ALL PRODUCTS</Text>
                         </TouchableOpacity>
                     </View>
