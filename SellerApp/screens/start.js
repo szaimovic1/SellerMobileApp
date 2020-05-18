@@ -8,11 +8,13 @@ import { guestLogIn } from '../functions/storage';
 import { useProductsContext } from '../contexts/productsContext';
 import { useNotificationsContext } from '../contexts/notificationsContext';
 import {  withStomp  } from "react-stompjs";
+import { useOrdersContext } from '../contexts/ordersContext';
 
 function Start ({ navigation, stompContext }) {
     const [fontsLoaded, setFontsLoaded] = useState(false);
     const { getProducts, getMockData } = useProductsContext();
     const { subscribeToServer, topicId } = useNotificationsContext();
+   // const { subscribeToServerOrders } = useOrdersContext();
 
     //ULOGOVANJE GUESTA I UCITAVANJE PODATAKA   
     useEffect(() => {
