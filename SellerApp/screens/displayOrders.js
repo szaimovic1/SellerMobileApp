@@ -26,7 +26,7 @@ export default function DisplayOrders({ navigation }) {
     {
       singleOrder.products.map((singleProduct) => {
         ammount += singleProduct.times * singleProduct.price
-      });
+      });    
     }
     return ammount.toFixed(2);
   }
@@ -34,13 +34,6 @@ export default function DisplayOrders({ navigation }) {
   useEffect(() => {
     getOrdersServer(); // odmah ucita narudzbe
   }, []); 
-
- /* useEffect(() => { // ucitava narudzbe svakih 20 sekundi
-    const timer = setInterval(() => {
-      getOrdersServer();
-    }, 20000);
-    return () => clearTimeout(timer);
-  }, [guestOrders]);   */
 
   return (
     <ImageBackground source={require('../images/background2.png')}

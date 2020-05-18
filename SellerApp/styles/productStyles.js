@@ -53,7 +53,7 @@ export default StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     textAlign: "center",
-    fontSize: 30
+    fontSize: 20
   },
   modalText: {
     marginBottom: 15,
