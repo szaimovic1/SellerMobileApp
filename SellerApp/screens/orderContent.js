@@ -143,6 +143,7 @@ export default function OrderContent({ navigation }) {
   }
 
   const submitOrder = () => {
+    calculateTotalPrice();
     postOrder(navigation, narudzba, backupObject);
   }
 

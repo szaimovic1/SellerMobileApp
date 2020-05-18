@@ -144,6 +144,7 @@ export default function GuestOrderContent({ navigation }) {
   }
 
   const submitOrder = () => {
+    calculateTotalPrice();
     postOrderGuest(navigation, narudzba, backupObject);
   }
 
