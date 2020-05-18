@@ -99,7 +99,7 @@ export default function FilterIngredients({ navigation }) {
                     if(product.productItems.length != 0 && numIngr==ingredients.length && !filteredProducts.includes(product)) filteredProducts.push(product);
                 });   
             }
-            filteredProducts = filteredProducts.filter(pro => pro.quantity!=0);
+            filteredProducts = filteredProducts.filter(pro => pro.quantity != 0);
             navigation.navigate('Offer',  { data: { filteredProducts }, ingr: ingredients});
         } else  {
             navigation.navigate('Offer', { data: { productsWithoutFilter }, ingr: ingredients });

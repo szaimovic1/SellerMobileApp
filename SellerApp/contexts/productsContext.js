@@ -28,23 +28,21 @@ export const ProductsContextProvider = (props) => {
           .done();
     }
     const getMockData = async() => {
-        var TOKEN = await AsyncStorage.getItem('token');
-        if (TOKEN == null) TOKEN = await AsyncStorage.getItem('guestToken');
-        fetch("https://cash-register-server-si.herokuapp.com/api/items", {
-          method: "GET",
-          headers: {
-            'Authorization': 'Bearer ' + TOKEN
-          }
+      var TOKEN = await AsyncStorage.getItem('token');
+      if (TOKEN == null) TOKEN = await AsyncStorage.getItem('guestToken');
+      fetch("https://cash-register-server-si.herokuapp.com/api/items", {
+        method: "GET",
+        headers: {
+          'Authorization': 'Bearer ' + TOKEN
+        }
+      })
+      .then((response) => response.json())
+      .then((items) => {
+        setMockData(items);
+          return items;
         })
-          .then((response) => response.json())
-          .then((items) => {
-            setMockData(items);
-            return items;
-          })
-          .done();
-        
-  }
-
+      .done();    
+    }
     const productsData = {
         products, 
         getProducts,

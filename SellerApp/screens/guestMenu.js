@@ -144,7 +144,6 @@ export default function GuestMenu({ navigation }) {
     //console.log('backupObject je: ', backupObject);
 
   }, [receiptItems]);
-  //
 
   const addNewItemToOrder = (item, timesPressed) => {
     var postojao = false;
