@@ -204,6 +204,28 @@ export const OrdersContextProvider = (props) => {
         .done();
     }
 
+    const subscribeToServerOrders = async (stompContext, StompEventTypes) => {
+        const client = await stompContext.newStompClient('https://cash-register-server-si.herokuapp.com/ws');
+        stompContext.addStompEventListener(StompEventTypes.Connect, async () => {
+          console.log("Connected");
+          if(stompContext.getStompClient() === undefined)
+            await stompContext.newStompClient('https://cash-register-server-si.herokuapp.com/ws');
+          setTopicId(stompContext
+            .getStompClient()
+            .subscribe('/topic/guest_order', (msg) => {
+                getOrdersServer();
+            })
+        )});
+    
+        stompContext.addStompEventListener(StompEventTypes.Disconnect, () => {
+          console.log("Disconnected");
+        });
+    
+        stompContext.addStompEventListener(StompEventTypes.WebSocketClose, () => {
+          console.log("Disconnected (not graceful)");
+        });
+    };
+
     const ordersData = {
         orders,
         setOrders,
@@ -216,6 +238,7 @@ export const OrdersContextProvider = (props) => {
         updateGuestOrderState,
         postOrderGuest,
         updateGuestOrderSeen,
+        subscribeToServerOrders,
     }
 
     return <OrdersContext.Provider value={ordersData}>{ children }</OrdersContext.Provider>

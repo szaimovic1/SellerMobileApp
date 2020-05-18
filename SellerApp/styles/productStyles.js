@@ -53,7 +53,7 @@ export default StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     textAlign: "center",
-    fontSize: 30
+    fontSize: 20
   },
   modalText: {
     marginBottom: 15,
@@ -186,12 +186,11 @@ export default StyleSheet.create({
   },
   editButton: {
     marginBottom: 20,
-    marginLeft: 15
+    width: "15%",
   },
   addButton: {
-    position: 'absolute',
-    right: 15,
     backgroundColor: "white",
+    width: "15%",
   },
   productQuantity: {
     flexDirection: 'row', 
@@ -214,8 +213,6 @@ export default StyleSheet.create({
   },
   addButtonDisabled: {
     backgroundColor: "#237804",
-    position: 'absolute',
-    right: 15,
     backgroundColor: "white",
   },
   input: {

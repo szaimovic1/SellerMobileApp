@@ -223,7 +223,7 @@ export const postGuestOrder = async (sendToServerObject) => {
   })
     .then((response) => response.text())
     .then((res) => {
-      console.log(res);
+      console.log("ODGOVOR", res);
     }).catch((error) => console.error(error))
     .done();
 }
@@ -312,7 +312,7 @@ export const guestLogIn = async () => {
 //logout
 export const logOut = async (stompContext, topicId) => {
   try{
-    //stompContext.getStompClient().unsubscribe(topicId);
+    //stompContext.getStompClient().unsubscribe(topicId); otkomentarisati kasnije
     /*stompContext.getStompClient().disconnect(function() {
       console.log("DIskonektovanoo");
     });*/
