@@ -143,6 +143,7 @@ export default function OrderContent({ navigation }) {
   }
 
   const submitOrder = () => {
+    calculateTotalPrice();
     postOrder(navigation, narudzba, backupObject);
   }
 
@@ -160,14 +161,14 @@ export default function OrderContent({ navigation }) {
       <View style={styles.showPrice}>
         <Text style={{ ...styles.sumbitText, fontSize: 18 }}>To pay: {price + " KM"}</Text>
       </View>
-      <View style={{ flexDirection: "row" }}>
+      <View style={{ flexDirection: "row", alignSelf: "center"}}>
         {editButtonVisible &&
           <Button onPress={editButton} style={styles.editButton}>
-            <MaterialIcons name='edit' size={30} style={styles.editIcon} />
+            <MaterialIcons name='edit' size={25} style={styles.editIcon} />
           </Button>}
         {!editButtonVisible &&
-          <Button onPress={checkButton} style={{ marginBottom: 20, marginLeft: 15 }}>
-            <MaterialIcons name='check' size={30} style={styles.editIcon} />
+          <Button onPress={checkButton} style={{ marginBottom: 20 }}>
+            <MaterialIcons name='check' size={25} style={styles.editIcon} />
           </Button>}
         <View style={orderStyles.orderServedView}>
           <Text style={orderStyles.textServed}>Served: </Text>
@@ -175,7 +176,7 @@ export default function OrderContent({ navigation }) {
         </View>
         <Button onPress={addButton} style={
           (addButtonDisabled && styles.addButtonDisabled) || (!addButtonDisabled && styles.addButton)} disabled={addButtonDisabled}>
-          <MaterialIcons name='add' size={30} style={styles.addIcon} />
+          <MaterialIcons name='add' size={25} style={styles.addIcon} />
         </Button>
       </View>
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import Receiver from '../src/Receiver';
+import Receiver from './Receiver';
 
 export default class Receiver extends React.Component {
     constructor() {

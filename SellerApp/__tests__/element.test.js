@@ -1,6 +1,6 @@
 import 'react-native';
 import React from 'react';
-import LoginForm from '../src/LoginForm';
+import LoginForm from '../examples/LoginForm';
 import renderer from 'react-test-renderer';
 
 const findElement = (tree, element) => {

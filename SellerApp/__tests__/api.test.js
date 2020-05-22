@@ -1,8 +1,8 @@
-import Movies from '../src/Movies';
+import Users from '../examples/Users';
 import 'isomorphic-fetch';
 
 it("API test 1", async function () {
-    const response = await Movies.getAll();
+    const response = await Users.getAllUsers();
     expect(response.movies[2].title).toEqual('The Matrix');
 });
 
@@ -19,6 +19,6 @@ it("API test 2", async function () {
         return p;
     });
 
-    const response = await Movies.getAll();
+    const response = await Users.getAllUsers();
     expect(response.id).toBe(1);
 });

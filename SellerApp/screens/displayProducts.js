@@ -8,7 +8,7 @@ import { Card } from 'react-native-paper';
 import Filter from '../components/filter';
 import styles from '../styles/productStyles';
 import { getStyle, getTitleStyle, getSubtitleStyle, getTextStyle, isProductQuantitySmall } from '../functions/productStyleFunc';
-import { checkIfOrdersEmpty } from '../functions/storage';
+import { checkIfOrdersEmpty, clearAsyncStorage } from '../functions/storage';
 import { useProductsContext } from '../contexts/productsContext';
 
 export default function DisplayProducts ({ navigation }) {
@@ -52,6 +52,7 @@ export default function DisplayProducts ({ navigation }) {
   }
 
   async function checkTableNr(){
+     // clearAsyncStorage();
       const tableNr = await AsyncStorage.getItem('tableNumber');
       console.log(tableNr);
       if (tableNr === null)
@@ -59,12 +60,12 @@ export default function DisplayProducts ({ navigation }) {
   }
 
   useEffect(() => {
-    checkIfOrdersEmpty();
-    checkTableNr();
+    getProducts();
   }, []);
 
   useEffect(() => {
-    getProducts();
+    checkIfOrdersEmpty();
+    checkTableNr();
   }, []);
 
   useEffect(() => {
@@ -104,122 +105,121 @@ export default function DisplayProducts ({ navigation }) {
   const updateList = (specificProducts) => {
     setProducts(specificProducts);
   }
-
-  return (
-    <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); }}>
-      <ImageBackground source={require('../images/background2.png')}
-        style={[styles.container,
-        modalVisible ? { opacity: 0.05 } : '1']}>
-        <Modal
-          style={styles.centeredView}
-          animationType="fade"
-          transparent={true}
-          visible={modalVisible}>
-          <View style={styles.modal}>
-            <Image
-              style={styles.modalImage}
-              source={{ uri: modalData.image }}
-            />
-          </View>
-          <View style={styles.centeredView}>
-            <View style={{ ...styles.modalView, marginBottom: '50%' }}>
-              <Text style={styles.modalTitle}>{modalData.name}</Text>
-              <Text style={styles.modalText}>Price: <Text style={{ fontWeight: "bold" }}>{modalData.price} KM</Text></Text>
-              <Text style={getStyle(modalData.quantity)}>Quantity: <Text style={{ fontWeight: "bold" }}>{modalData.quantity} {modalData.unit}</Text><Text> {isProductQuantitySmall(modalData.quantity)}</Text></Text>
-              <Text style={styles.modalText}>Discount: <Text style={{ fontWeight: "bold" }}>{modalData.discount} %</Text></Text>
-              <TouchableHighlight
-                style={{ ...styles.openButton, backgroundColor: 'rgba(0,0,55,50)' }}
-                onPress={() => {
-                  setModalVisible(false);
-                }}
-              >
-                <Text style={styles.textStyle}>&#215;</Text>
-              </TouchableHighlight>
+  
+    return (
+      <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); }}>
+        <ImageBackground source={require('../images/background2.png')}
+          style={[styles.container,
+          modalVisible ? { opacity: 0.05 } : '1']}>
+          <Modal
+            style={styles.centeredView}
+            animationType="fade"
+            transparent={true}
+            visible={modalVisible}>
+            <View style={styles.modal}>
+              <Image
+                style={styles.modalImage}
+                source={{ uri: modalData.image }}
+              />
             </View>
-          </View>
-        </Modal>
+            <View style={styles.centeredView}>
+              <View style={{ ...styles.modalView, marginBottom: '50%' }}>
+                <Text style={styles.modalTitle}>{modalData.name}</Text>
+                <Text style={styles.modalText}>Price: <Text style={{ fontWeight: "bold" }}>{modalData.price} KM</Text></Text>
+                <Text style={getStyle(modalData.quantity)}>Quantity: <Text style={{ fontWeight: "bold" }}>{modalData.quantity} {modalData.unit}</Text><Text> {isProductQuantitySmall(modalData.quantity)}</Text></Text>
+                <Text style={styles.modalText}>Discount: <Text style={{ fontWeight: "bold" }}>{modalData.discount} %</Text></Text>
+                <TouchableHighlight
+                  style={{ ...styles.openButton, backgroundColor: 'rgba(0,0,55,50)' }}
+                  onPress={() => {
+                    setModalVisible(false);
+                  }}
+                >
+                  <Text style={styles.textStyle}>&#215;</Text>
+                </TouchableHighlight>
+              </View>
+            </View>
+          </Modal>
 
-        {buttonVisible && <TouchableOpacity
-          style={styles.proceedBtn}
-          onPress={() => {
-            navigation.navigate('AddNewOrder', { data: { newOrder } });
-            setOrderProducts([]);
-            setNewOrder({});
-            setButtonVisible(false);
-          }}
-          underlayColor='#fff'>
-          <Text style={styles.sumbitText}>Proceed</Text>
-        </TouchableOpacity>}
+          {buttonVisible && <TouchableOpacity
+            style={styles.proceedBtn}
+            onPress={() => {
+              navigation.navigate('AddNewOrder', { data: { newOrder } });
+              setOrderProducts([]);
+              setNewOrder({});
+              setButtonVisible(false);
+            }}
+            underlayColor='#fff'>
+            <Text style={styles.sumbitText}>Proceed</Text>
+          </TouchableOpacity>}
 
-        <Filter updateList={updateList} />
-        <ScrollView
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={getProducts} />
-          }>
-
-          {products.map((item) => {
-            //update količine proizvoda
-            var timesPressed = '0';
-            orderProducts.map((orderObject) => {
-              if (orderObject.name === item.name) {
-                timesPressed = orderObject.times.toString();
-                return;
-              }
-
-            });
-
-            return (
-              <TouchableOpacity key={item.id}
-                onLongPress={() => {
-                  ModalFetcher(item.id);
-                  setModalVisible(true);
+          <Filter updateList={updateList} />
+          <ScrollView
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={getProducts} />
+            }>
+            {products != undefined && products.length != 0 && products.map((item) => {
+              //update količine proizvoda
+              var timesPressed = '0';
+              orderProducts.map((orderObject) => {
+                if (orderObject.name === item.name) {
+                  timesPressed = orderObject.times.toString();
+                  return;
                 }
-                }
-                onPress={() => {
-                  if (item.quantity != 0) {
-                    timesPressed++;
-                    addNewItemToOrder(item, timesPressed);
+
+              });
+
+              return (
+                <TouchableOpacity key={item.id}
+                  onLongPress={() => {
+                    ModalFetcher(item.id);
+                    setModalVisible(true);
                   }
-                }
-                }
-              >
-                <WingBlank size="lg">
-                  <Card.Title
-                    title={item.name}
-                    titleStyle={getTitleStyle(item.quantity)}
-                    subtitleStyle={getSubtitleStyle(item.quantity)}
+                  }
+                  onPress={() => {
+                    if (item.quantity != 0) {
+                      timesPressed++;
+                      addNewItemToOrder(item, timesPressed);
+                    }
+                  }
+                  }
+                >
+                  <WingBlank size="lg">
+                    <Card.Title
+                      title={item.name}
+                      titleStyle={getTitleStyle(item.quantity)}
+                      subtitleStyle={getSubtitleStyle(item.quantity)}
 
-                    left={(props) => {
-                      const img = item.imageBase64;
-                      return <Image {...props}
-                        style={[{ width: 35, height: 35 }, modalVisible ? { opacity: 0 } : '1']}
-                        source={{ uri: img }} />
-                    }}
-                    right={(props) => (
-                      <View {...props} style={{flexDirection: 'row', 
-                          backgroundColor: 'white', 
-                          justifyContent: 'center', 
-                          alignItems: 'center', width: 130}
-                      }>  
-                      {buttonVisible &&
-                        <Text style={styles.tableNum1}>{timesPressed}</Text>
-                      }
-                        <Text style = {[{flex: 5, textAlign: "center", marginBottom: 3},  !buttonVisible ? { marginLeft: 50 } : 0,]}>{item.price} KM</Text>
-                      </View>
-                    )}
-                    style={[styles.card,
-                    modalVisible ? { backgroundColor: 'rgba(0,0,0,0.7)' } : '',
-                    modalVisible ? { borderColor: 'rgba(0,0,0,0.7)' } : '']}
-                  />
-                </WingBlank>
-                <WhiteSpace size="lg" />
-              </TouchableOpacity>
-            )
-          }
-          )}
-        </ScrollView>
-        
-      </ImageBackground>
-    </TouchableWithoutFeedback>
-  )
+                      left={(props) => {
+                        const img = item.imageBase64;
+                        return <Image {...props}
+                          style={[{ width: 35, height: 35 }, modalVisible ? { opacity: 0 } : '1']}
+                          source={{ uri: img }} />
+                      }}
+                      right={(props) => (
+                        <View {...props} style={{flexDirection: 'row', 
+                            backgroundColor: 'white', 
+                            justifyContent: 'center', 
+                            alignItems: 'center', width: 130}
+                        }>  
+                        {buttonVisible &&
+                          <Text style={styles.tableNum1}>{timesPressed}</Text>
+                        }
+                          <Text style = {[{flex: 5, textAlign: "center", marginBottom: 3},  !buttonVisible ? { marginLeft: 50 } : 0,]}>{item.price} KM</Text>
+                        </View>
+                      )}
+                      style={[styles.card,
+                      modalVisible ? { backgroundColor: 'rgba(0,0,0,0.7)' } : '',
+                      modalVisible ? { borderColor: 'rgba(0,0,0,0.7)' } : '']}
+                    />
+                  </WingBlank>
+                  <WhiteSpace size="lg" />
+                </TouchableOpacity>
+              )
+            }
+            )}
+          </ScrollView>
+          
+        </ImageBackground>
+      </TouchableWithoutFeedback>
+    )
 }

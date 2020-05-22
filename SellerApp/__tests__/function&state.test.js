@@ -1,6 +1,6 @@
 import 'react-native';
 import React from 'react';
-import Random from '../src/Random';
+import Random from '../examples/Random';
 import renderer from 'react-test-renderer';
 
 it('Function should return value multiplied by 10', () => {

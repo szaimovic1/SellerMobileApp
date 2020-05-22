@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, AsyncStorage, Alert, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import styles from '../styles/productStyles';
 import SearchableDropdown from 'react-native-searchable-dropdown';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function ChangeTableNr({ navigation }) {
     const [ tables, setTables ] = useState(async () => {
@@ -70,7 +71,7 @@ export default function ChangeTableNr({ navigation }) {
               <Text style={{...styles.textStyle, color: "#181819"}}>{text1}</Text>
               <Text style = {{marginTop: 20, fontSize: 20, }}>{text2}</Text>
             </View>
-            <View style={{flex: 5, marginVertical: 10,}}>
+            <View style={{flex: 5, marginVertical: "20%",}}>
               <SearchableDropdown
                 keyboardType={'numeric'} 
                 placeholderTextColor = {"#181819"}

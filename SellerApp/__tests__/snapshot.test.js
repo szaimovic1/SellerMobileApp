@@ -1,6 +1,6 @@
 import 'react-native';
 import React from 'react';
-import Parent from '../src/Parent';
+import Parent from '../examples/Parent';
 import renderer from 'react-test-renderer';
 
 test('Snapshot for Parent component', () => {
